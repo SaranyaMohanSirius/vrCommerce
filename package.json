@@ -1,0 +1,27 @@
+{
+  "name": "siriusecom",
+  "version": "0.0.1",
+  "description": "sirius ecommerce bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.8",
+    "node-cron": "^1.2.1",
+    "q": "^1.4.1",
+    "request": "^2.74.0",
+    "watson-developer-cloud": "^2.37.0",
+    "universal-analytics": "^0.4.15 ",
+    "gampee": "^1.0.1",
+    "lodash.merge": "^4.6.0",
+    "request-promise": "^4.2.1 ",
+    "promise": "^8.0.1"
+  },
+  "devDependencies": {}
+}
