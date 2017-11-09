@@ -21,12 +21,12 @@ app.use(bodyParser.json());
 
 // Index route
 app.get('/', function(req, res) {
-  res.send('Hello world');
-
+	commerce.guestLogin(res);
 });
 
 // Spin up the server
 app.listen(app.get('port'), function() {
   console.log('running on port', app.get('port'))
 })
+
 
