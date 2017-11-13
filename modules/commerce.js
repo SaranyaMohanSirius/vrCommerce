@@ -30,7 +30,8 @@ module.exports = {
 		  console.log("access_token: " + body.access_token);
 		  res.send({
                 "success": true,
-                "authorization_code": body.access_token
+                "authorization_code": body.access_token,
+                "bearer": body.token_type
               });
 		  
         } else {
