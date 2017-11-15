@@ -28,6 +28,10 @@ app.get('/getTopCategories', function(req, res) {
 	commerce.getTopCategories(constants.EP_ACCESS_TOKEN,res);
 });
 
+app.get('/getSearchResults', function(req, res) {
+	commerce.getSearchResults(constants.EP_ACCESS_TOKEN,res,"dress","20");
+});
+
 
 // Spin up the server
 app.listen(app.get('port'), function() {
