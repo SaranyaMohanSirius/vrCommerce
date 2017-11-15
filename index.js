@@ -24,6 +24,11 @@ app.get('/', function(req, res) {
 	commerce.guestLogin(res);
 });
 
+app.get('/getTopCategories', function(req, res) {
+	commerce.getTopCategories(constants.EP_ACCESS_TOKEN,res);
+});
+
+
 // Spin up the server
 app.listen(app.get('port'), function() {
   console.log('running on port', app.get('port'))

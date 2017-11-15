@@ -15,16 +15,17 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "gampee": "^1.0.1",
+    "json-mapper": "0.0.12",
+    "lodash.merge": "^4.6.0",
     "mongodb": "^2.2.8",
     "node-cron": "^1.2.1",
+    "promise": "^8.0.1",
     "q": "^1.4.1",
     "request": "^2.74.0",
-    "watson-developer-cloud": "^2.37.0",
-    "universal-analytics": "^0.4.15 ",
-    "gampee": "^1.0.1",
-    "lodash.merge": "^4.6.0",
     "request-promise": "^4.2.1 ",
-    "promise": "^8.0.1"
+    "universal-analytics": "^0.4.15 ",
+    "watson-developer-cloud": "^2.37.0"
   },
   "devDependencies": {},
   "repository": {
