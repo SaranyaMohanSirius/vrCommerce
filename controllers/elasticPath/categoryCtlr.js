@@ -12,6 +12,7 @@ var globalcount = 0;
 
 module.exports = {
 
+  /*Controller for getting the Top level categories for header in EP*/ 
   getTopCategories: function(token,res){
     
   messageData = {};
@@ -22,7 +23,7 @@ module.exports = {
       method: 'GET',
       json: messageData,
     headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Content-Type': 'application/json',
         'Authorization': 'bearer ' + token
       },
     }, function(error, response, body) {
@@ -31,10 +32,12 @@ module.exports = {
       
             var converter = JM.makeConverter({
                 
-                element: ['_element', JM.map({
+                TopCategories: ['_element', JM.map({
                     name: 'display-name',
                     identifier: 'name',
-                    id: 'self.uri'
+                    id: 'self.uri',
+                    parentCategoryId: JM.helpers.def('-1'),
+
                 })]
             });
 
@@ -45,6 +48,58 @@ module.exports = {
                       "result": result,
                   
             });
+        } else {
+          console.log('errors in service hit to login service');
+          console.log(body.errors);
+          res.send({ "success": false, "error": body.errors });
+        }
+      } else {
+        console.log('commerce error');
+        console.log(error);
+        res.send({ "success": false, "error": error });
+      }
+    }); 
+  },
+
+  /*Controller for getting the Sub categories for header nav menu in EP*/
+  getSubCategories: function(token,res,identifier){
+    
+  messageData = {};
+  var concattUrl =  identifier + constants.EP_SUB_CATEGORIES_ZOOM;
+
+  console.log("getSubCategories - url:" + util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false));
+  
+  request({
+      url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false),
+      method: 'GET',
+      json: messageData,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + token
+      },
+    }, function(error, response, body) {
+      if (!error) {
+        if (!body.errors) {
+      
+            var converter = JM.makeConverter({
+                
+                SubCategories: ['_child', JM.map({
+                    name: 'display-name',
+                    identifier: 'name',
+                    id: 'self.uri',
+                    parentCategoryId: JM.helpers.def(identifier),
+                    
+                })]
+            });
+
+            var result = converter(body);
+
+            res.send({
+                      "success": true ,
+                      "result": result,
+                  
+            });
+
         } else {
           console.log('errors in service hit to login service');
           console.log(body.errors);

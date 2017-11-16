@@ -15,6 +15,11 @@ router.get('/getTopCategories', function(req, res) {
 	category.getTopCategories(constants.EP_ACCESS_TOKEN,res);
 });
 
+router.get('/getSubCategories', function(req, res) {
+	category.getSubCategories(constants.EP_ACCESS_TOKEN,res,"/navigations/britney/ijbecucqifjekta=");
+});
+
+
 
 module.exports = router;
 

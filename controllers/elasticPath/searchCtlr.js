@@ -12,13 +12,14 @@ var globalcount = 0;
 
 module.exports = {
 
+  /*Controller for getting the Search results for a given keyword in EP*/
    getSearchResults: function(token,res,keyword,pageSize){
        
     messageData = {
         "keywords": keyword,
         "page-size": pageSize      
     };
-    console.log("url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false));
+    console.log("getSearchResults post form url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false));
    
     request({
       url: util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false),
@@ -34,7 +35,7 @@ module.exports = {
                 var uri = body.self.uri;
                 var concatURL = uri + constants.EP_SEARCH_ZOOM;
                 var searchUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
-                console.log("url:" + searchUrl);
+                console.log("getSearchResults resource url:" + searchUrl);
                 messageData = {};
                 request({
                   url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),
