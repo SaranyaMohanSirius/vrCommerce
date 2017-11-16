@@ -111,6 +111,70 @@ module.exports = {
         res.send({ "success": false, "error": error });
       }
     }); 
-  } 
+  },
+
+  /*Controller for getting the products list for a given category/subcategory in EP*/
+  getProductsListForCategory: function(token,res,identifier){
+
+    messageData = {};
+  
+    var n = identifier.split("/");
+    var categoryIdentifier = n[n.length - 1];
+
+    var concatURL =  constants.EP_PRODUCTS_FROM_CATEGORIES_NAV + categoryIdentifier + constants.EP_SEARCH_ZOOM;
+
+    var productListUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
+    console.log('productListUrl'+ productListUrl);
+
+    request({
+      url: productListUrl,
+      method: 'GET',
+      json: messageData,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + token
+      },
+    }, function(error, response, body) {
+        if (!error) {
+              if(!body.errors){
+                  var converter = JM.makeConverter({
+                  productsList: ['_element', JM.map({
+                                           
+                         availability: '_availability.0.state',
+                         listPrice: '_price.0.list-price.0.display',
+                         purchasePrice: '_price.0.purchase-price.0.display',
+                         displayName: '_definitions.0.details.0.displayName',
+                         code: '_code.0.code'
+
+                  })],
+
+                  });
+
+                  var result = converter(body);
+                  res.send({
+                    "success": true ,
+                    "result": result,                                            
+                  });                            
+              }
+              else{
+                console.log('errors in service hit to login service');
+                console.log(body.errors);
+                res.send({ "success": false, "error": body.errors });
+              }
+        }else{
+            console.log('commerce error');
+            console.log(error);
+            res.send({ "success": false, "error": error });                        
+        }
+
+
+    });
+
+    
+
+  }
+
+
+
 
 };
