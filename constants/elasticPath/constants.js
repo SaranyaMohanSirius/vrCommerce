@@ -2,6 +2,7 @@ module.exports = {
 
   "EP_HOSTNAME" : "53868ff2.ngrok.io",
   "EP_HOSTNAME_CORTEX" : "53868ff2.ngrok.io/cortex",
+  "EP_STORE" : "britney",
   "EP_GUEST_LOGIN" : "/cortex/oauth2/tokens?grant_type=password&role=PUBLIC&scope=britney",
   "EP_TOP_CATEGORIES" : "/cortex/navigations/britney?zoom=element",
   "EP_SUB_CATEGORIES_ZOOM" : "?zoom=child",

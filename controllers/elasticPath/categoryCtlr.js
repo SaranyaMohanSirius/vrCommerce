@@ -155,6 +155,8 @@ module.exports = {
                              purchasePrice: '_price.0.purchase-price.0.display',
                              displayName: '_definition.0.display-name',
                              code: '_code.0.code',
+                             resourceIdentifier: '_code.0.links.0.uri',
+                             store: JM.helpers.def(constants.EP_STORE),
 
 
                              attributes: ['_definition.0.details', JM.map({
