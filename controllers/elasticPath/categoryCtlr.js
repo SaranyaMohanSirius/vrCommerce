@@ -138,15 +138,26 @@ module.exports = {
         if (!error) {
               if(!body.errors){
                   var converter = JM.makeConverter({
-                  productsList: ['_element', JM.map({
-                                           
-                         availability: '_availability.0.state',
-                         listPrice: '_price.0.list-price.0.display',
-                         purchasePrice: '_price.0.purchase-price.0.display',
-                         displayName: '_definitions.0.details.0.displayName',
-                         code: '_code.0.code'
 
-                  })],
+
+                      pagination: {
+                          pageSize: 'pagination.page-size',
+                          currentPageNumber: 'pagination.current',
+                          resultsTotal: 'pagination.results',
+                          resultsCurrentPage: 'pagination.results-on-page',
+
+                       },
+
+                      productsList: ['_element', JM.map({
+                                               
+                             availability: '_availability.0.state',
+                             listPrice: '_price.0.list-price.0.display',
+                             purchasePrice: '_price.0.purchase-price.0.display',
+                             displayName: '_definitions.0.details.0.displayName',
+                             code: '_code.0.code',
+
+                      })],
+
 
                   });
 
