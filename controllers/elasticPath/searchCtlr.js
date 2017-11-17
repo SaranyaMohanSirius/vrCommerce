@@ -63,8 +63,18 @@ module.exports = {
                                            availability: '_availability.0.state',
                                            listPrice: '_price.0.list-price.0.display',
                                            purchasePrice: '_price.0.purchase-price.0.display',
-                                           displayName: '_definitions.0.details.0.displayName',
-                                           code: '_code.0.code'
+                                           displayName: '_definition.0.display-name',
+                                           code: '_code.0.code',
+
+
+                                           attributes: ['_definition.0.details', JM.map({
+                                              displayable: JM.helpers.def('true'),
+                                              usage: JM.helpers.def('Descriptive'),
+                                              name: 'display-name',
+                                              identifier: 'name',
+                                              values: 'value', 
+
+                                          })],
 
                                     })],
 
