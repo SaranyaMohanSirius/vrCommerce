@@ -1,7 +1,7 @@
 module.exports = {
 
-  "EP_HOSTNAME" : "53868ff2.ngrok.io",
-  "EP_HOSTNAME_CORTEX" : "53868ff2.ngrok.io/cortex",
+  "EP_HOSTNAME" : "4c00070e.ngrok.io",
+  "EP_HOSTNAME_CORTEX" : "4c00070e.ngrok.io/cortex",
   "EP_STORE" : "britney",
   "EP_GUEST_LOGIN" : "/cortex/oauth2/tokens?grant_type=password&role=PUBLIC&scope=britney",
   "EP_TOP_CATEGORIES" : "/cortex/navigations/britney?zoom=element",
@@ -14,7 +14,7 @@ module.exports = {
   "HTML_DIR" : "WebContent/html/",
 
   //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : "69d0ead7-4e6d-40f0-bcde-8cbaa8924740"
+  "EP_ACCESS_TOKEN" : "07d5cbb6-8f12-4a5f-8182-d9482ec6dc35"
 
 
 };
