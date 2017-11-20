@@ -78,6 +78,19 @@ module.exports = {
 
                                           })],
 
+                                         hasSingleSKU: ['_definition.0.links', function(arr){
+                                            if(arr.length >= 3)
+                                              return false;
+                                            else
+                                              return true;
+                                          }],
+                                          catalogEntryTypeCode: ['_definition.0.links', function(arr){
+                                            if(arr.length >= 3)
+                                              return 'ProductBean';
+                                            else
+                                              return 'ItemBean';
+                                          }]
+
                                     })],
 
                                 });
