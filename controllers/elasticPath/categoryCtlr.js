@@ -37,8 +37,12 @@ module.exports = {
                     identifier: 'name',
                     id: 'self.uri',
                     parentCategoryId: JM.helpers.def('-1'),
+                    store: JM.helpers.def(constants.EP_STORE)
 
-                })]
+                })],
+                totalCount: ['_element', function(arr){
+                  return arr.length;
+                }]
             });
 
             var result = converter(body);
@@ -88,8 +92,12 @@ module.exports = {
                     identifier: 'name',
                     id: 'self.uri',
                     parentCategoryId: JM.helpers.def(identifier),
+                    store: JM.helpers.def(constants.EP_STORE),
                     
-                })]
+                })],
+                totalCount: ['_child', function(arr){
+                  return arr.length;
+                }],
             });
 
             var result = converter(body);
