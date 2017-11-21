@@ -7,12 +7,12 @@ module.exports = {
   "EP_TOP_CATEGORIES" : "/cortex/navigations/britney?zoom=element",
   "EP_SUB_CATEGORIES_ZOOM" : "?zoom=child",
   "EP_PRODUCTS_FROM_CATEGORIES_NAV" : "/searches/britney/navigations/items/",
-
   
   "EP_SEARCH_ZOOM" : "?zoom=element:availability,element:code,element:definition,element:element,element:price",
   "EP_SEARCH" : "/cortex/searches/britney/keywords/items?followlocation",
 
-
+  "EP_PDP_ZOOM" : "?zoom=availability,code,definition,definition:options:element,definition:options:element:selector:choice:description,definition:options:element:selector:chosen:description,price",
+  
   "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "EP_IMAGE_FMT": ".jpg",
 
