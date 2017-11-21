@@ -7,6 +7,15 @@ var _ = require("underscore");
 
 var globalcount = 0;
 
+var winston = require('winston');
+var logger = new (winston.Logger)({
+   transports: [
+     new (winston.transports.Console)(),
+     new (winston.transports.File)({ filename: 'trace.log' })
+   ]
+});
+
+
 module.exports = {
 
   /*Controller for getting the Search results for a given keyword in EP*/
@@ -16,8 +25,9 @@ module.exports = {
         "keywords": keyword,
         "page-size": pageSize      
     };
-    console.log("getSearchResults post form url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false));
    
+    logger.info('getSearchResults post form url', util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false));
+
     request({
       url: util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false),
       method: 'POST',
@@ -32,7 +42,7 @@ module.exports = {
                 var uri = body.self.uri;
                 var concatURL = uri + constants.EP_SEARCH_ZOOM;
                 var searchUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
-                console.log("getSearchResults resource url:" + searchUrl);
+                logger.info("getSearchResults resource url:" + searchUrl);
                 messageData = {};
                 request({
                   url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),
@@ -54,25 +64,21 @@ module.exports = {
                                 });                            
                             }
                             else{
-                              console.log('errors in service hit to login service');
-                              console.log(body.errors);
+                              logger.error('errors in service to getSearchResults in EP: ', body.errors);
                               res.send({ "success": false, "error": body.errors });
                             }
                         }else{
-                            console.log('commerce error');
-                            console.log(error);
+                            logger.error('errors in service to getSearchResults in EP: ', error);
                             res.send({ "success": false, "error": error });                        
                         }
                     });
                 }  
             else {
-              console.log('errors in service hit to login service');
-              console.log(body.errors);
+              logger.error('errors in service to postSearchresultsFom in EP: ', body.errors);
               res.send({ "success": false, "error": body.errors });
             }
           } else {
-            console.log('commerce error');
-            console.log(error);
+            logger.error('errors in service to postSearchresultsFom in EP: ', error);
             res.send({ "success": false, "error": error });
           }
     });

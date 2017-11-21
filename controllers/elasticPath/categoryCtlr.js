@@ -7,13 +7,23 @@ var _ = require("underscore");
 
 var globalcount = 0;
 
+var winston = require('winston');
+var logger = new (winston.Logger)({
+   transports: [
+     new (winston.transports.Console)(),
+     new (winston.transports.File)({ filename: 'trace.log' })
+   ]
+});
+
+
 module.exports = {
 
   /*Controller for getting the Top level categories for header in EP*/ 
   getTopCategories: function(token,res){
     
   messageData = {};
-  console.log("url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_TOP_CATEGORIES, false));
+
+  logger.info('Top categories EP url: ', util.constructUrl(constants.EP_HOSTNAME, constants.EP_TOP_CATEGORIES, false));
   
   request({
       url: util.constructUrl(constants.EP_HOSTNAME, constants.EP_TOP_CATEGORIES, false),
@@ -34,14 +44,12 @@ module.exports = {
             });
 
         } else {
-          console.log('errors in service hit to login service');
-          console.log(body.errors);
-          res.send({ "success": false, "error": body.errors });
+            logger.error('errors in service to get Top categories in EP: ', body.errors);
+            res.send({ "success": false, "error": body.errors });
         }
       } else {
-        console.log('commerce error');
-        console.log(error);
-        res.send({ "success": false, "error": error });
+            logger.error('errors in service to get Top categories in EP: ', error);
+            res.send({ "success": false, "error": error });
       }
     }); 
   },
@@ -52,7 +60,7 @@ module.exports = {
   messageData = {};
   var concattUrl =  identifier + constants.EP_SUB_CATEGORIES_ZOOM;
 
-  console.log("getSubCategories - url:" + util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false));
+  logger.info('Sub Categories EP url:' , util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false));
   
   request({
       url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false),
@@ -73,14 +81,12 @@ module.exports = {
             });
 
         } else {
-          console.log('errors in service hit to login service');
-          console.log(body.errors);
-          res.send({ "success": false, "error": body.errors });
+            logger.error('errors in service to get Sub categories in EP: ', body.errors);
+            res.send({ "success": false, "error": body.errors });
         }
       } else {
-        console.log('commerce error');
-        console.log(error);
-        res.send({ "success": false, "error": error });
+            logger.error('errors in service to get Sub categories in EP: ', error);
+            res.send({ "success": false, "error": error });
       }
     }); 
   },
@@ -96,7 +102,8 @@ module.exports = {
     var concatURL =  constants.EP_PRODUCTS_FROM_CATEGORIES_NAV + categoryIdentifier + constants.EP_SEARCH_ZOOM;
 
     var productListUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
-    console.log('productListUrl'+ productListUrl);
+
+    logger.info('Categories page Product List EP url:' , productListUrl);
 
     request({
       url: productListUrl,
@@ -117,14 +124,12 @@ module.exports = {
                   });                            
               }
               else{
-                console.log('errors in service hit to login service');
-                console.log(body.errors);
+                logger.error('errors in service to get products list for category in EP: ', body.errors);
                 res.send({ "success": false, "error": body.errors });
               }
         }else{
-            console.log('commerce error');
-            console.log(error);
-            res.send({ "success": false, "error": error });                        
+                logger.error('errors in service to get products list for category in EP: ', body.errors);
+                res.send({ "success": false, "error": error });                        
         }
     });
   }
