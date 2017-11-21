@@ -8,8 +8,8 @@ var globalcount = 0;
 module.exports = {
 
   /*json Mapper for mapping the PDP header in EP*/ 
-  mapPdpJSON: function(body){
-
+  mapPdpJSON: function(body, concatImageURL){
+		
 		var converter = JM.makeConverter({
 		
 			catalogEntryView: {
@@ -67,7 +67,9 @@ module.exports = {
 						})],
 					})],
 				})],
-								
+				
+				thumbnail: JM.helpers.def(concatImageURL),
+				fullImage: JM.helpers.def(concatImageURL),
 			},
 		});
 	    

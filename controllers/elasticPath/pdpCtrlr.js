@@ -30,7 +30,12 @@ module.exports = {
     }, function(error, response, body) {
           if (!error) {
             if (!body.errors) {
-				  var result = pdpMapper.mapPdpJSON(body); 
+				  var code = body._code[0].code;
+				  var imageName = (code.split("-")[0]).toUpperCase();
+				  imageName = imageName.replace(".", "-");
+				  var concatImageURL =  constants.EP_AWS_IMAGE_PATH + imageName + constants.EP_IMAGE_FMT;
+				  console.log('Image URL: '+concatImageURL);
+				  var result = pdpMapper.mapPdpJSON(body,concatImageURL); 
                   res.send({
                     "success": true ,
                     "result": result,                                            
