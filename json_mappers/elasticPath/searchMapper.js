@@ -7,54 +7,9 @@ var globalcount = 0;
 
 module.exports = {
 
-  /*json Mapper for mapping the Top level categories for header in EP*/ 
-  mapTopCategoriesJSON: function(body){
-    
-            var converter = JM.makeConverter({
-                
-                Categories: ['_element', JM.map({
-                    name: 'display-name',
-                    identifier: 'name',
-                    id: 'self.uri',
-                    parentCategoryId: JM.helpers.def('-1'),
-                    store: JM.helpers.def(constants.EP_STORE)
-
-                })],
-                totalCount: ['_element', function(arr){
-                  return arr.length;
-                }]
-            });
-
-            var result = converter(body);
-			return result;
-  },
-
-
-  /*json Mapper for mapping the Top level categories for header in EP*/ 
-  mapSubCategoriesJSON: function(body,identifier){
-
-
-              var converter = JM.makeConverter({
-                
-                SubCategories: ['_child', JM.map({
-                    name: 'display-name',
-                    identifier: 'name',
-                    id: 'self.uri',
-                    parentCategoryId: JM.helpers.def(identifier),
-                    store: JM.helpers.def(constants.EP_STORE),
-                    
-                })],
-                totalCount: ['_child', function(arr){
-                  return arr.length;
-                }],
-            });
-
-            var result = converter(body);
-            return result;
-  },
 
   /*json mapper for mapping the product list json for category landing page in EP*/
-  mapProductsListForCategoryJSON: function(body){
+  mapSearchResultJSON: function(body){
 
   			 var converter = JM.makeConverter({
 
@@ -65,7 +20,7 @@ module.exports = {
                   resultsCurrentPage: 'pagination.results-on-page',
 
                },
-              productsList: ['_element', JM.map({
+              searchResults: ['_element', JM.map({
                                        
                      availability: '_availability.0.state',
                      listPrice: '_price.0.list-price.0.display',

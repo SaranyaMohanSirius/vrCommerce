@@ -10,7 +10,12 @@ module.exports = {
 
   
   "EP_SEARCH_ZOOM" : "?zoom=element:availability,element:code,element:definition,element:element,element:price",
-  "EP_SEARCH" : "/cortex/searches/britney/keywords/items?followlocation", 
+  "EP_SEARCH" : "/cortex/searches/britney/keywords/items?followlocation",
+
+
+  "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
+  "EP_IMAGE_FMT": ".jpg",
+
   "HTML_DIR" : "WebContent/html/",
 
   //constants that needs to removed & got from the app

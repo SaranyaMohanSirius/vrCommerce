@@ -1,10 +1,7 @@
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
+var searchMapper = require('../../json_mappers/elasticPath/searchMapper');
 var request = require('request');
-var q = require('q');
-var gampee = require("gampee");
-var rp = require('request-promise');
-var Promise = require('promise');
 var JM = require('json-mapper');
 var _ = require("underscore");
 
@@ -48,54 +45,9 @@ module.exports = {
                 }, function(error, response, body) {
                         if (!error) {
                             if(!body.errors){
-                                var converter = JM.makeConverter({
 
-                                    pagination: {
-                                        pageSize: 'pagination.page-size',
-                                        currentPageNumber: 'pagination.current',
-                                        resultsTotal: 'pagination.results',
-                                        resultsCurrentPage: 'pagination.results-on-page',
+                               var result = searchMapper.mapSearchResultJSON(body); 
 
-                                    },    
-
-                                    searchResults: ['_element', JM.map({
-                                                             
-                                           availability: '_availability.0.state',
-                                           listPrice: '_price.0.list-price.0.display',
-                                           purchasePrice: '_price.0.purchase-price.0.display',
-                                           displayName: '_definition.0.display-name',
-                                           code: '_code.0.code',
-                                           resourceIdentifier: '_code.0.links.0.uri',
-                                           store: JM.helpers.def(constants.EP_STORE),
-
-
-                                           attributes: ['_definition.0.details', JM.map({
-                                              displayable: JM.helpers.def('true'),
-                                              usage: JM.helpers.def('Descriptive'),
-                                              name: 'display-name',
-                                              identifier: 'name',
-                                              values: 'value', 
-
-                                          })],
-
-                                         hasSingleSKU: ['_definition.0.links', function(arr){
-                                            if(arr.length >= 3)
-                                              return false;
-                                            else
-                                              return true;
-                                          }],
-                                          catalogEntryTypeCode: ['_definition.0.links', function(arr){
-                                            if(arr.length >= 3)
-                                              return 'ProductBean';
-                                            else
-                                              return 'ItemBean';
-                                          }]
-
-                                    })],
-
-                                });
- 
-                                var result = converter(body);
                                 res.send({
                                   "success": true ,
                                   "result": result,                                            

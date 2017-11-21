@@ -27,7 +27,7 @@ module.exports = {
       if (!error) {
         if (!body.errors) {
       
-          var result = categoryMapper.mapTopCategoriesJSON(body,res);
+          var result = categoryMapper.mapTopCategoriesJSON(body);
           res.send({
                       "success": true ,
                       "result": result,
@@ -66,7 +66,7 @@ module.exports = {
       if (!error) {
         if (!body.errors) { 
       
-            var result = categoryMapper.mapSubCategoriesJSON(body,res,identifier);
+            var result = categoryMapper.mapSubCategoriesJSON(body,identifier);
             res.send({
                       "success": true ,
                       "result": result,
@@ -110,7 +110,7 @@ module.exports = {
         if (!error) {
               if(!body.errors){
 
-                  var result = categoryMapper.mapProductsListForCategoryJSON(body,res);
+                  var result = categoryMapper.mapProductsListForCategoryJSON(body);
                   res.send({
                     "success": true ,
                     "result": result,                                            
