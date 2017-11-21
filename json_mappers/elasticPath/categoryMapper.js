@@ -63,6 +63,7 @@ module.exports = {
                   currentPageNumber: 'pagination.current',
                   resultsTotal: 'pagination.results',
                   resultsCurrentPage: 'pagination.results-on-page',
+                  pages: 'pagination.pages',
 
                },
               productsList: ['_element', JM.map({

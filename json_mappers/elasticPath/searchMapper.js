@@ -18,6 +18,7 @@ module.exports = {
                   currentPageNumber: 'pagination.current',
                   resultsTotal: 'pagination.results',
                   resultsCurrentPage: 'pagination.results-on-page',
+                  pages: 'pagination.pages',
 
                },
               searchResults: ['_element', JM.map({
