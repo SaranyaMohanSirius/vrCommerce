@@ -7,13 +7,7 @@ var _ = require("underscore");
 
 var globalcount = 0;
 
-var winston = require('winston');
-var logger = new (winston.Logger)({
-   transports: [
-     new (winston.transports.Console)(),
-     new (winston.transports.File)({ filename: 'trace.log' })
-   ]
-});
+var logger= util.getLogger();
 
 
 module.exports = {

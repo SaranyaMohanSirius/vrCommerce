@@ -7,13 +7,8 @@ var JM = require('json-mapper');
 var _ = require("underscore");
 
 var globalcount = 0;
-var winston = require('winston');
-var logger = new (winston.Logger)({
-   transports: [
-     new (winston.transports.Console)(),
-     new (winston.transports.File)({ filename: 'trace.log' })
-   ]
-});
+
+var logger= util.getLogger();
 var Promise = require("bluebird");
 var request = require('request-promise').defaults({ simple: false });
 
