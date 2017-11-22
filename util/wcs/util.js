@@ -15,6 +15,16 @@ module.exports = {
 		}
 
 		res.send(error);
-	}
+	},
+	getLogger: function(){
+		var winston = require('winston');
+		var logger = new (winston.Logger)({
+		transports: [
+		     new (winston.transports.Console)(),
+		     new (winston.transports.File)({ filename: 'trace.log' })
+		   ]
+		});
+		return logger;
+	} 
   
 };
