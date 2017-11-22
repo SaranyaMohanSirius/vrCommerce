@@ -19,6 +19,7 @@ module.exports = {
   
   "EP_CURRENT_ORDER" : "/orders/britney/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",
   "EP_SHIPMODE_ZOOM" : "deliveries:element:shippingoptioninfo:selector:choice:description,deliveries:element:shippingoptioninfo:selector:chosen:description",
+  "EP_LOG_DIR" : "log/elasticPath/trace.log",
   
   "HTML_DIR" : "WebContent/html/",
 

@@ -1,3 +1,5 @@
+var constants = require('../../constants/wcs/constants');
+
 module.exports = {
 	constructUrl : function  (hostname, path, isHttp) {
 		if(!isHttp){
@@ -21,7 +23,7 @@ module.exports = {
 		var logger = new (winston.Logger)({
 		transports: [
 		     new (winston.transports.Console)(),
-		     new (winston.transports.File)({ filename: 'trace.log' })
+		     new (winston.transports.File)({ filename: constants.WCS_LOG_DIR })
 		   ]
 		});
 		return logger;

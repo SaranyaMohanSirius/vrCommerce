@@ -9,6 +9,7 @@ module.exports = {
   "WCS_STORE_ID": "10151",
   "WCS_CATALOG_ID": "10001",
   "WCS_LANG_ID": "-1",
+  "WCS_LOG_DIR" : "log/wcs/trace.log",
   "HTML_DIR" : "WebContent/html/",
 
 
