@@ -18,3 +18,22 @@ Input Body :
   }
    ]
 }
+
+
+
+
+
+
+Search
+
+Request : POST : http://localhost:5000/ep/search/getSearchResults?pageSize=20&keyword=dress
+
+
+
+
+
+PDP
+
+Request : GET : http://localhost:5000/ep/pdp/getProductDetails?uri=10001
+		  GET : http://localhost:5000/wcs/pdp/getProductDetails?uri=/items/britney/qgqvhl2cijcvamjtgqxeo4tfpewvquy=
+
