@@ -22,7 +22,7 @@ var epSearchRoute = require('./routes/elasticPath/searchRoutes');
 var epCategoryRoute = require('./routes/elasticPath/categoryRoutes');
 var epPDPRoute = require('./routes/elasticPath/pdpRoutes');
 var epCartRoute = require('./routes/elasticPath/cartRoutes');
-
+var wcsPDPRoute = require('./routes/wcs/pdpRoutes');
 
 //This needs to be  refined based on the discussion with UI Team
 app.use('/ep/login',epLoginRoute);
@@ -30,6 +30,7 @@ app.use('/ep/search',epSearchRoute);
 app.use('/ep/category',epCategoryRoute);
 app.use('/ep/PDP',epPDPRoute);
 app.use('/ep/cart',epCartRoute);
+app.use('/wcs/PDP',wcsPDPRoute);
 
 
 // Spin up the server
