@@ -16,7 +16,10 @@ module.exports = {
   "EP_PRODUCT_ADDED" : "Product Added Successfully",
   "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "EP_IMAGE_FMT": ".jpg",
-
+  
+  "EP_CURRENT_ORDER" : "/orders/britney/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",
+  "EP_SHIPMODE_ZOOM" : "deliveries:element:shippingoptioninfo:selector:choice:description,deliveries:element:shippingoptioninfo:selector:chosen:description",
+  
   "HTML_DIR" : "WebContent/html/",
 
   //constants that needs to removed & got from the app
