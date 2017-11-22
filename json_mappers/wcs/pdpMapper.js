@@ -60,8 +60,8 @@ module.exports = {
 				
 				thumbnail: 'thumbnail',
 				fullImage: 'fullImage',
-			},
-		})];
+			})],
+		});
 	    
 		var result = converter(body);
         return result;
