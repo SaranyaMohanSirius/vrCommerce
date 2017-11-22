@@ -12,7 +12,7 @@ var router = express.Router();
 
 
 router.get('/getSearchResults', function(req, res){
-    search.getSearchResults(constants.EP_ACCESS_TOKEN,res,"dress","20");
+    search.getSearchResults(constants.EP_ACCESS_TOKEN,res,req);
 });
 
 module.exports = router;

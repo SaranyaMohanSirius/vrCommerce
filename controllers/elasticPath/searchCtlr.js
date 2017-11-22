@@ -9,19 +9,21 @@ var globalcount = 0;
 
 var logger= util.getLogger();
 
-
 module.exports = {
 
   /*Controller for getting the Search results for a given keyword in EP*/
    getSearchResults: function(token,res,keyword,pageSize){
-       
+
+	var keyword = req.query.keyword;
+	var pageSize = req.query.pageSize;
+	
     messageData = {
         "keywords": keyword,
         "page-size": pageSize      
     };
-   
-    logger.info('getSearchResults post form url', util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false));
 
+	logger.info('getSearchResults post form url', util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false));
+  
     request({
       url: util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false),
       method: 'POST',
@@ -36,7 +38,7 @@ module.exports = {
                 var uri = body.self.uri;
                 var concatURL = uri + constants.EP_SEARCH_ZOOM;
                 var searchUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
-                logger.info("getSearchResults resource url:" + searchUrl);
+                console.log("getSearchResults resource url:" + searchUrl);
                 messageData = {};
                 request({
                   url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),
@@ -58,7 +60,7 @@ module.exports = {
                                 });                            
                             }
                             else{
-                              logger.error('errors in service to getSearchResults in EP: ', body.errors);
+                              logger.error('errors in service to getSearchResults in EP: ', body.errors);								
                               res.send({ "success": false, "error": body.errors });
                             }
                         }else{
