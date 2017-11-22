@@ -10,7 +10,7 @@ var globalcount = 0;
 
 var logger= util.getLogger();
 var Promise = require("bluebird");
-var request = require('request-promise').defaults({ simple: false });
+var requestPromise = require('request-promise').defaults({ simple: false });
 
 module.exports = {
   /*Controller to add a product to cart  in EP  */

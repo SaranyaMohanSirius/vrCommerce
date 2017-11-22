@@ -5,7 +5,6 @@ var request = require('request');
 var JM = require('json-mapper');
 var _ = require("underscore");
 
-var globalcount = 0;
 
 var logger= util.getLogger();
 

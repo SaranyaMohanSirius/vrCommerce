@@ -9,7 +9,7 @@ var Promise = require('promise');
 var JM = require('json-mapper');
 var _ = require("underscore");
 
-var globalcount = 0;
+var logger= util.getLogger();
 
 module.exports = {
 
@@ -17,7 +17,7 @@ module.exports = {
    getProductDetails: function(token,res,uri){
 	   
     var concatURL = uri + constants.EP_PDP_ZOOM;   
-    console.log("getProductDetails post form url:" + util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false));	
+    logger.info("getProductDetails post form url:" + util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false));	
 	messageData = {};
     request({
       url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),
@@ -34,7 +34,7 @@ module.exports = {
 				  var imageName = (code.split("-")[0]).toUpperCase();
 				  imageName = imageName.replace(".", "-");
 				  var concatImageURL =  constants.EP_AWS_IMAGE_PATH + imageName + constants.EP_IMAGE_FMT;
-				  console.log('Image URL: '+concatImageURL);
+				  logger.info('Image URL: '+concatImageURL);
 				  var result = pdpMapper.mapPdpJSON(body,concatImageURL); 
                   res.send({
                     "success": true ,
@@ -43,13 +43,11 @@ module.exports = {
 
 			}
             else {
-              console.log('errors in service hit to login service');
-              console.log(body.errors);
+              logger.error('errors in service hit to login service'+body.errors);
               res.send({ "success": false, "error": body.errors });
             }
           } else {
-            console.log('commerce error');
-            console.log(error);
+            logger.error('commerce error'+ error);
             res.send({ "success": false, "error": error });
           }
     });

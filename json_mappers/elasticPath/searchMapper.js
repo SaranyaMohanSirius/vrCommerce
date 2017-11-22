@@ -3,7 +3,7 @@ var util = require('../../util/elasticPath/util');
 var JM = require('json-mapper');
 var _ = require("underscore");
 
-var globalcount = 0;
+
 
 module.exports = {
 

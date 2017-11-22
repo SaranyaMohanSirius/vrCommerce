@@ -8,14 +8,14 @@ var Promise = require('promise');
 var JM = require('json-mapper');
 var _ = require("underscore");
 
-var globalcount = 0;
+var logger= util.getLogger();
 
 module.exports = {
 
   guestLogin: function(res) {
 
 	messageData = {};
-	console.log("url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_GUEST_LOGIN, false));
+	logger.info("url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_GUEST_LOGIN, false));
 	
 	request({
       url: util.constructUrl(constants.EP_HOSTNAME, constants.EP_GUEST_LOGIN, false),
@@ -28,7 +28,7 @@ module.exports = {
     }, function(error, response, body) {
       if (!error) {
         if (!body.errors) {
-		  console.log("access_token: " + body.access_token);
+		  logger.info("access_token: " + body.access_token);
 		  res.send({
                 "success": true,
                 "authorization_code": body.access_token
@@ -37,13 +37,11 @@ module.exports = {
 			  
 		  
         } else {
-          console.log('errors in service hit to login service');
-          console.log(body.errors);
+          logger.error('errors in service hit to login service'+body.errors);
           res.send({ "success": false, "error": body.errors });
         }
       } else {
-        console.log('commerce error');
-        console.log(error);
+        logger.error('commerce error'+error);
         res.send({ "success": false, "error": error });
       }
     });
