@@ -13,6 +13,7 @@ module.exports = {
 
   "EP_PDP_ZOOM" : "?zoom=availability,code,definition,definition:options:element,definition:options:element:selector:choice:description,definition:options:element:selector:chosen:description,price",
   
+  "EP_PRODUCT_ADDED" : "Product Added Successfully",
   "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "EP_IMAGE_FMT": ".jpg",
 
