@@ -15,14 +15,6 @@ Input Body :
       {
     "productId": "/carts/britney/default/lineitems/items/britney/qgqvhmccijcvamjsguxee3dbmnvs2mry=",
     "quantity": "2.0"
-  },
-  {
-    "productId":"/carts/britney/default/lineitems/items/britney/qgqvhl2cijcvamjshexeezlsoj4s2ti=",
-    "quantity": "3.0"
-  },
-  {
-    "productId":"/carts/britney/default/lineitems/items/britney/qgqvhl2cijcvamjtgqxeo4tfpewvquy=",
-    "quantity": "1.0"
   }
    ]
 }

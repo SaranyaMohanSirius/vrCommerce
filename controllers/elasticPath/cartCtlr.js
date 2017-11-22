@@ -1,3 +1,4 @@
+
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var cartMapper = require('../../json_mappers/elasticPath/cartMapper');
@@ -14,7 +15,7 @@ var logger = new (winston.Logger)({
    ]
 });
 var Promise = require("bluebird");
-var request = require('request-promise');
+var request = require('request-promise').defaults({ simple: false });
 
 module.exports = {
   /*Controller to add a product to cart  in EP  */
@@ -23,32 +24,49 @@ module.exports = {
   for(var i = 0; i < req.body.orderItem.length; i++) {
   var messageData = [];
   var concattUrl =  req.body.orderItem[i].productId + "?followlocation";
-    logger.info("addToCart URL" + util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false));
-    messageData= {"quantity":req.body.orderItem[i].quantity};
-    requests.push({ url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false),
-      method: 'POST',
-      json: JSON.parse(JSON.stringify(messageData)),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'bearer ' + token
-      }
-    });
+   messageData= {"quantity":req.body.orderItem[i].quantity};
+   requests.push(getMyData(token,messageData,concattUrl));
     }
 
-  Promise.all(requests).then(function(results) {
-    /*
-    //Can be Handled based on the results -- Leaving this as empty
-    for (var i = 0; i < results.length; i++) {
-     
-    } */
-     var result = cartMapper.addToCartJSON(); 
-                                  res.send({
-                                    "success": true ,
-                                    "result": result,                                            
-                                  });
-  }, function(err) {
-            logger.error('errors in service hit to login service' + err);
-            res.send({ "success": false, "error": err });
-  });
+function getMyData(authToken,data,url) {
+    return new Promise(function(resolve,reject){
+        request.post({
+            url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),
+            json: JSON.parse(JSON.stringify(data)),
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + authToken
+        }
+      },function(error, response, body) {
+        if (!error) {
+            if (!body.errors) {
+                    return resolve({success:true, url:url,body:body})
+            }
+           else {
+              logger.error('Errors in request getRequest EP: ', body.errors);
+               return resolve({success:false, error:body.errors})
+            }
+          } else {
+            logger.error('errors in service to postSearchresultsFom in EP: ', error);
+            return resolve({success:false, error:error})
+          }       
+      });
+    });   
+}
+ Promise.all(requests).then(function(results) {
+  //Can be Handled based on the results -- Leaving this as empty
+  /*for (var i = 0; i < results.length; i++) {
+    
+    logger.info('Joseph Results' + JSON.stringify(results[i]));
+  } */
+   var result = cartMapper.addToCartJSON(); 
+                                res.send({
+                                  "success": true ,
+                                  "result": result,                                            
+                                }); 
+}, function(err) {
+          logger.error('errors in service hit to login service' + err);
+          res.send({ "success": false, "error": err });
+});
 }
 };
