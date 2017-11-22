@@ -12,7 +12,7 @@ var logger= util.getLogger();
 module.exports = {
 
   /*Controller for getting the Search results for a given keyword in EP*/
-   getSearchResults: function(token,res,keyword,pageSize){
+   getSearchResults: function(token,res,req){
 
 	var keyword = req.query.keyword;
 	var pageSize = req.query.pageSize;
