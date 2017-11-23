@@ -10,9 +10,18 @@ var app=express();
 var express = require('express');
 var router = express.Router();
 
-/*App needs to pass EP access token*/
+/**
+ *  Add a Product to a Cart
+ */
 router.post('/addToCart', function(req, res) {
 	cart.addToCart(constants.EP_ACCESS_TOKEN,req,res);
 });
+/**
+ * Get Shopping Cart Details.
+ */
+router.get('/shoppingCart', function(req, res) {
+	cart.getShoppingCart(constants.EP_ACCESS_TOKEN,req,res);
+});
+
 
 module.exports = router;

@@ -13,55 +13,98 @@ var Promise = require("bluebird");
 var requestPromise = require('request-promise').defaults({ simple: false });
 
 module.exports = {
-  /*Controller to add a product to cart  in EP  */
+  /**
+   * Controller to add a product to cart  in EP  
+   */
   addToCart: function(token,req,res){
   var requests = [];
   for(var i = 0; i < req.body.orderItem.length; i++) {
   var messageData = [];
   var concattUrl =  req.body.orderItem[i].productId + "?followlocation";
    messageData= {"quantity":req.body.orderItem[i].quantity};
-   requests.push(getMyData(token,messageData,concattUrl));
+   requests.push(this.getAddToCartRequestPromise(token,messageData,concattUrl));
     }
+  Promise.all(requests).then(function(results) {
+    //Can be Handled based on the results -- Leaving this as empty
+    /*for (var i = 0; i < results.length; i++) {
+      
+      logger.info('Joseph Results' + JSON.stringify(results[i]));
+    } */
+    var result = cartMapper.addToCartJSON(); 
+                                  res.send({
+                                    "success": true ,
+                                    "result": result,                                            
+                                  }); 
+  }, function(err) {
+            logger.error('errors in service hit to login service' + err);
+            res.send({ "success": false, "error": err });
+  });
 
-function getMyData(authToken,data,url) {
-    return new Promise(function(resolve,reject){
-        request.post({
-            url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),
-            json: JSON.parse(JSON.stringify(data)),
-            headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'bearer ' + authToken
-        }
-      },function(error, response, body) {
-        if (!error) {
-            if (!body.errors) {
-                    return resolve({success:true, url:url,body:body})
-            }
-           else {
-              logger.error('Errors in request getRequest EP: ', body.errors);
-               return resolve({success:false, error:body.errors})
-            }
-          } else {
-            logger.error('errors in service to postSearchresultsFom in EP: ', error);
-            return resolve({success:false, error:error})
-          }       
-      });
-    });   
-}
- Promise.all(requests).then(function(results) {
-  //Can be Handled based on the results -- Leaving this as empty
-  /*for (var i = 0; i < results.length; i++) {
+},
+
+getAddToCartRequestPromise: function(authToken,data,url) {
+  return new Promise(function(resolve,reject){
+      request.post({
+          url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),
+          json: JSON.parse(JSON.stringify(data)),
+          headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer ' + authToken
+      }
+    },function(error, response, body) {
+      if (!error) {
+          if (!body.errors) {
+                  return resolve({success:true, url:url,body:body})
+          }
+         else {
+            logger.error('Errors in request getRequest EP: ', body.errors);
+             return resolve({success:false, error:body.errors})
+          }
+        } else {
+          logger.error('errors in service to postSearchresultsFom in EP: ', error);
+          return resolve({success:false, error:error})
+        }       
+    });
+  });   
+},
+
+/**
+ * Get Shopping Cart Details
+ */
+
+getShoppingCart: function(token,req,res){
     
-    logger.info('Joseph Results' + JSON.stringify(results[i]));
-  } */
-   var result = cartMapper.addToCartJSON(); 
-                                res.send({
-                                  "success": true ,
-                                  "result": result,                                            
-                                }); 
-}, function(err) {
-          logger.error('errors in service hit to login service' + err);
-          res.send({ "success": false, "error": err });
-});
-}
+      messageData = {};
+    var concattUrl= constants.EP_SHOPPING_CART+constants.EP_SHOPPING_CART_ZOOM;
+    var defaultCartURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
+    
+    logger.info('Get shoppingCart form url',  defaultCartURL);
+    request({
+      url: defaultCartURL,
+      method: 'GET',
+      json: messageData,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + token
+      },
+    }, function(error, response, body) {
+            if (!error) {
+                if(!body.errors){
+                  console.log("body "+ JSON.stringify(body));
+                  var result = cartMapper.shoppingCartJSON(body); 
+                  res.send({
+                    "success": true ,
+                    "result": result,                                            
+                  });                           
+                }
+                else{
+                  logger.error('errors in service to getSearchResults in EP: ', body.errors);								
+                  res.send({ "success": false, "error": body.errors });
+                }
+            }else{
+                logger.error('errors in service to getSearchResults in EP: ', error);
+                res.send({ "success": false, "error": error });                        
+            }
+        });
+    } 
 };

@@ -20,11 +20,14 @@ module.exports = {
   "EP_CURRENT_ORDER" : "/orders/britney/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",
   "EP_SHIPMODE_ZOOM" : "deliveries:element:shippingoptioninfo:selector:choice:description,deliveries:element:shippingoptioninfo:selector:chosen:description",
   "EP_LOG_DIR" : "log/elasticPath/trace.log",
+  "EP_SHOPPING_CART" : "/carts/britney/default",
+  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:price,lineitems:element:item:code,total",
   
   "HTML_DIR" : "WebContent/html/",
 
   //constants that needs to removed & got from the app
   "EP_ACCESS_TOKEN" : "07d5cbb6-8f12-4a5f-8182-d9482ec6dc35"
+  
 
 
 };
