@@ -1,5 +1,5 @@
 var express = require('express');
-var category = require('../../controllers/wcs/categoryCtrl');
+var category = require('../../controllers/wcs/categoryCtlr');
 
 var router = express.Router();
 

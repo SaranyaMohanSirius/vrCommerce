@@ -3,7 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var constants = require('../../constants/elasticPath/constants');
-var pdp = require('../../controllers/elasticPath/pdpCtrlr');
+var pdp = require('../../controllers/elasticPath/pdpCtlr');
 var cron = require('node-cron');
 
 var app=express();
