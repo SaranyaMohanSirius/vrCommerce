@@ -5,6 +5,22 @@
 
 /** WCS  Requests **/
 
-PDP
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Category
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TopCategory :
+Request : GET : http://localhost:5000/wcs/category/getTopCategories
+
+
+SubCategory :
+Request : GET :  http://localhost:5000/wcs/category/getSubCategories?identifier=10003
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        PDP
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
    GET : http://localhost:5000/wcs/pdp/getProductDetails?uri=/items/britney/qgqvhl2cijcvamjtgqxeo4tfpewvquy=
 

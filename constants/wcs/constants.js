@@ -6,6 +6,8 @@ module.exports = {
   "WCS_IMAGE_FMT": ".jpg",
   "WCS_PRODUCT_DETAILS": "/search/resources/store/",
   "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
+  "WCS_CATEGORY_TOP": "/categoryview/@top",
+  "WCS_SUB_CATEGORY": "/categoryview/byParentCategory/",
   "WCS_STORE_ID": "10151",
   "WCS_CATALOG_ID": "10001",
   "WCS_LANG_ID": "-1",
