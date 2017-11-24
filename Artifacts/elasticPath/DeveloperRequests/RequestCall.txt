@@ -47,6 +47,20 @@ Input Body :
    ]
 }
 
+** Delete Item
+
+Request : DELETE : http://localhost:5000/ep/cart/deleteShoppingCartItem
+
+
+Input Body :
+{
+   "lineItem": [
+      {
+         "lineItemId": "/carts/britney/gntdenteha3dsllemrsgiljug4ydeljzgi3wgljwgm3tomzrme3dgolfgq=/lineitems/mi2tamrrg43teljsgyzdiljugq3dqljzhezgkljwmiydgyrshazwkmrxgm=",
+		 "quantity": "0"
+  }
+   ]
+}
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                           Search

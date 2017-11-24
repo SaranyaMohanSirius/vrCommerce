@@ -96,5 +96,19 @@ module.exports = {
                 }]
                };      
       return JSON.parse(JSON.stringify(jsonResponse));
-}
+    },
+      /**
+       * DeleteItem in Cart
+       */
+      deleteCartItemJSON: function(){
+        var jsonResponse = {orderId: "",
+                lineItem: [ {
+                  lineItemId:"", //Need to finalize
+                }],
+                message: "Item Deleted Successfully",
+               };      
+      return JSON.parse(JSON.stringify(jsonResponse));
+    }
+
+    
 };

@@ -23,10 +23,17 @@ router.get('/shoppingCart', function(req, res) {
 	cart.getShoppingCart(constants.EP_ACCESS_TOKEN,req,res);
 });
 /**
- * Update Shopping Cart Details.
+ * Update Item Shopping Cart .
  */
 router.put('/updateShoppingCartItem', function(req, res) {
 	cart.updateShoppingCartItem(constants.EP_ACCESS_TOKEN,req,res);
+});
+
+/**
+ * Delete Item from  Shopping Cart .
+ */
+router.delete('/deleteShoppingCartItem', function(req, res) {
+	cart.deleteShoppingCartItem(constants.EP_ACCESS_TOKEN,req,res);
 });
 
 

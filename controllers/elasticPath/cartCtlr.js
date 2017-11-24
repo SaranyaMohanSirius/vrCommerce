@@ -143,7 +143,44 @@ getShoppingCart: function(token,req,res){
                   res.send({ "success": false, "error": error });                        
               }
           });
-      }
+      },
+    /**
+    *   Delete item from Shopping Cart 
+    */
+
+    deleteShoppingCartItem: function(token,req,res){
+      
+            messageData = {};
+            var uri= req.body.lineItem[0].lineItemId;
+            var deleteCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+            logger.info('delete Item form url',  deleteCartItemURL);
+            request({
+              url: deleteCartItemURL,
+              method: 'DELETE',
+              json: messageData,
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + token
+              },
+            }, function(error, response, body) {
+                  if(!error){
+                    if (response.statusCode != 404) {
+                         var result = cartMapper.deleteCartItemJSON(); 
+                          res.send({
+                            "success": true ,
+                            "result": result,                                            
+                          });                           
+                        }
+                        else{
+                          logger.error('errors in service to delete Item Shopping Cart Item in EP: ', response.body);
+                          res.send({ "success": false, "error": response.body });
+                        }  
+                    }else{
+                        logger.error('errors in service to delete Item Shopping Cart in EP: ', error);
+                        res.send({ "success": false, "error": error });                        
+                    }
+                });
+            },
     
 
 };
