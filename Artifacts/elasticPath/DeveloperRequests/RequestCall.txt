@@ -3,12 +3,22 @@
 /** Add the developer requests for reference and corresponding Inputs in this file ** /
 
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Category
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Product List
+ 
+https://ep-mcommerce-app.herokuapp.com/ep/category/getProductsListForCategory?identifier=/navigations/britney/ijbemt2pkrlukqkskm=
 
 
-Add to Cart 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                         Cart
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+** Add to Cart
 
 Request : POST : http://localhost:5000/ep/cart/addToCart
-
 Input Body : 
 {
    "orderItem": [
@@ -19,20 +29,36 @@ Input Body :
    ]
 }
 
-Search
+** Shopping Cart
+ 
+Request :GET:  http://localhost:5000/ep/cart/shoppingCart
+
+** UpdateItem 
+
+Request : PUT : http://localhost:5000/ep/cart/updateShoppingCartItem
+
+Input Body :
+{
+   "lineItem": [
+      {
+         "lineItemId": "/carts/britney/gntdenteha3dsllemrsgiljug4ydeljzgi3wgljwgm3tomzrme3dgolfgq=/lineitems/g5tgcyrtgftdgljugzrdgljuheywillbmuytcljzgrsdgolfgeztanlemm=",
+           "quantity": "21"
+       }
+   ]
+}
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                          Search
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Request : POST : http://localhost:5000/ep/search/getSearchResults?pageSize=20&keyword=dress
 
-PDP
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                            PDP
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Request : GET : http://localhost:5000/ep/pdp/getProductDetails?uri=10001
 
-Shopping Cart 
-
-Request : http://localhost:5000/ep/cart/shoppingCart
 
 
-Category :
-
-Product List : 
-https://ep-mcommerce-app.herokuapp.com/ep/category/getProductsListForCategory?identifier=/navigations/britney/ijbemt2pkrlukqkskm=

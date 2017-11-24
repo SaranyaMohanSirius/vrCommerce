@@ -22,6 +22,12 @@ router.post('/addToCart', function(req, res) {
 router.get('/shoppingCart', function(req, res) {
 	cart.getShoppingCart(constants.EP_ACCESS_TOKEN,req,res);
 });
+/**
+ * Update Shopping Cart Details.
+ */
+router.put('/updateShoppingCartItem', function(req, res) {
+	cart.updateShoppingCartItem(constants.EP_ACCESS_TOKEN,req,res);
+});
 
 
 module.exports = router;

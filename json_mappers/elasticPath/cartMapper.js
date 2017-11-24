@@ -38,7 +38,7 @@ module.exports = {
 
                 currency:'_price.0.purchase-price.0.currency',
                 freeGift:JM.helpers.def('false'),
-                orderItemId:JM.helpers.def(''),
+                orderItemId:'self.uri',
                 orderItemInventoryStatus:'_availability.0.state',
                 orderItemPrice:'_price.0.purchase-price.0.display',//Need to multiply wih Item Quantity
                 partNumber:'_item.0._code.0.code',
@@ -84,6 +84,17 @@ module.exports = {
              });
               var result = converter(body);
               return result;
-      }          
-
+      },
+      /**
+       * UpdateItem in Cart
+       */
+      updateCartItemJSON: function(lineItemIdURI){
+        var jsonResponse = {orderId: "",
+                orderId: "",
+                lineItem: [ {
+                  lineItemId:lineItemIdURI
+                }]
+               };      
+      return JSON.parse(JSON.stringify(jsonResponse));
+}
 };

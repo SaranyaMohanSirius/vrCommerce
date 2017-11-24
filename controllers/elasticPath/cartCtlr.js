@@ -90,7 +90,6 @@ getShoppingCart: function(token,req,res){
     }, function(error, response, body) {
             if (!error) {
                 if(!body.errors){
-                  console.log("body "+ JSON.stringify(body));
                   var result = cartMapper.shoppingCartJSON(body); 
                   res.send({
                     "success": true ,
@@ -98,13 +97,53 @@ getShoppingCart: function(token,req,res){
                   });                           
                 }
                 else{
-                  logger.error('errors in service to getSearchResults in EP: ', body.errors);								
+                  logger.error('errors in service to GetShoppingCart in EP: ', body.errors);								
                   res.send({ "success": false, "error": body.errors });
                 }
             }else{
-                logger.error('errors in service to getSearchResults in EP: ', error);
+                logger.error('errors in service to GetShoppingCart in EP: ', error);
                 res.send({ "success": false, "error": error });                        
             }
         });
-    } 
+    },
+    
+    /**
+    *   Update Shopping Cart Item Details
+    */
+
+    updateShoppingCartItem: function(token,req,res){
+
+      messageData = {"quantity":req.body.lineItem[0].quantity};
+      var uri= req.body.lineItem[0].lineItemId;
+      var updateCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+      logger.info('updateShoppingCart form url',  updateCartItemURL);
+      request({
+        url: updateCartItemURL,
+        method: 'PUT',
+        json: messageData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer ' + token
+        },
+      }, function(error, response, body) {
+            if(!error){
+              if (response.statusCode != 404) {
+                   var result = cartMapper.updateCartItemJSON(uri); 
+                    res.send({
+                      "success": true ,
+                      "result": result,                                            
+                    });                           
+                  }
+                  else{
+                    logger.error('errors in service to updateShoppingCart Item in EP: ', response.body);
+                    res.send({ "success": false, "error": response.body });
+                  }  
+              }else{
+                  logger.error('errors in service to updateShoppingCart Item in EP: ', error);
+                  res.send({ "success": false, "error": error });                        
+              }
+          });
+      }
+    
+
 };
