@@ -21,7 +21,7 @@ module.exports = {
   "EP_SHIPMODE_ZOOM" : "deliveries:element:shippingoptioninfo:selector:choice:description,deliveries:element:shippingoptioninfo:selector:chosen:description",
   "EP_LOG_DIR" : "log/elasticPath/trace.log",
   "EP_SHOPPING_CART" : "/carts/britney/default",
-  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:price,lineitems:element:item:code,total",
+  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:price,lineitems:element:item:code,total",
   
   "HTML_DIR" : "WebContent/html/",
 

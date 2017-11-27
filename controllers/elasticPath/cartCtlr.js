@@ -16,7 +16,8 @@ module.exports = {
   /**
    * Controller to add a product to cart  in EP  
    */
-  addToCart: function(token,req,res){
+  addToCart: function(req,res){
+  var token=constants.EP_ACCESS_TOKEN;
   var requests = [];
   for(var i = 0; i < req.body.orderItem.length; i++) {
   var messageData = [];
@@ -72,9 +73,9 @@ getAddToCartRequestPromise: function(authToken,data,url) {
  * Get Shopping Cart Details
  */
 
-getShoppingCart: function(token,req,res){
-    
-      messageData = {};
+getShoppingCart: function(req,res){
+    var token=constants.EP_ACCESS_TOKEN;
+    messageData = {};
     var concattUrl= constants.EP_SHOPPING_CART+constants.EP_SHOPPING_CART_ZOOM;
     var defaultCartURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
     
@@ -111,8 +112,8 @@ getShoppingCart: function(token,req,res){
     *   Update Shopping Cart Item Details
     */
 
-    updateShoppingCartItem: function(token,req,res){
-
+    updateShoppingCartItem: function(req,res){
+      var token=constants.EP_ACCESS_TOKEN;
       messageData = {"quantity":req.body.lineItem[0].quantity};
       var uri= req.body.lineItem[0].lineItemId;
       var updateCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
@@ -127,7 +128,7 @@ getShoppingCart: function(token,req,res){
         },
       }, function(error, response, body) {
             if(!error){
-              if (response.statusCode != 404) {
+              if (!response.body) {
                    var result = cartMapper.updateCartItemJSON(uri); 
                     res.send({
                       "success": true ,
@@ -148,8 +149,8 @@ getShoppingCart: function(token,req,res){
     *   Delete item from Shopping Cart 
     */
 
-    deleteShoppingCartItem: function(token,req,res){
-      
+    deleteShoppingCartItem: function(req,res){
+            var token=constants.EP_ACCESS_TOKEN;
             messageData = {};
             var uri= req.body.lineItem[0].lineItemId;
             var deleteCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
@@ -164,7 +165,7 @@ getShoppingCart: function(token,req,res){
               },
             }, function(error, response, body) {
                   if(!error){
-                    if (response.statusCode != 404) {
+                    if (!response.body) {
                          var result = cartMapper.deleteCartItemJSON(); 
                           res.send({
                             "success": true ,
@@ -181,6 +182,42 @@ getShoppingCart: function(token,req,res){
                     }
                 });
             },
-    
+            
+      /**
+      *   Delete All item from Shopping Cart 
+      */
 
+    deleteAllShoppingCartItem: function(req,res){
+            var token=constants.EP_ACCESS_TOKEN;
+            messageData = {};
+            var uri= req.body.orderId;
+            var deleteAllCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+            logger.info('delete All Item form url',  deleteAllCartItemURL);
+            request({
+              url: deleteAllCartItemURL,
+              method: 'DELETE',
+              json: messageData,
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + token
+              },
+            }, function(error, response, body) {
+                  if(!error){
+                    if (!response.body) {
+                         var result = cartMapper.deleteAllCartItemJSON(); 
+                          res.send({
+                            "success": true ,
+                            "result": result,                                            
+                          });                           
+                        }
+                        else{
+                          logger.error('errors in service to delete All Item Shopping Cart Item in EP: ', response.body);
+                          res.send({ "success": false, "error": response.body });
+                        }  
+                    }else{
+                        logger.error('errors in service to delete All Item Shopping Cart in EP: ', error);
+                        res.send({ "success": false, "error": error });                        
+                    }
+                });
+            }
 };

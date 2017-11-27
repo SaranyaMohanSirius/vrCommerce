@@ -62,6 +62,16 @@ Input Body :
    ]
 }
 
+** Delete All Item
+
+Request : DELETE : http://localhost:5000/ep/cart/deleteAllShoppingCartItem
+
+
+Input Body :
+{
+   "orderId":"/carts/britney/gntdenteha3dsllemrsgiljug4ydeljzgi3wgljwgm3tomzrme3dgolfgq=/lineitems"
+}
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                           Search
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

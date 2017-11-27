@@ -10,7 +10,7 @@ module.exports = {
   addToCartJSON: function(){
             var jsonResponse = {orderItemId: "",
                     orderId: "",
-                    addToCartMsg: constants.EP_PRODUCT_ADDED
+                    message: constants.EP_PRODUCT_ADDED
                    };      
 			return JSON.parse(JSON.stringify(jsonResponse));
   },
@@ -33,7 +33,7 @@ module.exports = {
                })],
                grandTotal:'_total.0.cost.0.display',
                grandTotalCurrency:'_total.0.cost.0.currency',
-               orderId:JM.helpers.def(''),
+               orderId:'_lineitems.0.self.uri',
                orderItem : ['_lineitems.0._element', JM.map({
 
                 currency:'_price.0.purchase-price.0.currency',
@@ -106,6 +106,15 @@ module.exports = {
                   lineItemId:"", //Need to finalize
                 }],
                 message: "Item Deleted Successfully",
+               };      
+      return JSON.parse(JSON.stringify(jsonResponse));
+    },
+     /**
+       * DeleteAllItem in Cart
+       */
+      deleteAllCartItemJSON: function(){
+        var jsonResponse = {
+                message: "All Cart Items are Deleted Successfully",
                };      
       return JSON.parse(JSON.stringify(jsonResponse));
     }
