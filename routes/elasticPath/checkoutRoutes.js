@@ -25,4 +25,10 @@ router.get('/getShippingAddresses', function(req, res) {
 	checkout.getShippingAddresses(constants.EP_ACCESS_TOKEN,req,res);
 });
 
+/***
+*	Deletes a shipping address
+*/
+router.delete('/deleteShippingAddress',function(req,res){
+	checkout.deleteShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
+});
 module.exports = router;

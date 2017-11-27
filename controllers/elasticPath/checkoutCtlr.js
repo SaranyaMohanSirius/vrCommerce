@@ -10,7 +10,7 @@ var logger= util.getLogger();
 
 module.exports = {
 
-
+  /*controller for adding shipping address in EP*/
   addShippingAddress: function(token,req,res){
 
       messageData = {
@@ -59,7 +59,7 @@ module.exports = {
         });
   },
 
-
+  /*Controller for getting all the shipping address in EP*/
   getShippingAddresses: function(token,req,res){
 
       messageData = {};
@@ -96,8 +96,40 @@ module.exports = {
 
         });
 
+  },
 
-
+  /*Controller for deleting shipping address in EP*/
+  deleteShippingAddress: function(token,req,res){
+      messageData = {};
+      var uri= req.body.addressId;
+      var deleteShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+      logger.info('deleteShippingAddress url',  deleteShippingAddressURL);
+      request({
+        url: deleteShippingAddressURL,
+        method: 'DELETE',
+        json: messageData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer ' + token
+        },
+      }, function(error, response, body) {
+            if(!error){
+              if (!response.body) {
+                   var result = checkoutMapper.deleteShippingAddressJSON(); 
+                    res.send({
+                      "success": true ,
+                      "result": result,                                            
+                    });                           
+                  }
+                  else{
+                    logger.error('errors in service to delete address in EP: ', response.body);
+                    res.send({ "success": false, "error": response.body });
+                  }  
+              }else{
+                  logger.error('errors in service to delete address in EP: ', error);
+                  res.send({ "success": false, "error": error });                        
+              }
+          });
   }     
 
 };

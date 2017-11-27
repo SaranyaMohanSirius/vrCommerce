@@ -98,7 +98,8 @@ Request  : POST  :  http://localhost:5000/ep/checkout/addShippingAddress
 Input Body :
 {
    "firstName" : "JANE",
-   "lastName" : "ROE",
+   "lastName" : "ROE”,
+    “nickName” : “JANE”,
    "addressType" : "ShippingAndBilling",
    "zipCode" : "85123",
    "addressLine": [
@@ -109,9 +110,17 @@ Input Body :
    "country" : "US",
    "email1" : "abc@xyz.com",
    "phone1" : "9191234567"
-} 
+}
 
+** Deleting a shipping address
 
+Request : DELETE : http://localhost:5000/ep/checkout/deleteShippingAddress
+
+Input Body:
+
+{
+	"addressId" : "/addresses/britney/hbswmzrtmuywkllbmyzdsljugvrtiljymq3gillbgmzggnjwg4zweyjtmi="
+}
 
 
 

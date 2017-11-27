@@ -53,6 +53,14 @@ module.exports = {
             });
             var result = converter(body);
             return result;
+  },
+
+  /*Normal response for deleting address in EP*/
+  deleteShippingAddressJSON: function(body){
+                  var jsonResponse = {
+                    deleteShippingAddressMsg: constants.EP_ADDRESS_DELETED
+                   };      
+      return JSON.parse(JSON.stringify(jsonResponse));
   }
 
     

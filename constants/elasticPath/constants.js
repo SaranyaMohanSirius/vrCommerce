@@ -15,6 +15,7 @@ module.exports = {
   
   "EP_PRODUCT_ADDED" : "Product Added Successfully",
   "EP_ADDRESS_ADDED" : "Address Added Successfully",
+  "EP_ADDRESS_DELETED" : "Address Deleted Successfully",
 
   "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "EP_IMAGE_FMT": ".jpg",
