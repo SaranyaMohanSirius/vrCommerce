@@ -1,7 +1,6 @@
 var constants = require('../../constants/wcs/constants');
 var util = require('../../util/wcs/util');
 var JM = require('json-mapper');
-var _ = require("underscore");
 
 var globalcount = 0;
 

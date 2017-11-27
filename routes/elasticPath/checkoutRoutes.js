@@ -1,13 +1,9 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var request = require('request');
 var constants = require('../../constants/elasticPath/constants');
 var checkout = require('../../controllers/elasticPath/checkoutCtlr');
 var cron = require('node-cron');
-
-var app=express();
-var express = require('express');
 var router = express.Router();
 
 /**

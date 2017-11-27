@@ -3,7 +3,7 @@ var category = require('../../controllers/wcs/categoryCtlr');
 
 var router = express.Router();
 
-var app=express();
+
 
 
 router.get('/getTopCategories', function(req, res){

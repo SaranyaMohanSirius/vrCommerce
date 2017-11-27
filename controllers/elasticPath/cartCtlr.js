@@ -3,10 +3,8 @@ var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var cartMapper = require('../../json_mappers/elasticPath/cartMapper');
 var request = require('request');
-var JM = require('json-mapper');
-var _ = require("underscore");
 
-var globalcount = 0;
+
 
 var logger= util.getLogger();
 var Promise = require("bluebird");

@@ -3,7 +3,6 @@ var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var checkoutMapper = require('../../json_mappers/elasticPath/checkoutMapper');
 var request = require('request');
-var _ = require("underscore");
 
 
 var logger= util.getLogger();

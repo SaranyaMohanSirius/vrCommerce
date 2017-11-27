@@ -1,12 +1,6 @@
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var request = require('request');
-var q = require('q');
-var gampee = require("gampee");
-var rp = require('request-promise');
-var Promise = require('promise');
-var JM = require('json-mapper');
-var _ = require("underscore");
 
 var logger= util.getLogger();
 

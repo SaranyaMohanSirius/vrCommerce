@@ -1,12 +1,8 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var request = require('request');
 var login = require('../../controllers/elasticPath/loginCtlr');
 var cron = require('node-cron');
-
-var app=express();
-var express = require('express');
 var router = express.Router();
 
 

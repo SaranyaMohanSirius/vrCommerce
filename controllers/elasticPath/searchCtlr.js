@@ -2,8 +2,6 @@ var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var searchMapper = require('../../json_mappers/elasticPath/searchMapper');
 var request = require('request');
-var JM = require('json-mapper');
-var _ = require("underscore");
 
 
 
