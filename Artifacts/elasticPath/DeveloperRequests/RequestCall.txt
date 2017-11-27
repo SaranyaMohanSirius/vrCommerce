@@ -86,3 +86,34 @@ Request : GET : http://localhost:5000/ep/pdp/getProductDetails?uri=10001
 
 
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                            Checkout
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+** Adding a shipping address
+
+Request  : POST  :  http://localhost:5000/ep/checkout/addShippingAddress
+
+Input Body :
+{
+   "firstName" : "JANE",
+   "lastName" : "ROE",
+   "addressType" : "ShippingAndBilling",
+   "zipCode" : "85123",
+   "addressLine": [
+      "200 E MAIN ST"
+      ],
+   "city" : "PHOENIX",
+   "state" : "AZ",
+   "country" : "US",
+   "email1" : "abc@xyz.com",
+   "phone1" : "9191234567"
+} 
+
+
+
+
+
+
+

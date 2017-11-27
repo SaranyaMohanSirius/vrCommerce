@@ -22,6 +22,9 @@ var epSearchRoute = require('./routes/elasticPath/searchRoutes');
 var epCategoryRoute = require('./routes/elasticPath/categoryRoutes');
 var epPDPRoute = require('./routes/elasticPath/pdpRoutes');
 var epCartRoute = require('./routes/elasticPath/cartRoutes');
+var epCheckoutRoute = require('./routes/elasticPath/checkoutRoutes');
+
+
 var wcsPDPRoute = require('./routes/wcs/pdpRoutes');
 var wcsCategoryRoute = require('./routes/wcs/categoryRoutes');
 
@@ -32,8 +35,10 @@ app.use('/ep/search',epSearchRoute);
 app.use('/ep/category',epCategoryRoute);
 app.use('/ep/PDP',epPDPRoute);
 app.use('/ep/cart',epCartRoute);
+app.use('/ep/checkout',epCheckoutRoute);
 app.use('/wcs/PDP',wcsPDPRoute);
 app.use('/wcs/category',wcsCategoryRoute);
+
 
 
 // Spin up the server
