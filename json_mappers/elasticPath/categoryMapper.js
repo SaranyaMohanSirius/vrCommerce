@@ -16,7 +16,6 @@ module.exports = {
                     name: 'display-name',
                     identifier: 'name',
                     id: 'self.uri',
-                    parentCategoryId: JM.helpers.def('-1'),
                     store: JM.helpers.def(constants.EP_STORE)
 
                 })],
@@ -40,7 +39,6 @@ module.exports = {
                     name: 'display-name',
                     identifier: 'name',
                     id: 'self.uri',
-                    parentCategoryId: JM.helpers.def(identifier),
                     store: JM.helpers.def(constants.EP_STORE),
                     
                 })],

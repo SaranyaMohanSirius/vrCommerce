@@ -9,7 +9,6 @@ module.exports = {
 					name : 'name',
 					identifier : 'identifier',
 					id: 'uniqueID',
-					parentCategoryId :'parentCatalogGroupID',
 					store : 'storeID',
 					
 			}) ],
@@ -27,7 +26,6 @@ module.exports = {
 					name : 'name',
 					identifier : 'identifier',
 					id: 'uniqueID',
-					parentCategoryId :'parentCatalogGroupID',
 					store : 'storeID',
 					
 			}) ],
