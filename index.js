@@ -27,6 +27,7 @@ var epCheckoutRoute = require('./routes/elasticPath/checkoutRoutes');
 
 var wcsPDPRoute = require('./routes/wcs/pdpRoutes');
 var wcsCategoryRoute = require('./routes/wcs/categoryRoutes');
+var wcsShipModeRoutes = require('./routes/wcs/shipModeRoutes');
 
 //This needs to be  refined based on the discussion with UI Team
 app.use('/ep/login',epLoginRoute);
@@ -39,8 +40,7 @@ app.use('/ep/checkout',epCheckoutRoute);
 
 app.use('/wcs/PDP',wcsPDPRoute);
 app.use('/wcs/category',wcsCategoryRoute);
-app.use('/wcs/PDP',wcsPDPRoute);
-
+app.use('/wcs/shipModes',wcsShipModeRoutes);
 
 // Spin up the server
 app.listen(app.get('port'), function() {
