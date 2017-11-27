@@ -1,11 +1,19 @@
-var constants = require('../../constants/elasticPath/constants');
-
 module.exports = {
 	constructUrl : function  (hostname, path, isHttp) {
 		if(!isHttp){
-			return "http://"+hostname+path;
+			if(hostname.startsWith("http://")){
+				return hostname+path;
+			}
+			else{
+				return "http://"+hostname+path;
+			}
 		} else {
-			return "https://"+hostname+path;
+			if(hostname.startsWith("https://")){
+				return hostname+path;
+			}
+			else{
+				return "https://"+hostname+path;
+			}
 		} 
 	},
 
@@ -24,7 +32,7 @@ module.exports = {
 		var logger = new (winston.Logger)({
 		transports: [
 		     new (winston.transports.Console)(),
-		     new (winston.transports.File)({ filename: constants.EP_LOG_DIR })
+		     new (winston.transports.File)({ filename: 'trace.log' })
 		   ]
 		});
 		return logger;

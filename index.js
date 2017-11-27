@@ -22,12 +22,12 @@ var epSearchRoute = require('./routes/elasticPath/searchRoutes');
 var epCategoryRoute = require('./routes/elasticPath/categoryRoutes');
 var epPDPRoute = require('./routes/elasticPath/pdpRoutes');
 var epCartRoute = require('./routes/elasticPath/cartRoutes');
+var epShipModeRoute = require('./routes/elasticPath/shipModeRoutes');
 var epCheckoutRoute = require('./routes/elasticPath/checkoutRoutes');
-
 
 var wcsPDPRoute = require('./routes/wcs/pdpRoutes');
 var wcsCategoryRoute = require('./routes/wcs/categoryRoutes');
-
+var wcsCheckoutRoute = require('./routes/wcs/checkoutRoutes');
 
 //This needs to be  refined based on the discussion with UI Team
 app.use('/ep/login',epLoginRoute);
@@ -35,10 +35,12 @@ app.use('/ep/search',epSearchRoute);
 app.use('/ep/category',epCategoryRoute);
 app.use('/ep/PDP',epPDPRoute);
 app.use('/ep/cart',epCartRoute);
+app.use('/ep/shipModes',epShipModeRoute);
 app.use('/ep/checkout',epCheckoutRoute);
+
 app.use('/wcs/PDP',wcsPDPRoute);
 app.use('/wcs/category',wcsCategoryRoute);
-
+app.use('/wcs/PDP',wcsPDPRoute);
 
 
 // Spin up the server
