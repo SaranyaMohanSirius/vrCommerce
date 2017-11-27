@@ -12,7 +12,7 @@ module.exports = {
     
             var converter = JM.makeConverter({
                 
-                Categories: ['_element', JM.map({
+                TopCategories: ['_element', JM.map({
                     name: 'display-name',
                     identifier: 'name',
                     id: 'self.uri',

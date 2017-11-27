@@ -26,7 +26,7 @@ module.exports = {
   "HTML_DIR" : "WebContent/html/",
 
   //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : "07d5cbb6-8f12-4a5f-8182-d9482ec6dc35"
+  "EP_ACCESS_TOKEN" : "3edefe2f-8112-499a-94b2-9d26b61edbac"
   
 
 
