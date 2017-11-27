@@ -14,6 +14,10 @@ router.get('/getSubCategories', function(req, res){
 	
     category.getSubCategories(res,req);
 });
+router.get('/getProductsListForCategory', function(req, res) {
+	category.getProductsListForCategory(req,res,req.query.identifier);
+});
 
 
 module.exports = router;
+
