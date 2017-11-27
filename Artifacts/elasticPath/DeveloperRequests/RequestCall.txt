@@ -9,7 +9,7 @@
 
 Product List
  
-https://ep-mcommerce-app.herokuapp.com/ep/category/getProductsListForCategory?identifier=/navigations/britney/ijbemt2pkrlukqkskm=
+Request : GET :  http://localhost:5000/ep/category/getProductsListForCategory?identifier=/navigations/britney/ijbemt2pkrlukqkskm=
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -47,7 +47,8 @@ module.exports = {
                           email1: JM.helpers.def(' '),
                           phone1: JM.helpers.def(' '),
                           primary: JM.helpers.def('true'),
-                      })],  
+                      })],
+                      userId : JM.helpers.def(' '),  
                 })],
             });
             var result = converter(body);
