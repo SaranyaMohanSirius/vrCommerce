@@ -12,13 +12,13 @@ module.exports = {
 		
 		var converter = JM.makeConverter({
 		
-			catalogEntryView: {
+			catalogEntryView: [{
 				
 				hasSingleSKU: ['_definition.0.links', function(arr){
 					  if(arr.length >= 3)
-						return 'false';
+						return false;
 					  else
-						return 'true';
+						return true;
 				}],
 
 				catalogEntryTypeCode: ['_definition.0.links', function(arr){
@@ -34,10 +34,8 @@ module.exports = {
 
 				availability: '_availability.0.state',
 				
-				price: ['_price', JM.map({
-					listPrice : 'list-price.0.display',
-					purchasePrice: 'purchase-price.0.display',
-				})],
+				listPrice : '_price.0.list-price.0.display',
+				purchasePrice: '_price.0.purchase-price.0.display',
 				
 				code: '_code.0.code',
 				
@@ -70,7 +68,7 @@ module.exports = {
 				
 				thumbnail: JM.helpers.def(concatImageURL),
 				fullImage: JM.helpers.def(concatImageURL),
-			},
+			}],
 		});
 	    
 		var result = converter(body);
