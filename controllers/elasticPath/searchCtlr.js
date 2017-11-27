@@ -38,7 +38,7 @@ module.exports = {
                 var uri = body.self.uri;
                 var concatURL = uri + constants.EP_SEARCH_ZOOM;
                 var searchUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
-                console.log("getSearchResults resource url:" + searchUrl);
+                logger.info("getSearchResults resource url:" + searchUrl);
                 messageData = {};
                 request({
                   url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),
