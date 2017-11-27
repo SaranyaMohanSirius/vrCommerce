@@ -27,7 +27,6 @@ var epCheckoutRoute = require('./routes/elasticPath/checkoutRoutes');
 
 var wcsPDPRoute = require('./routes/wcs/pdpRoutes');
 var wcsCategoryRoute = require('./routes/wcs/categoryRoutes');
-var wcsCheckoutRoute = require('./routes/wcs/checkoutRoutes');
 
 //This needs to be  refined based on the discussion with UI Team
 app.use('/ep/login',epLoginRoute);

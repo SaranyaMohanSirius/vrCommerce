@@ -17,4 +17,12 @@ router.post('/addShippingAddress', function(req, res) {
 	checkout.addShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
 });
 
+
+/**
+*	Gets the shipping address associated with an order
+*/
+router.get('/getShippingAddresses', function(req, res) {
+	checkout.getShippingAddresses(constants.EP_ACCESS_TOKEN,req,res);
+});
+
 module.exports = router;

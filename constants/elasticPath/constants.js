@@ -14,6 +14,8 @@ module.exports = {
   "EP_PDP_ZOOM" : "?zoom=availability,code,definition,definition:options:element,definition:options:element:selector:choice:description,definition:options:element:selector:chosen:description,price",
   
   "EP_PRODUCT_ADDED" : "Product Added Successfully",
+  "EP_ADDRESS_ADDED" : "Address Added Successfully",
+
   "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "EP_IMAGE_FMT": ".jpg",
 
@@ -27,14 +29,17 @@ module.exports = {
   
   "HTML_DIR" : "WebContent/html/",
 
+  "EP_ADD_SHIPPING_ADDRESS" : "/cortex/addresses/britney?followlocation",  
+  "EP_DEFAULT_CART" : "/cortex/carts/britney/default",
+
+  "EP_GET_SHIPPING_ADDRESS_ZOOM": "?zoom=order:deliveries:element:destinationinfo:selector:chosen:description,order:deliveries:element:destinationinfo:selector:choice:description",  
+
   
-  "EP_CURRENT_ORDER" : "/orders/britney/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",
-  "EP_SHIPMODE_ZOOM" : "deliveries:element:shippingoptioninfo:selector:choice:description,deliveries:element:shippingoptioninfo:selector:chosen:description",
-  "EP_ADDRESS_ADDED" : "Address Added Successfully",
+  "HTML_DIR" : "WebContent/html/",
 
   //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : "891389a3-ece9-4702-bf54-263619c3aceb"
-
+  "EP_ACCESS_TOKEN" : "3edefe2f-8112-499a-94b2-9d26b61edbac"
+  
 
 
 };

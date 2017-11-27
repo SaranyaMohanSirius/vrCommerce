@@ -57,6 +57,47 @@ module.exports = {
             }
 
         });
-  }    
+  },
+
+
+  getShippingAddresses: function(token,req,res){
+
+      messageData = {};
+
+      var conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_ZOOM;
+      var getShippingAddressesURL = util.constructUrl(constants.EP_HOSTNAME, conCatUrl, false);   
+      logger.info('getShippingAddresses url',  getShippingAddressesURL);
+      request({
+        url: getShippingAddressesURL,
+        method: 'GET',
+        json: messageData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer ' + token
+        },
+      }, function(error, response, body) {
+            if (!error) {
+                if(!body.errors){
+
+                  var result = checkoutMapper.getShippingAddressesJSON(body);
+                  res.send({
+                    "success": true ,
+                    "result": result,
+                  });                           
+                }
+                else{
+                  logger.error('errors in service to addShippingAddress in EP: ', body.errors);                
+                  res.send({ "success": false, "error": body.errors });
+                }
+            }else{
+                logger.error('errors in service to addShippingAddress in EP: ', error);
+                res.send({ "success": false, "error": error });                        
+            }
+
+        });
+
+
+
+  }     
 
 };
