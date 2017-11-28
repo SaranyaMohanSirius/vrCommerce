@@ -24,3 +24,45 @@ Request : GET :  http://localhost:5000/wcs/category/getSubCategories?identifier=
 
    GET : http://localhost:5000/wcs/pdp/getProductDetails?uri=/items/britney/qgqvhl2cijcvamjtgqxeo4tfpewvquy=
 
+
+
+
+/** Add the developer requests for reference and corresponding Inputs in this file ** /
+
+
+
+
+Add to Cart 
+
+Request : POST : http://localhost:5000/ep/cart/addToCart
+
+Input Body : 
+{
+   "orderItem": [
+      {
+    "productId": "/carts/britney/default/lineitems/items/britney/qgqvhmccijcvamjsguxee3dbmnvs2mry=",
+    "quantity": "2.0"
+  }
+   ]
+}
+
+
+
+
+
+
+Search
+
+Request : POST : http://localhost:5000/ep/search/getSearchResults?pageSize=20&keyword=dress
+
+
+
+
+
+		  
+ShipModes
+
+Request : GET : http://localhost:5000/wcs/shipModes/getShippingMethods
+
+
+

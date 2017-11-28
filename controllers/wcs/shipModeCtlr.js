@@ -2,9 +2,16 @@ var constants = require('../../constants/wcs/constants');
 var util = require('../../util/wcs/util');
 var shipModeMapper = require('../../json_mappers/wcs/shipModeMapper');
 var request = require('request');
-
+var q = require('q');
+var gampee = require("gampee");
+var rp = require('request-promise');
+var Promise = require('promise');
+var JM = require('json-mapper');
+var _ = require("underscore");
 
 var globalcount = 0;
+
+var logger= util.getLogger();
 
 module.exports = {
 
@@ -12,7 +19,8 @@ module.exports = {
    getShipModes: function(res,req){
 	   
     var concatURL = constants.WCS_SHIPMODES + constants.WCS_STORE_ID + constants.WCS_SHIPMODES_APPEND;
-    console.log("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));	
+    logger.info("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));	
+	
 	messageData = {};
     request({
       url: util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false),
@@ -32,14 +40,12 @@ module.exports = {
 
 			}
             else {
-              console.log('errors in service hit to login service');
-              console.log(body.errors);
-              res.send({ "success": false, "error": body.errors });
+				logger.error('errors in service to get ship modes in WCS: ', body.errors);
+				res.send({ "success": false, "error": body.errors });
             }
           } else {
-            console.log('commerce error');
-            console.log(error);
-            res.send({ "success": false, "error": error });
+				logger.error('errors in service to get ship modes in WCS: ', error);
+				res.send({ "success": false, "error": error });
           }
     });
    

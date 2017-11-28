@@ -3,8 +3,9 @@ var util = require('../../util/wcs/util');
 var pdpMapper = require('../../json_mappers/wcs/pdpMapper');
 var request = require('request');
 
-
 var globalcount = 0;
+
+var logger= util.getLogger();
 
 module.exports = {
 
@@ -12,7 +13,7 @@ module.exports = {
    getProductDetails: function(res,productId){
 	   
     var concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
-    console.log("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME, concatURL, false));	
+    logger.info("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME, concatURL, false));	
 	messageData = {};
     request({
       url: util.constructUrl(constants.WCS_HOSTNAME, concatURL, false),
@@ -32,14 +33,12 @@ module.exports = {
 
 			}
             else {
-              console.log('errors in service hit to login service');
-              console.log(body.errors);
+			  logger.error('errors in service to get product details in WCS: ', body.errors);
               res.send({ "success": false, "error": body.errors });
             }
           } else {
-            console.log('commerce error');
-            console.log(error);
-            res.send({ "success": false, "error": error });
+				logger.error('errors in service to get product details in WCS: ', error);
+				res.send({ "success": false, "error": error });
           }
     });
    
