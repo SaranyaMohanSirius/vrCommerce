@@ -176,6 +176,67 @@ module.exports = {
 	                  res.send({ "success": false, "error": error });                        
 	              }
 	          });
+  },
+
+  /*Controller for selecting the shipping address in EP*/
+  selectShippingAddress: function(token,req,res){
+
+    messageData = {};
+    var addressId = req.body.addressId;
+
+    var conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM ;
+
+    var selectShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME , conCatUrl, false);
+    logger.info('selectShippingAddress url ', selectShippingAddressURL);
+    request({
+          url: selectShippingAddressURL,
+          method: 'GET',
+          json: messageData,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + token
+          },
+        }, function(error, response, body) {
+              if(!error){
+                    var uri = body._order[0]._deliveries[0]._element[0]._destinationinfo[0]._selector[0].self.uri;
+                    var concatURL = uri  + addressId + constants.EP_FOLLOW_LOCATION;
+                    var shippingAddressSelectURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
+                    logger.info('shipping address select post url ', shippingAddressSelectURL);
+                    
+                    messageData = {};
+                    request({
+                      url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),
+                      method: 'POST',
+                      json: messageData,
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'bearer ' + token
+                      },
+                    }, function(error, response, body) {
+                            if (!error) {
+                                if(!body.errors){
+                                   var result = addressMapper.selectShippingAddressJSON();
+                                    res.send({
+                                      "success": true ,
+                                      "result": result,                                            
+                                    });                           
+                                }
+                                else{
+                                  logger.error('errors in service to getSearchResults in EP: ', body.errors);               
+                                  res.send({ "success": false, "error": body.errors });
+                                }
+                            }else{
+                                logger.error('errors in service to getSearchResults in EP: ', error);
+                                res.send({ "success": false, "error": error });                        
+                            }
+                        });  
+                }else{
+                    logger.error('errors in service to get shipping address selector in EP: ', error);
+                    res.send({ "success": false, "error": error });                        
+                }
+            });
+
+
   }      
 
 };

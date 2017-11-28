@@ -17,6 +17,7 @@ module.exports = {
   "EP_ADDRESS_ADDED" : "Address Added Successfully",
   "EP_ADDRESS_DELETED" : "Address Deleted Successfully",
   "EP_ADDRESS_UPDATED"  : "Address Updated Successfully",
+  "EP_ADDRESS_SELECTED" : "Address Selected Successfully",
 
   "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "EP_IMAGE_FMT": ".jpg",
@@ -35,6 +36,9 @@ module.exports = {
   "EP_DEFAULT_CART" : "/cortex/carts/britney/default",
 
   "EP_GET_SHIPPING_ADDRESS_ZOOM": "?zoom=order:deliveries:element:destinationinfo:selector:chosen:description,order:deliveries:element:destinationinfo:selector:choice:description",  
+  "EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM" : "?zoom=order:deliveries:element:destinationinfo:selector",
+
+  "EP_FOLLOW_LOCATION": "?followlocation",
 
   
   "HTML_DIR" : "WebContent/html/",

@@ -62,12 +62,21 @@ module.exports = {
       return JSON.parse(JSON.stringify(jsonResponse));
   },
 
+  /*Normal response for updating address in EP*/
   updateShippingAddressJSON: function(body){
                   var jsonResponse = {
                     updateShippingAddressMsg: constants.EP_ADDRESS_UPDATED
                    };      
       return JSON.parse(JSON.stringify(jsonResponse));
 
+  },
+
+  /*Normal response for selecting address in EP*/
+  selectShippingAddressJSON: function(body){
+                   var jsonResponse = {
+                    selectShippingAddressMsg: constants.EP_ADDRESS_SELECTED
+                   };      
+      return JSON.parse(JSON.stringify(jsonResponse));               
   }
 
     

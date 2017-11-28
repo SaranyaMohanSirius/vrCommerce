@@ -35,4 +35,11 @@ router.put('/updateShippingAddress', function(req, res) {
 	address.updateShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
 });
 
+/**
+*	Selects a shipping address for an order
+*/
+router.post('/selectShippingAddress',function(req,res){
+	address.selectShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
+});
+
 module.exports = router;
