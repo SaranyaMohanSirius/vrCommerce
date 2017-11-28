@@ -19,6 +19,6 @@
    "WCS_INV_AVL": "/inventoryavailability/",
    "WCS_LOG_DIR" : "log/wcs/trace.log",
    "HTML_DIR" : "WebContent/html/",
-   "WCS_PRODUCT_ADDED" : "Product Added Successfully"
- 
+   "WCS_PRODUCT_ADDED" : "Product Added Successfully",
+   "WCS_PRODUCT_SEARCH_BY_KEYWORD" : "/productview/bySearchTerm/"
  };
