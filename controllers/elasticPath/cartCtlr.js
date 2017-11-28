@@ -84,8 +84,13 @@ getShoppingCart: function(req,res){
                 "result": result,                                            
             });   
       }).catch(function (error) {
-          logger.error('errors in service to GetShoppingCart in EP: ', error);
-          res.send({ "success": false, "error": error }); 
+          if(error.response.body){
+            logger.error('errors in service to getShoppingCart in EP: ', error.response.body);
+            res.send({ "success": false, "error": error.response.body }); 
+          }else{
+            logger.error('errors in service to getShoppingCart in EP: ', error);
+            res.send({ "success": false, "error": error});
+          }
       });
     },
     /**
@@ -107,8 +112,13 @@ getShoppingCart: function(req,res){
                 "result": result,                                            
               });   
         }).catch(function (error) {
-            logger.error('errors in service to GetShoppingCart in EP: ', error);
-            res.send({ "success": false, "error": error }); 
+          if(error.response.body){
+            logger.error('errors in service to updateShoppingCartItem in EP: ', error.response.body);
+            res.send({ "success": false, "error": error.response.body }); 
+          }else{
+            logger.error('errors in service to updateShoppingCartItem in EP: ', error);
+            res.send({ "success": false, "error": error});
+          }
         });
       },
     /**
@@ -130,8 +140,13 @@ getShoppingCart: function(req,res){
                   "result": result,                                            
                 });       
               }).catch(function (error) {
-                  logger.error('errors in service to GetShoppingCart in EP: ', error);
-                  res.send({ "success": false, "error": error }); 
+                if(error.response.body){
+                  logger.error('errors in service to DeleteItem in EP: ', error.response.body);
+                  res.send({ "success": false, "error": error.response.body }); 
+                }else{
+                  logger.error('errors in service to DeleteItem in EP: ', error);
+                  res.send({ "success": false, "error": error});
+                } 
               });
             },
             
@@ -154,8 +169,13 @@ getShoppingCart: function(req,res){
                   "result": result,                                            
                 });      
               }).catch(function (error) {
-                  logger.error('errors in service to GetShoppingCart in EP: ', error);
-                  res.send({ "success": false, "error": error }); 
+                  if(error.response.body){
+                    logger.error('errors in service to DeleteAllItem in EP: ', error.response.body);
+                    res.send({ "success": false, "error": error.response.body }); 
+                  }else{
+                    logger.error('errors in service to DeleteAllItem in EP: ', error);
+                    res.send({ "success": false, "error": error});
+                  }
               });
             }
 };

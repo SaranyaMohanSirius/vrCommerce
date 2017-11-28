@@ -38,12 +38,22 @@ module.exports = {
                       "result": result,                                            
                   });   
             }).catch(function (error) {
-                logger.error('errors in service to GetShoppingCart in EP: ', error);
-                res.send({ "success": false, "error": error }); 
+                if(error.response.body){
+                  logger.error('errors in service to getSearchResults in EP: ', error.response.body);
+                  res.send({ "success": false, "error": error.response.body }); 
+                }else{
+                  logger.error('errors in service to getSearchResults in EP: ', error);
+                  res.send({ "success": false, "error": error});
+                }
             });
       }).catch(function (error) {
-          logger.error('errors in service to GetShoppingCart in EP: ', error);
-          res.send({ "success": false, "error": error }); 
+            if(error.response.body){
+              logger.error('errors in service to getSearchResults in EP: ', error.response.body);
+              res.send({ "success": false, "error": error.response.body }); 
+            }else{
+              logger.error('errors in service to getSearchResults in EP: ', error);
+              res.send({ "success": false, "error": error});
+            }
       });
   }
 };
