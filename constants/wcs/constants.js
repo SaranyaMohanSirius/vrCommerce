@@ -17,8 +17,10 @@
    "WCS_SHIPMODES_APPEND": "/cart/shipping_modes",
    "WCS_SHIPMODES": "/wcs/resources/store/",
    "WCS_INV_AVL": "/inventoryavailability/",
+   "WCS_UPDATE_SHIP_INFO": "/cart/@self/shipping_info",
    "WCS_LOG_DIR" : "log/wcs/trace.log",
    "HTML_DIR" : "WebContent/html/",
-   "WCS_PRODUCT_ADDED" : "Product Added Successfully",
-   "WCS_PRODUCT_SEARCH_BY_KEYWORD" : "/productview/bySearchTerm/"
+   "WCS_PRODUCT_SEARCH_BY_KEYWORD" : "/productview/bySearchTerm/",
+   "WCS_PRODUCT_ADDED" : "Product Added Successfully"
+ 
  };

@@ -1,6 +1,7 @@
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var JM = require('json-mapper');
+var _ = require("underscore");
 
 module.exports = {
 
@@ -15,6 +16,7 @@ module.exports = {
 					carrier: '_description.0.carrier',
 					displayName: '_description.0.display-name',
 					name: '_description.0.name',
+					shipModeId: '_selectaction.0.self.uri',
 					cost: '_description.0.cost'
 				})],
 
@@ -22,6 +24,7 @@ module.exports = {
 					carrier: '_description.0.carrier',
 					displayName: '_description.0.display-name',
 					name: '_description.0.name',
+					shipModeId: '_selectaction.0.self.uri',
 					cost: '_description.0.cost'
 				})],
 

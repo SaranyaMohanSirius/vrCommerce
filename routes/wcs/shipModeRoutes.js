@@ -11,4 +11,9 @@ router.get('/getShippingMethods', function(req, res){
     wcsShipModeCtrl.getShipModes(res,req);
 });
 
+router.get('/updateShippingMethods', function(req, res){
+    wcsShipModeCtrl.updateShipModes(res,req);
+});
+
+
 module.exports = router;

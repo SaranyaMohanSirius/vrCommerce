@@ -29,9 +29,6 @@ module.exports = {
   "EP_CART" : "/carts/britney/default",
 
   "EP_SHIPMODE_ZOOM" : "?zoom=deliveries:element:shippingoptioninfo:selector:choice:description,deliveries:element:shippingoptioninfo:selector:chosen:description",
-  
-  "HTML_DIR" : "WebContent/html/",
-
   "EP_ADD_SHIPPING_ADDRESS" : "/cortex/addresses/britney?followlocation",  
   "EP_DEFAULT_CART" : "/cortex/carts/britney/default",
 
@@ -39,13 +36,19 @@ module.exports = {
   "EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM" : "?zoom=order:deliveries:element:destinationinfo:selector",
 
   "EP_FOLLOW_LOCATION": "?followlocation",
-
   
   "HTML_DIR" : "WebContent/html/",
 
-  //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : "3edefe2f-8112-499a-94b2-9d26b61edbac"
   
+  "EP_CURRENT_ORDER" : "/orders/britney/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",
+  "EP_SHIPMODE_ZOOM" : "?zoom=deliveries:element:shippingoptioninfo:selector:choice:selectaction,deliveries:element:shippingoptioninfo:selector:choice:description,deliveries:element:shippingoptioninfo:selector:chosen:selectaction,deliveries:element:shippingoptioninfo:selector:chosen:description",
+  "EP_ADDRESS_ADDED" : "Address Added Successfully",
+
+  "EP_FOLLOW_LOCATION" : "?followlocation",
+  
+  //constants that needs to removed & got from the app
+  "EP_ACCESS_TOKEN" : "891389a3-ece9-4702-bf54-263619c3aceb"
+
 
 
 };

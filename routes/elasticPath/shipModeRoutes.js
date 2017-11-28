@@ -11,6 +11,10 @@ router.get('/getShippingMethods', function(req, res){
     shipMode.getShippingMethods(constants.EP_ACCESS_TOKEN,res,req);
 });
 
+router.get('/updateShippingMethod', function(req, res){
+    shipMode.updateShippingMethods(constants.EP_ACCESS_TOKEN,res,req);
+});
+
 module.exports = router;
 
 

@@ -19,7 +19,7 @@ module.exports = {
    getShipModes: function(res,req){
 	   
     var concatURL = constants.WCS_SHIPMODES + constants.WCS_STORE_ID + constants.WCS_SHIPMODES_APPEND;
-    logger.info("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));	
+    logger.info("getShipModes post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));	
 	
 	messageData = {};
     request({
@@ -50,6 +50,46 @@ module.exports = {
     });
    
  
-  } 
+  },
+
+  updateShipModes: function(res,req){
+	   
+    var shipModeId = req.query.shipModeId;
+	var addressId = req.query.addressId;
+	var concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_UPDATE_SHIP_INFO;
+    logger.info("updateShipModes post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true));	
+	
+	messageData = {
+		"shipModeId": shipModeId,
+		"addressId": addressId,
+		"x_calculationUsage": "-1,-2,-3,-4,-5,-6,-7"
+    };
+	
+    
+	request({
+      url: util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true),
+      method: 'PUT',
+      json: messageData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }, function(error, response, body) {
+          if (!error) {
+            if (!body.errors) {
+                  res.send({"success": true});                            
+
+			}
+            else {
+				logger.error('errors in service to get ship modes in WCS: ', body.errors);
+				res.send({ "success": false, "error": body.errors });
+            }
+          } else {
+				logger.error('errors in service to get ship modes in WCS: ', error);
+				res.send({ "success": false, "error": error });
+          }
+    });
+   
+ 
+  }
 
 };

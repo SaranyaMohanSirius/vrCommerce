@@ -5,6 +5,7 @@ var request = require('request');
 var cron = require('node-cron');
 var util = require('./util/elasticPath/util');
 var logger= util.getLogger();
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 var app = express();
 

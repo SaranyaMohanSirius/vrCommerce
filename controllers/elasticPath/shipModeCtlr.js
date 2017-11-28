@@ -59,6 +59,38 @@ module.exports = {
 			  }
 		});
  
-    } 
+    },
+
+	/*Controller for updating the shipping method in EP*/
+   updateShippingMethods: function(token,res,req){
+		var url = req.query.uri + constants.EP_FOLLOW_LOCATION;
+		logger.info('Update Shipping method EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false));
+		messageData = {};
+		request({
+		  url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),
+		  method: 'POST',
+		  json: messageData,
+		  headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'bearer ' + token
+		  },
+		}, function(error, response, body) {
+			  if (!error) {
+				if (!body.errors) {
+					  res.send({
+						"success": true ,
+					  }); 
+				}
+				else{
+				  logger.error('errors in service to get Shipping methods in EP: ', body.errors);
+				  res.send({ "success": false, "error": body.errors });			
+				}
+			 }else{
+				logger.error('errors in service to get Shipping methods in EP: ', error);
+				res.send({ "success": false, "error": error });			 
+			 }
+		});
+ 
+    }
 
 };

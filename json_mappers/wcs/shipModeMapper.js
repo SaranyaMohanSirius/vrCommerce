@@ -1,6 +1,7 @@
 var constants = require('../../constants/wcs/constants');
 var util = require('../../util/wcs/util');
 var JM = require('json-mapper');
+var _ = require("underscore");
 
 var globalcount = 0;
 
@@ -14,6 +15,7 @@ module.exports = {
 			usableShippingMode: [{
 				choice:['usableShippingMode', JM.map({
 					carrier: 'field2',
+					shipModeId: 'shipModeId',
 					displayName: 'shipModeDescription',
 					name: 'shipModeCode',
 				})],
