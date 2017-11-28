@@ -17,7 +17,7 @@ module.exports = {
   getShippingAddressesJSON: function(body){
             var converter = JM.makeConverter({
                 contact: ['_order.0._deliveries.0._element.0._destinationinfo', JM.map({
-                      address:['_selector.0._choice',JM.map({
+                      choice:['_selector.0._choice',JM.map({
                           addressId: '_description.0.self.uri',
                           addressLine: '_description.0.address.street-address',
                           addressType: JM.helpers.def('ShippingAndBilling'),
@@ -32,7 +32,7 @@ module.exports = {
                           phone1: JM.helpers.def(' '),
                           primary: JM.helpers.def('false'),
                       })],
-                      address1:['_selector.0._chosen',JM.map({
+                      chosen:['_selector.0._chosen',JM.map({
                           addressId: '_description.0.self.uri',
                           addressLine: '_description.0.address.street-address',
                           addressType: JM.helpers.def('ShippingAndBilling'),
