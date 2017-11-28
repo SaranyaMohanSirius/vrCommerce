@@ -47,7 +47,7 @@ module.exports = {
   "EP_FOLLOW_LOCATION" : "?followlocation",
   
   //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : "891389a3-ece9-4702-bf54-263619c3aceb"
+  "EP_ACCESS_TOKEN" : "3edefe2f-8112-499a-94b2-9d26b61edbac"
 
 
 

@@ -2,12 +2,6 @@ var constants = require('../../constants/wcs/constants');
 var util = require('../../util/wcs/util');
 var shipModeMapper = require('../../json_mappers/wcs/shipModeMapper');
 var request = require('request');
-var q = require('q');
-var gampee = require("gampee");
-var rp = require('request-promise');
-var Promise = require('promise');
-var JM = require('json-mapper');
-var _ = require("underscore");
 
 var globalcount = 0;
 

@@ -36,5 +36,18 @@ module.exports = {
 		   ]
 		});
 		return logger;
-	} 
+	},
+	
+	constructRequest:function(uri,method,data,token){
+		return {
+			uri: uri,
+			method: method,
+			json: data,
+			headers: {
+			  'Content-Type': 'application/json',
+			  'Authorization': 'bearer ' + token
+			}
+		};
+	}
+
 };

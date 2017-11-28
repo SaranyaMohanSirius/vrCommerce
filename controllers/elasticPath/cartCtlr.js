@@ -2,13 +2,10 @@
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var cartMapper = require('../../json_mappers/elasticPath/cartMapper');
-var request = require('request');
-
-
+var requestPromise = require('request-promise');
+var Promise = require("bluebird");
 
 var logger= util.getLogger();
-var Promise = require("bluebird");
-var requestPromise = require('request-promise').defaults({ simple: false });
 
 module.exports = {
   /**
@@ -78,34 +75,19 @@ getShoppingCart: function(req,res){
     var defaultCartURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
     
     logger.info('Get shoppingCart form url',  defaultCartURL);
-    request({
-      url: defaultCartURL,
-      method: 'GET',
-      json: messageData,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'bearer ' + token
-      },
-    }, function(error, response, body) {
-            if (!error) {
-                if(!body.errors){
-                  var result = cartMapper.shoppingCartJSON(body); 
-                  res.send({
-                    "success": true ,
-                    "result": result,                                            
-                  });                           
-                }
-                else{
-                  logger.error('errors in service to GetShoppingCart in EP: ', body.errors);								
-                  res.send({ "success": false, "error": body.errors });
-                }
-            }else{
-                logger.error('errors in service to GetShoppingCart in EP: ', error);
-                res.send({ "success": false, "error": error });                        
-            }
-        });
+    var method ='GET';
+    var requestCall = util.constructRequest(defaultCartURL,method,messageData,token)
+    requestPromise(requestCall).then(function (data) {
+          var result = cartMapper.shoppingCartJSON(data); 
+              res.send({
+                "success": true ,
+                "result": result,                                            
+            });   
+      }).catch(function (error) {
+          logger.error('errors in service to GetShoppingCart in EP: ', error);
+          res.send({ "success": false, "error": error }); 
+      });
     },
-    
     /**
     *   Update Shopping Cart Item Details
     */
@@ -116,32 +98,18 @@ getShoppingCart: function(req,res){
       var uri= req.body.lineItem[0].lineItemId;
       var updateCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
       logger.info('updateShoppingCart form url',  updateCartItemURL);
-      request({
-        url: updateCartItemURL,
-        method: 'PUT',
-        json: messageData,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'bearer ' + token
-        },
-      }, function(error, response, body) {
-            if(!error){
-              if (!response.body) {
-                   var result = cartMapper.updateCartItemJSON(uri); 
-                    res.send({
-                      "success": true ,
-                      "result": result,                                            
-                    });                           
-                  }
-                  else{
-                    logger.error('errors in service to updateShoppingCart Item in EP: ', response.body);
-                    res.send({ "success": false, "error": response.body });
-                  }  
-              }else{
-                  logger.error('errors in service to updateShoppingCart Item in EP: ', error);
-                  res.send({ "success": false, "error": error });                        
-              }
-          });
+      var method ='PUT';
+      var requestCall = util.constructRequest(updateCartItemURL,method,messageData,token)
+      requestPromise(requestCall).then(function (data) {
+              var result = cartMapper.updateCartItemJSON(uri); 
+              res.send({
+                "success": true ,
+                "result": result,                                            
+              });   
+        }).catch(function (error) {
+            logger.error('errors in service to GetShoppingCart in EP: ', error);
+            res.send({ "success": false, "error": error }); 
+        });
       },
     /**
     *   Delete item from Shopping Cart 
@@ -153,32 +121,18 @@ getShoppingCart: function(req,res){
             var uri= req.body.lineItem[0].lineItemId;
             var deleteCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
             logger.info('delete Item form url',  deleteCartItemURL);
-            request({
-              url: deleteCartItemURL,
-              method: 'DELETE',
-              json: messageData,
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer ' + token
-              },
-            }, function(error, response, body) {
-                  if(!error){
-                    if (!response.body) {
-                         var result = cartMapper.deleteCartItemJSON(); 
-                          res.send({
-                            "success": true ,
-                            "result": result,                                            
-                          });                           
-                        }
-                        else{
-                          logger.error('errors in service to delete Item Shopping Cart Item in EP: ', response.body);
-                          res.send({ "success": false, "error": response.body });
-                        }  
-                    }else{
-                        logger.error('errors in service to delete Item Shopping Cart in EP: ', error);
-                        res.send({ "success": false, "error": error });                        
-                    }
-                });
+            var method ='DELETE';
+            var requestCall = util.constructRequest(deleteCartItemURL,method,messageData,token)
+            requestPromise(requestCall).then(function (data) {
+                var result = cartMapper.deleteCartItemJSON(); 
+                res.send({
+                  "success": true ,
+                  "result": result,                                            
+                });       
+              }).catch(function (error) {
+                  logger.error('errors in service to GetShoppingCart in EP: ', error);
+                  res.send({ "success": false, "error": error }); 
+              });
             },
             
       /**
@@ -191,31 +145,17 @@ getShoppingCart: function(req,res){
             var uri= req.body.orderId;
             var deleteAllCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
             logger.info('delete All Item form url',  deleteAllCartItemURL);
-            request({
-              url: deleteAllCartItemURL,
-              method: 'DELETE',
-              json: messageData,
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer ' + token
-              },
-            }, function(error, response, body) {
-                  if(!error){
-                    if (!response.body) {
-                         var result = cartMapper.deleteAllCartItemJSON(); 
-                          res.send({
-                            "success": true ,
-                            "result": result,                                            
-                          });                           
-                        }
-                        else{
-                          logger.error('errors in service to delete All Item Shopping Cart Item in EP: ', response.body);
-                          res.send({ "success": false, "error": response.body });
-                        }  
-                    }else{
-                        logger.error('errors in service to delete All Item Shopping Cart in EP: ', error);
-                        res.send({ "success": false, "error": error });                        
-                    }
-                });
+            var method ='DELETE';
+            var requestCall = util.constructRequest(deleteAllCartItemURL,method,messageData,token)
+            requestPromise(requestCall).then(function (data) {
+                var result = cartMapper.deleteAllCartItemJSON(); 
+                res.send({
+                  "success": true ,
+                  "result": result,                                            
+                });      
+              }).catch(function (error) {
+                  logger.error('errors in service to GetShoppingCart in EP: ', error);
+                  res.send({ "success": false, "error": error }); 
+              });
             }
 };
