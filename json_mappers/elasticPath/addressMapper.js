@@ -64,7 +64,7 @@ module.exports = {
 
   updateShippingAddressJSON: function(body){
                   var jsonResponse = {
-                    deleteShippingAddressMsg: constants.EP_ADDRESS_UPDATED
+                    updateShippingAddressMsg: constants.EP_ADDRESS_UPDATED
                    };      
       return JSON.parse(JSON.stringify(jsonResponse));
 

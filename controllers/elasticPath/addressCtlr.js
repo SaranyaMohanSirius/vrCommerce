@@ -1,7 +1,7 @@
 
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
-var checkoutMapper = require('../../json_mappers/elasticPath/checkoutMapper');
+var addressMapper = require('../../json_mappers/elasticPath/addressMapper');
 var request = require('request');
 
 
@@ -39,8 +39,7 @@ module.exports = {
       }, function(error, response, body) {
             if (!error) {
                 if(!body.errors){
-
-                  var result = checkoutMapper.addShippingAddressJSON();  
+                  var result = addressMapper.addShippingAddressJSON();  
                   res.send({
                     "success": true ,
                     "result": result,
@@ -78,7 +77,7 @@ module.exports = {
             if (!error) {
                 if(!body.errors){
 
-                  var result = checkoutMapper.getShippingAddressesJSON(body);
+                  var result = addressMapper.getShippingAddressesJSON(body);
                   res.send({
                     "success": true ,
                     "result": result,
@@ -114,7 +113,7 @@ module.exports = {
       }, function(error, response, body) {
             if(!error){
               if (!response.body) {
-                   var result = checkoutMapper.deleteShippingAddressJSON(); 
+                   var result = addressMapper.deleteShippingAddressJSON(); 
                     res.send({
                       "success": true ,
                       "result": result,                                            
@@ -162,7 +161,7 @@ module.exports = {
 	      }, function(error, response, body) {
 	            if(!error){
 	              if (!response.body) {
-	                   var result = checkoutMapper.updateShippingAddressJSON();
+	                   var result = addressMapper.updateShippingAddressJSON();
 	                    res.send({
 	                      "success": true ,
 	                      "result": result,                                            

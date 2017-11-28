@@ -23,7 +23,7 @@ var epCategoryRoute = require('./routes/elasticPath/categoryRoutes');
 var epPDPRoute = require('./routes/elasticPath/pdpRoutes');
 var epCartRoute = require('./routes/elasticPath/cartRoutes');
 var epShipModeRoute = require('./routes/elasticPath/shipModeRoutes');
-var epCheckoutRoute = require('./routes/elasticPath/checkoutRoutes');
+var epAddressRoute = require('./routes/elasticPath/addressRoutes');
 
 var wcsPDPRoute = require('./routes/wcs/pdpRoutes');
 var wcsCategoryRoute = require('./routes/wcs/categoryRoutes');
@@ -36,7 +36,7 @@ app.use('/ep/category',epCategoryRoute);
 app.use('/ep/PDP',epPDPRoute);
 app.use('/ep/cart',epCartRoute);
 app.use('/ep/shipModes',epShipModeRoute);
-app.use('/ep/checkout',epCheckoutRoute);
+app.use('/ep/address',epAddressRoute);
 
 app.use('/wcs/PDP',wcsPDPRoute);
 app.use('/wcs/category',wcsCategoryRoute);

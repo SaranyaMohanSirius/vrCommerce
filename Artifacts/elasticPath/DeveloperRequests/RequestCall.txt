@@ -87,13 +87,13 @@ Request : GET : http://localhost:5000/ep/pdp/getProductDetails?uri=10001
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                                            Checkout
+                                            Checkout - ADDRESS
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 ** Adding a shipping address
 
-Request  : POST  :  http://localhost:5000/ep/checkout/addShippingAddress
+Request  : POST  :  http://localhost:5000/ep/address/addShippingAddress
 
 Input Body :
 {
@@ -114,13 +114,13 @@ Input Body :
 
 ** Get all shipping address
 
-Request	: GET : http://localhost:5000/ep/checkout/getShippingAddresses
+Request	: GET : http://localhost:5000/ep/address/getShippingAddresses
 
 
 
 ** Deleting a shipping address
 
-Request : DELETE : http://localhost:5000/ep/checkout/deleteShippingAddress
+Request : DELETE : http://localhost:5000/ep/address/deleteShippingAddress
 
 Input Body:
 
@@ -133,7 +133,7 @@ Note: Pass the addressId taken from get shipping address call
 
 ** Updates a Shipping address
 
-Request : PUT : http://localhost:5000/ep/checkout/updateShippingAddress
+Request : PUT : http://localhost:5000/ep/address/updateShippingAddress
 
 Input Body:
 
@@ -154,6 +154,9 @@ Input Body:
    "email1" : "abc@xyz.com",
    "phone1" : "9191234567"
 }	
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
