@@ -129,6 +129,54 @@ module.exports = {
                   res.send({ "success": false, "error": error });                        
               }
           });
-  }     
+  },
+
+  /*Controller for updating shipping address in EP*/
+  updateShippingAddress: function(token,req,res){
+
+  	  messageData = {
+         "address":{  
+            "country-name": req.body.country,
+            "extended-address":"",
+            "locality": req.body.city,
+            "postal-code": req.body.zipCode,
+            "region": req.body.state,
+            "street-address": req.body.addressLine[0]
+         },
+         "name":{  
+            "family-name": req.body.lastName,
+            "given-name": req.body.firstName
+         }
+      };
+  		var uri = req.body.addressId;
+  		var updateShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX,uri,false);
+		logger.info('updateShippingAddress url',  updateShippingAddressURL);
+	    request({
+	        url: updateShippingAddressURL,
+	        method: 'PUT',
+	        json: messageData,
+	        headers: {
+	          'Content-Type': 'application/json',
+	          'Authorization': 'bearer ' + token
+	        },
+	      }, function(error, response, body) {
+	            if(!error){
+	              if (!response.body) {
+	                   var result = checkoutMapper.updateShippingAddressJSON();
+	                    res.send({
+	                      "success": true ,
+	                      "result": result,                                            
+	                    });                           
+	                  }
+	                  else{
+	                    logger.error('errors in service to update address in EP: ', response.body);
+	                    res.send({ "success": false, "error": response.body });
+	                  }  
+	              }else{
+	                  logger.error('errors in service to update address in EP: ', error);
+	                  res.send({ "success": false, "error": error });                        
+	              }
+	          });
+  }      
 
 };

@@ -112,6 +112,12 @@ Input Body :
    "phone1" : "9191234567"
 }
 
+** Get all shipping address
+
+Request	: GET : http://localhost:5000/ep/checkout/getShippingAddresses
+
+
+
 ** Deleting a shipping address
 
 Request : DELETE : http://localhost:5000/ep/checkout/deleteShippingAddress
@@ -122,7 +128,32 @@ Input Body:
 	"addressId" : "/addresses/britney/hbswmzrtmuywkllbmyzdsljugvrtiljymq3gillbgmzggnjwg4zweyjtmi="
 }
 
+Note: Pass the addressId taken from get shipping address call
 
+
+** Updates a Shipping address
+
+Request : PUT : http://localhost:5000/ep/checkout/updateShippingAddress
+
+Input Body:
+
+
+{
+   "firstName" : "JANE",
+   "lastName" : "ROE",
+   "nickName" : "JANE",
+   "addressId"	: "/addresses/britney/gu4wcmleg5tdmljvhayweljuhe3diljygzrdiljygi4gembtmm4gmm3bhe=",
+   "addressType" : "ShippingAndBilling",
+   "zipCode" : "85123",
+   "addressLine": [
+      "201 E MAIN ST"
+      ],
+   "city" : "PHOENIX",
+   "state" : "AZ",
+   "country" : "US",
+   "email1" : "abc@xyz.com",
+   "phone1" : "9191234567"
+}	
 
 
 

@@ -60,6 +60,14 @@ module.exports = {
                     deleteShippingAddressMsg: constants.EP_ADDRESS_DELETED
                    };      
       return JSON.parse(JSON.stringify(jsonResponse));
+  },
+
+  updateShippingAddressJSON: function(body){
+                  var jsonResponse = {
+                    deleteShippingAddressMsg: constants.EP_ADDRESS_UPDATED
+                   };      
+      return JSON.parse(JSON.stringify(jsonResponse));
+
   }
 
     

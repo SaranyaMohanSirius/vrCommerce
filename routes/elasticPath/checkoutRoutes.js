@@ -27,4 +27,12 @@ router.get('/getShippingAddresses', function(req, res) {
 router.delete('/deleteShippingAddress',function(req,res){
 	checkout.deleteShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
 });
+
+/**
+*	Updtes a shipping address
+*/
+router.put('/updateShippingAddress', function(req, res) {
+	checkout.updateShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
+});
+
 module.exports = router;
