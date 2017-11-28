@@ -1,13 +1,18 @@
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var JM = require('json-mapper');
+var _ = require("underscore");
 
 var globalcount = 0;
 
 module.exports = {
 
   /*json Mapper for mapping the PDP header in WCS*/ 
-  mapPdpJSON: function(body){
+  mapPdpJSON: function(body,body1){
+		
+		var invAvailability = body1.InventoryAvailability[0].inventoryStatus;
+		
+		var quantityAvailable = body1.InventoryAvailability[0].availableQuantity;
 		
 		var converter = JM.makeConverter({
 		
@@ -20,8 +25,6 @@ module.exports = {
 				buyable: 'buyable',
 				
 				store: 'storeID',
-
-				availability: '_availability.0.state',
 				
 				listPrice : 'price.0.value',
 				
@@ -63,7 +66,10 @@ module.exports = {
 		});
 	    
 		var result = converter(body);
-        return result;
+		var jsonObj = result;
+		jsonObj.catalogEntryView[0].availability = invAvailability;
+		jsonObj.catalogEntryView[0].quantity = quantityAvailable;
+        return jsonObj;
 
   }          
 

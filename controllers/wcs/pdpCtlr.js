@@ -25,12 +25,35 @@ module.exports = {
     }, function(error, response, body) {
           if (!error) {
             if (!body.errors) {
-				  var result = pdpMapper.mapPdpJSON(body);
-                  res.send({
-                    "success": true ,
-                    "result": result,                                            
-                  });                            
-
+				var body1 = body;
+				concatURL = constants.WCS_SHIPMODES + constants.WCS_STORE_ID + constants.WCS_INV_AVL + productId;
+				logger.info("getInvAvl post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));	
+				messageData = {};
+				request({
+				  url: util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false),
+				  method: 'GET',
+				  json: messageData,
+				  headers: {
+					'Content-Type': 'application/json',
+				  },
+				}, function(error, response, body) {
+					  if (!error) {
+						if (!body.errors) {
+							  var result = pdpMapper.mapPdpJSON(body1,body);
+							  res.send({
+								"success": true ,
+								"result": result,                                            
+							  });
+					    }
+						else {
+							logger.error('errors in service to get product details in WCS: ', body.errors);
+							res.send({ "success": false, "error": body.errors });
+						}
+					} else {
+						logger.error('errors in service to get product details in WCS: ', error);
+						res.send({ "success": false, "error": error });
+					}
+				});
 			}
             else {
 			  logger.error('errors in service to get product details in WCS: ', body.errors);

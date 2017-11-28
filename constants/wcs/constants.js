@@ -16,6 +16,7 @@
    "WCS_LANG_ID": "-1",
    "WCS_SHIPMODES_APPEND": "/cart/shipping_modes",
    "WCS_SHIPMODES": "/wcs/resources/store/",
+   "WCS_INV_AVL": "/inventoryavailability/",
    "WCS_LOG_DIR" : "log/wcs/trace.log",
    "HTML_DIR" : "WebContent/html/",
    "WCS_PRODUCT_ADDED" : "Product Added Successfully"
