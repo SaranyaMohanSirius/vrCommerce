@@ -17,16 +17,12 @@ module.exports = {
   for(var i = 0; i < req.body.orderItem.length; i++) {
   var messageData = [];
   var concattUrl =  req.body.orderItem[i].productId + "?followlocation";
+  var addToCartUrl=util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)
    messageData= {"quantity":req.body.orderItem[i].quantity};
-   requests.push(this.getAddToCartRequestPromise(token,messageData,concattUrl));
+   requests.push(this.getAddToCartRequestPromise(token,JSON.parse(JSON.stringify(messageData)),addToCartUrl));
     }
   Promise.all(requests).then(function(results) {
-    //Can be Handled based on the results -- Leaving this as empty
-    /*for (var i = 0; i < results.length; i++) {
-      
-      logger.info('Joseph Results' + JSON.stringify(results[i]));
-    } */
-    var result = cartMapper.addToCartJSON(); 
+    var result = cartMapper.addToCartJSON(results); 
                                   res.send({
                                     "success": true ,
                                     "result": result,                                            
@@ -40,28 +36,15 @@ module.exports = {
 
 getAddToCartRequestPromise: function(authToken,data,url) {
   return new Promise(function(resolve,reject){
-      request.post({
-          url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),
-          json: JSON.parse(JSON.stringify(data)),
-          headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'bearer ' + authToken
-      }
-    },function(error, response, body) {
-      if (!error) {
-          if (!body.errors) {
-                  return resolve({success:true, url:url,body:body})
-          }
-         else {
-            logger.error('Errors in request getRequest EP: ', body.errors);
-             return resolve({success:false, error:body.errors})
-          }
-        } else {
-          logger.error('errors in service to postSearchresultsFom in EP: ', error);
+    var requestCall = util.constructRequest(url,"POST",data,authToken)
+    requestPromise(requestCall).then(function (data) {
+          var result = cartMapper.shoppingCartJSON(data); 
+             return resolve({success:true, url:url,body:data});
+      }).catch(function (error) {
+          logger.error('errors in service to updateShoppingCartItem in EP: ', error);
           return resolve({success:false, error:error})
-        }       
+      }); 
     });
-  });   
 },
 
 /**

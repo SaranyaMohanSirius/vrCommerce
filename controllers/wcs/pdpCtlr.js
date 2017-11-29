@@ -31,19 +31,19 @@ module.exports = {
 				});   	
 		}).catch(function (error) {
                 if(error.response.body){
-                  logger.error('errors in service to getSearchResults in EP: ', error.response.body);
+                  logger.error('errors in service to get product details in EP: ', error.response.body);
                   res.send({ "success": false, "error": error.response.body }); 
                 }else{
-                  logger.error('errors in service to getSearchResults in EP: ', error);
+									logger.error('errors in service to get product details in WCS: ', error);									
                   res.send({ "success": false, "error": error});
                 }
         });
 	}).catch(function (error) {
 			if(error.response.body){
-			  logger.error('errors in service to getSearchResults in EP: ', error.response.body);
+			  logger.error('errors in service to get product detailsin EP: ', error.response.body);
 			  res.send({ "success": false, "error": error.response.body }); 
 			}else{
-			  logger.error('errors in service to getSearchResults in EP: ', error);
+			  logger.error('errors in service to get product details in EP: ', error);
 			  res.send({ "success": false, "error": error});
 			}
 	});

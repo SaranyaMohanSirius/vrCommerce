@@ -1,17 +1,25 @@
 var constants = require('../../constants/elasticPath/constants');
 var util = require('../../util/elasticPath/util');
 var JM = require('json-mapper');
-
+var logger= util.getLogger();
 
 module.exports = {
 
   /*Normal Response for Add to Cart this needs to be refine*/ 
-  addToCartJSON: function(){
-            var jsonResponse = {orderItemId: "",
-                    orderId: "",
-                    message: constants.EP_PRODUCT_ADDED
-                   };      
-			return JSON.parse(JSON.stringify(jsonResponse));
+  addToCartJSON: function(results){
+    var orderItem=[];
+    var uri;
+    for (var i = 0; i < results.length; i++) {
+      if(results[i].success){
+        orderItem.push({"orderItemId": results[i].body.self.uri});
+        uri = results[i].body.links[3].uri;
+      }else{
+        logger.info('RequestFailed' + JSON.stringify(results[i].error.message));
+        orderItem.push({"orderItemId": results[i].error.message});
+      }
+    }
+     var results = {"orderId":uri ,"orderItem":orderItem} 
+          return JSON.parse(JSON.stringify(results));
   },
   /**
    * json mapper for mapping the product list json for category landing page in EP
