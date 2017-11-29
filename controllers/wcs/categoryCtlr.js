@@ -15,7 +15,7 @@ module.exports = {
    			var concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_TOP +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
 			logger.info('Top categories WCS url: ', util.constructUrl(constants.WCS_HOSTNAME, concatURL, false));
  
-			messageData = {};
+			var messageData = {};
 			request({
 			      url: util.constructUrl(constants.WCS_HOSTNAME, concatURL, false),
 			      method: 'GET',
@@ -50,7 +50,7 @@ module.exports = {
 			var concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
 			logger.info('Sub categories WCS url: ', util.constructUrl(constants.WCS_HOSTNAME, concatURL, false));
  
-			messageData = {};
+			var messageData = {};
 			request({
 			      url: util.constructUrl(constants.WCS_HOSTNAME, concatURL, false),
 			      method: 'GET',
@@ -87,7 +87,7 @@ module.exports = {
     var concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
     logger.info("getProductsListForCategory post form url:" + util.constructUrl(constants.WCS_HOSTNAME, concatURL, false));  
 
-    messageData = {
+    var messageData = {
       'pageSize': pageSize,
       'currentPageNumber': currentPageNumber
     };

@@ -15,10 +15,9 @@ module.exports = {
   var token=constants.EP_ACCESS_TOKEN;
   var requests = [];
   for(var i = 0; i < req.body.orderItem.length; i++) {
-  var messageData = [];
   var concattUrl =  req.body.orderItem[i].productId + "?followlocation";
   var addToCartUrl=util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)
-   messageData= {"quantity":req.body.orderItem[i].quantity};
+  var messageData= {"quantity":req.body.orderItem[i].quantity};
    requests.push(this.getAddToCartRequestPromise(token,JSON.parse(JSON.stringify(messageData)),addToCartUrl));
     }
   Promise.all(requests).then(function(results) {
@@ -53,7 +52,7 @@ getAddToCartRequestPromise: function(authToken,data,url) {
 
 getShoppingCart: function(req,res){
     var token=constants.EP_ACCESS_TOKEN;
-    messageData = {};
+    var messageData = {};
     var concattUrl= constants.EP_SHOPPING_CART+constants.EP_SHOPPING_CART_ZOOM;
     var defaultCartURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
     
@@ -82,7 +81,7 @@ getShoppingCart: function(req,res){
 
     updateShoppingCartItem: function(req,res){
       var token=constants.EP_ACCESS_TOKEN;
-      messageData = {"quantity":req.body.lineItem[0].quantity};
+      var messageData = {"quantity":req.body.lineItem[0].quantity};
       var uri= req.body.lineItem[0].lineItemId;
       var updateCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
       logger.info('updateShoppingCart form url',  updateCartItemURL);
@@ -110,7 +109,7 @@ getShoppingCart: function(req,res){
 
     deleteShoppingCartItem: function(req,res){
             var token=constants.EP_ACCESS_TOKEN;
-            messageData = {};
+            var messageData = {};
             var uri= req.body.lineItem[0].lineItemId;
             var deleteCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
             logger.info('delete Item form url',  deleteCartItemURL);
@@ -139,7 +138,7 @@ getShoppingCart: function(req,res){
 
     deleteAllShoppingCartItem: function(req,res){
             var token=constants.EP_ACCESS_TOKEN;
-            messageData = {};
+            var messageData = {};
             var uri= req.body.orderId;
             var deleteAllCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
             logger.info('delete All Item form url',  deleteAllCartItemURL);

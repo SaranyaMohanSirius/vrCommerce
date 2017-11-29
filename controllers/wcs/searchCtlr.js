@@ -11,7 +11,7 @@ module.exports = {
         let pageSize = req.query.pageSize;
         let currentPage = req.query.currentPage;
         
-        messageData = {
+        var messageData = {
             "keywords": keyword,
             "pageSize": pageSize,
             "currentPage": currentPage      

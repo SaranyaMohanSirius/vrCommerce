@@ -15,7 +15,7 @@ module.exports = {
     var concatURL = constants.WCS_SHIPMODES + constants.WCS_STORE_ID + constants.WCS_SHIPMODES_APPEND;
     logger.info("getShipModes post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));	
 	
-	messageData = {};
+	  var messageData = {};
     request({
       url: util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false),
       method: 'GET',

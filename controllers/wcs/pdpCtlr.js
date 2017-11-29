@@ -14,7 +14,7 @@ module.exports = {
     var productDetailURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
     logger.info("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME, productDetailURL, false));	
 	var method ='GET';
-	messageData = {};
+	var messageData = {};
 	var requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME, productDetailURL, false),method,messageData);
 	logger.info("requestCAll " + requestCall);
 	requestPromise(requestCall).then(function (data) {

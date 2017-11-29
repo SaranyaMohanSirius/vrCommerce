@@ -9,7 +9,7 @@ module.exports = {
   /*Controller for getting the shipping methods in EP*/
    getShippingMethods: function(token,res,req){
 		logger.info('Shipping methods EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, constants.EP_CART, false));
-		messageData = {};
+		var messageData = {};
 		request({
 		  url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, constants.EP_CART, false),
 		  method: 'GET',
@@ -25,7 +25,7 @@ module.exports = {
 						
 						if(body.links[i].rel == 'order'){
 							console.log("getShippingMethods post form url:" + util.constructUrl(body.links[i].href + constants.EP_SHIPMODE_ZOOM, false));	
-							messageData = {};
+							var messageData = {};
 							request({
 							  url: util.constructUrl(body.links[i].href + constants.EP_SHIPMODE_ZOOM, false),
 							  method: 'GET',
@@ -65,7 +65,7 @@ module.exports = {
    updateShippingMethods: function(token,res,req){
 		var url = req.query.uri + constants.EP_FOLLOW_LOCATION;
 		logger.info('Update Shipping method EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false));
-		messageData = {};
+		var messageData = {};
 		request({
 		  url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),
 		  method: 'POST',

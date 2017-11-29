@@ -15,7 +15,7 @@ module.exports = {
 	var keyword = req.query.keyword;
 	var pageSize = req.query.pageSize;
 	
-    messageData = {
+    var messageData = {
         "keywords": keyword,
         "page-size": pageSize      
     };
@@ -28,7 +28,7 @@ module.exports = {
          var uri = data.self.uri;
          var concatURL = uri + constants.EP_SEARCH_ZOOM;
          var searchUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
-         messageData = {};
+         var messageData = {};
          logger.info("getSearchResults resource url:" + searchUrl);
          var secondRequestCall = util.constructRequest(searchUrl,"GET",messageData,token)
          return requestPromise(secondRequestCall).then(function (data) {

@@ -8,7 +8,7 @@ module.exports = {
 
   guestLogin: function(res) {
 
-	messageData = {};
+	var messageData = {};
 	logger.info("url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_GUEST_LOGIN, false));
 	
 	request({

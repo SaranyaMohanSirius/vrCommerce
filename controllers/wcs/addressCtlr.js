@@ -14,7 +14,7 @@ module.exports = {
     var getAddressURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_ADDRESS_DETAILS;
     logger.info("getAddress get form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true));	
 	var method ='GET';
-	messageData = {};
+	var messageData = {};
 	var requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true),method,messageData);
 	logger.info("requestCAll " + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true));
 	requestPromise(requestCall).then(function (data) {

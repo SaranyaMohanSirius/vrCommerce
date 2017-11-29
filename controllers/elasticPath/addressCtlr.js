@@ -13,7 +13,7 @@ module.exports = {
   /*controller for adding shipping address in EP*/
   addShippingAddress: function(token,req,res){
 
-      messageData = {
+    var  messageData = {
          "address":{  
             "country-name": req.body.country,
             "extended-address":"",
@@ -54,7 +54,7 @@ module.exports = {
   /*Controller for getting all the shipping address in EP*/
   getShippingAddresses: function(token,req,res){
 
-      messageData = {};
+      var messageData = {};
 
       var conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_ZOOM;
       var getShippingAddressesURL = util.constructUrl(constants.EP_HOSTNAME, conCatUrl, false);   
@@ -81,7 +81,7 @@ module.exports = {
 
   /*Controller for deleting shipping address in EP*/
   deleteShippingAddress: function(token,req,res){
-      messageData = {};
+      var messageData = {};
       var uri= req.body.addressId;
       var deleteShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
       logger.info('deleteShippingAddress url',  deleteShippingAddressURL);
@@ -108,7 +108,7 @@ module.exports = {
   /*Controller for updating shipping address in EP*/
   updateShippingAddress: function(token,req,res){
 
-  	  messageData = {
+  	  var messageData = {
          "address":{  
             "country-name": req.body.country,
             "extended-address":"",
@@ -149,7 +149,7 @@ module.exports = {
   /*Controller for selecting the shipping address in EP*/
   selectShippingAddress: function(token,req,res){
 
-    messageData = {};
+    var messageData = {};
     var addressId = req.body.addressId;
 
     var conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM ;
@@ -165,7 +165,7 @@ module.exports = {
         var shippingAddressSelectURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
         logger.info('shipping address select post url ', shippingAddressSelectURL);
 
-         messageData = {};
+         var messageData = {};
          var secondRequestCall = util.constructRequest(shippingAddressSelectURL,"POST",messageData,token)
          return requestPromise(secondRequestCall).then(function (data) {
              var result = addressMapper.selectShippingAddressJSON();

@@ -13,7 +13,7 @@ module.exports = {
 	   
     var concatURL = uri + constants.EP_PDP_ZOOM;   
     logger.info("getProductDetails post form url:" + util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false));	
-	messageData = {};
+	  var messageData = {};
     request({
       url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),
       method: 'GET',
