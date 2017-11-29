@@ -18,6 +18,7 @@ module.exports = {
 
 		res.send(error);
 	},
+	
 	getLogger: function(){
 		var winston = require('winston');
 		var logger = new (winston.Logger)({
@@ -27,6 +28,16 @@ module.exports = {
 		   ]
 		});
 		return logger;
-	} 
-  
+	}, 
+	
+	constructRequest:function(uri,method,data){
+		return {
+			url: uri,
+			method: method,
+			json: data,
+			headers: {
+			  'Content-Type': 'application/json'
+			}
+		};
+	}
 };
