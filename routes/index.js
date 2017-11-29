@@ -15,7 +15,7 @@ var wcsPDPRoute = require('./wcs/pdpRoutes');
 var wcsCategoryRoute = require('./wcs/categoryRoutes');
 var wcsShipModeRoutes = require('./wcs/shipModeRoutes');
 var wcsSearchRoute = require('./wcs/searchRoutes');
-
+var wcsAddressRoute = require('./wcs/addressRoutes');
 
 module.exports = function (app) {
     app.use('/ep/login',epLoginRoute);
@@ -30,6 +30,7 @@ module.exports = function (app) {
     app.use('/wcs/category',wcsCategoryRoute);
     app.use('/wcs/shipModes',wcsShipModeRoutes);
     app.use('/wcs/search',wcsSearchRoute);
+	app.use('/wcs/address',wcsAddressRoute);
 };
 
 //This needs to be  refined based on the discussion with UI Team

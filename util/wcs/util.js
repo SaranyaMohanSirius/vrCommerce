@@ -36,7 +36,9 @@ module.exports = {
 			method: method,
 			json: data,
 			headers: {
-			  'Content-Type': 'application/json'
+			  'Content-Type': 'application/json',
+			  'WCToken' : constants.WCS_AUTH_TOKEN,
+			  'WCTrustedToken' : constants.WCS_TRUSTED_TOKEN,
 			}
 		};
 	}
