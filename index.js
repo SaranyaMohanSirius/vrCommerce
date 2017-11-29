@@ -1,6 +1,7 @@
-
-var express = require('express');
-var bodyParser = require('body-parser');
+import express from 'express';
+//var express = require('express');
+import bodyParser from 'body-parser';
+//var bodyParser = require('body-parser');
 var request = require('request');
 var cron = require('node-cron');
 var util = require('./util/elasticPath/util');
