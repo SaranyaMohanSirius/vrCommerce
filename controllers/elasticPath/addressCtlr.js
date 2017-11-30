@@ -15,7 +15,7 @@ module.exports = {
     let  messageData = {
          "address":{  
             "country-name": req.body.country,
-            "extended-address":"",
+            "extended-address":req.body.addressLine[1],
             "locality": req.body.city,
             "postal-code": req.body.zipCode,
             "region": req.body.state,
@@ -110,7 +110,7 @@ module.exports = {
   	  let messageData = {
          "address":{  
             "country-name": req.body.country,
-            "extended-address":"",
+            "extended-address": req.body.addressLine[1],
             "locality": req.body.city,
             "postal-code": req.body.zipCode,
             "region": req.body.state,
