@@ -5,7 +5,7 @@ var extendify = require('extendify');
 module.exports = {
 
   /*json Mapper for mapping the Addresses in WCS*/ 
-  mapAddressJSON: function(addressResp,checkoutResp){
+  mapGetAddressJSON: function(addressResp,checkoutResp){
 		var converter1 = JM.makeConverter({
 			address: ['contact',JM.map({
 					addressId : 'addressId',
@@ -61,6 +61,41 @@ module.exports = {
 		contact.userId = checkoutResp.userId;
         return result;
 
-  }          
+  },
+
+  /* Normal Response for Adding address this needs to be refined */ 
+  mapAddAddressJSON: function(body){
+        var jsonResponse = {
+			userId: body.userId,			
+			addressId: body.addressId,
+            addShippingAddressMsg: constants.WCS_ADDRESS_ADDED
+        };      
+		return JSON.parse(JSON.stringify(jsonResponse));
+  }, 
+
+  /* Normal Response for Updating address this needs to be refined */ 
+  mapUpdateAddressJSON: function(body){
+        var jsonResponse = {
+			addressId: body.addressId,
+            updateShippingAddressMsg: constants.WCS_ADDRESS_UPDATED
+        };      
+		return JSON.parse(JSON.stringify(jsonResponse));
+  },   
+
+  /* Normal Response for Deleting address this needs to be refined */ 
+  mapDeleteAddressJSON: function(body){
+        var jsonResponse = {
+            deleteShippingAddressMsg: constants.WCS_ADDRESS_DELETED
+        };      
+		return JSON.parse(JSON.stringify(jsonResponse));
+  },
+  
+  /* Normal Response for Selecting address this needs to be refined */ 
+  mapSelectAddressJSON: function(body){
+        var jsonResponse = {
+            selectShippingAddressMsg: constants.WCS_ADDRESS_SELECTED
+        };      
+		return JSON.parse(JSON.stringify(jsonResponse));
+  }, 
 
 };

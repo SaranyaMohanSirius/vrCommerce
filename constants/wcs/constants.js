@@ -21,12 +21,21 @@
    "WCS_LOG_DIR" : "log/wcs/trace.log",
    "HTML_DIR" : "WebContent/html/",
    "WCS_PRODUCT_SEARCH_BY_KEYWORD" : "/productview/bySearchTerm/",
-   "WCS_PRODUCT_ADDED" : "Product Added Successfully",
    "WCS_ADDRESS_DETAILS" : "/person/@self/contact",
    "WCS_CHECKOUT_PROFILE" : "/person/@self/checkoutProfile",
+   "WCS_PRODUCT_ADDED" : "Product Added Successfully",
+   "SLASH" : "/",
+   "SHIP_CALC_USAGE" : "-1,-2,-3,-4,-5,-6,-7",   
+   "WCS_SHIP_INFO" : "/cart/@self/shipping_info",
+   
+   "WCS_ADDRESS_ADDED" : "Address Added Successfully",
+   "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",
+   "WCS_ADDRESS_UPDATED"  : "Address Updated Successfully",
+   "WCS_ADDRESS_SELECTED" : "Address Selected Successfully",
+
    
    /*To be got from the UI*/
-   "WCS_AUTH_TOKEN" : "12013%2CRIeojwMgMCo2Z05qiFU%2F2I2Nr%2BCZmbsA0znOl6%2F9tqDFxbuH%2BI9T9gTyEvVUpDOy9f%2FqVlafWIaIX4lTgOXRQy6N1iwZE163lA4PO5gaC9xB%2BVXXmCxnymBUIaeB3UcNpbb2kYthx5LsFp6cDpxiBf5umg%2F%2B3WrrPydWqq6mKX5he7rAXZqSAxACRVmUDRJi9gLwu8LQzEYAk6uNRWfXHl44b9Roa7kYQHyWCVWrEb8%3D",
-   "WCS_TRUSTED_TOKEN" : "12013%2CVqvNGjzs4uZg7%2F%2ByjfW04uveL9OYGQOZfyJCKhdY1q4%3D",
+   "WCS_AUTH_TOKEN" : "12017%2C7SQIVAMVwMtGoA9D0joJajj95fe4%2Fp1lMONDb%2BEmX4GA4ZcmJKOGkOHhfAKBrlCHD0mhGMXV1MuAeiGYn4XEo%2Fb%2BQjjL7pSICrVY1bESNNKkvn7frUajNQdJhrlv9SUobUqj7GrY4TP7qbDs8u0k0QAryCmnPzd6TUWfErlmvty1XvCj28SqY%2F1RytbUggZIz9KqWziQazoxZvquFqpON5v%2Fh%2B6Nxx%2B%2FuJDIMsVEyGE%3D",
+   "WCS_TRUSTED_TOKEN" : "12017%2CUuPvWQwjVZChBtViK5OfAeCDxRT6SpeFWTRvwsZD5Ss%3D",
  
  };
