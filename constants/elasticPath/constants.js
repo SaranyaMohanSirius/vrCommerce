@@ -32,8 +32,8 @@ module.exports = {
   "EP_ADD_SHIPPING_ADDRESS" : "/cortex/addresses/britney?followlocation",  
   "EP_DEFAULT_CART" : "/cortex/carts/britney/default",
 
-  "EP_GET_SHIPPING_ADDRESS_ZOOM": "?zoom=order:deliveries:element:destinationinfo:selector:chosen:description,order:deliveries:element:destinationinfo:selector:choice:description",  
-  "EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM" : "?zoom=order:deliveries:element:destinationinfo:selector",
+  "EP_GET_SHIPPING_ADDRESS_ZOOM": "/deliveries?zoom=element:destinationinfo:selector:chosen:description,element:destinationinfo:selector:choice:description",  
+  "EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM" : "/deliveries?zoom=element:destinationinfo:selector",
 
   "EP_FOLLOW_LOCATION": "?followlocation",
   

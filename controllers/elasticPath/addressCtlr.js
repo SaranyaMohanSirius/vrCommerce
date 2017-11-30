@@ -27,7 +27,7 @@ module.exports = {
          }
       };
       let addShippingAddressURL = constructUrl(constants.EP_HOSTNAME, constants.EP_ADD_SHIPPING_ADDRESS, false);   
-      logger.info('addShippingAddress url',  addShippingAddressURL);
+      logger.info('addShippingAddress url: ',  addShippingAddressURL);
       let method ='POST';
       let requestCall = constructRequest(addShippingAddressURL,method,messageData,token)
 
@@ -55,9 +55,9 @@ module.exports = {
 
       let messageData = {};
 
-      let conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_ZOOM;
-      let getShippingAddressesURL = constructUrl(constants.EP_HOSTNAME, conCatUrl, false);   
-      logger.info('getShippingAddresses url',  getShippingAddressesURL);
+      let conCatUrl = req.query.orderId + constants.EP_GET_SHIPPING_ADDRESS_ZOOM;
+      let getShippingAddressesURL = constructUrl(constants.EP_HOSTNAME_CORTEX, conCatUrl, false);   
+      logger.info('getShippingAddresses url: ',  getShippingAddressesURL);
       let method ='GET';
       let requestCall = constructRequest(getShippingAddressesURL,method,messageData,token)
 
@@ -83,7 +83,7 @@ module.exports = {
       let messageData = {};
       let uri= req.body.addressId;
       let deleteShippingAddressURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
-      logger.info('deleteShippingAddress url',  deleteShippingAddressURL);
+      logger.info('deleteShippingAddress url: ',  deleteShippingAddressURL);
       let method ='DELETE';
       let requestCall = constructRequest(deleteShippingAddressURL,method,messageData,token)
 
@@ -151,15 +151,15 @@ module.exports = {
     let messageData = {};
     let addressId = req.body.addressId;
 
-    let conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM ;
+    let conCatUrl = req.body.orderId + constants.EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM;
 
-    let selectShippingAddressURL = constructUrl(constants.EP_HOSTNAME , conCatUrl, false);
+    let selectShippingAddressURL = constructUrl(constants.EP_HOSTNAME_CORTEX , conCatUrl, false);
     logger.info('selectShippingAddress url ', selectShippingAddressURL);
     let method ='GET';
     let requestCall = constructRequest(selectShippingAddressURL,method,messageData,token)
 
     requestPromise(requestCall).then(function (data) {
-        let uri = data._order[0]._deliveries[0]._element[0]._destinationinfo[0]._selector[0].self.uri;
+        let uri = data._element[0]._destinationinfo[0]._selector[0].self.uri;
         let concatURL = uri  + addressId + constants.EP_FOLLOW_LOCATION;
         let shippingAddressSelectURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
         logger.info('shipping address select post url ', shippingAddressSelectURL);
