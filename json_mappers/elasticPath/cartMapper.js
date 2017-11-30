@@ -40,9 +40,9 @@ module.exports = {
                })],
                grandTotal:'_total.0.cost.0.display',
                grandTotalCurrency:'_total.0.cost.0.currency',
-               orderId:'_lineitems.0.self.uri',
+               orderId:'_order.0.self.uri',
+               cartLineItemId: '_lineitems.0.self.uri',
                orderItem : ['_lineitems.0._element', JM.map({
-
                 currency:'_price.0.purchase-price.0.currency',
                 freeGift:JM.helpers.def('false'),
                 orderItemId:'self.uri',
@@ -87,7 +87,6 @@ module.exports = {
              totalShippingChargeCurrency:JM.helpers.def(''),
              totalShippingTax:JM.helpers.def(''),
              totalShippingTaxCurrency:JM.helpers.def(''),
-
              });
               var result = converter(body);
               return result;
@@ -96,7 +95,7 @@ module.exports = {
        * UpdateItem in Cart
        */
       updateCartItemJSON: function(lineItemIdURI){
-        var jsonResponse = {orderId: "",
+        var jsonResponse = {
                 orderId: "",
                 lineItem: [ {
                   lineItemId:lineItemIdURI
@@ -108,11 +107,8 @@ module.exports = {
        * DeleteItem in Cart
        */
       deleteCartItemJSON: function(){
-        var jsonResponse = {orderId: "",
-                lineItem: [ {
-                  lineItemId:"", //Need to finalize
-                }],
-                message: "Item Deleted Successfully",
+        var jsonResponse = {
+                orderId: "",
                };      
       return JSON.parse(JSON.stringify(jsonResponse));
     },

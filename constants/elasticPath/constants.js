@@ -24,7 +24,7 @@ module.exports = {
 
   "EP_LOG_DIR" : "log/elasticPath/trace.log",
   "EP_SHOPPING_CART" : "/carts/britney/default",
-  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:price,lineitems:element:item:code,total",
+  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:price,lineitems:element:item:code,order,total",
   
   "EP_CART" : "/carts/britney/default",
 

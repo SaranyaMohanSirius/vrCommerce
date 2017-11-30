@@ -139,7 +139,7 @@ getShoppingCart: function(req,res){
     deleteAllShoppingCartItem: function(req,res){
             var token=constants.EP_ACCESS_TOKEN;
             var messageData = {};
-            var uri= req.body.orderId;
+            var uri= req.body.cartLineItemId;
             var deleteAllCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
             logger.info('delete All Item form url',  deleteAllCartItemURL);
             var method ='DELETE';
