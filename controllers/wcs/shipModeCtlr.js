@@ -12,7 +12,7 @@ module.exports = {
   /*Controller for getting the Product details to be displayed in the PDP page in WCS*/
    getShipModes: function(res,req){
 	   
-    var concatURL = constants.WCS_SHIPMODES + constants.WCS_STORE_ID + constants.WCS_SHIPMODES_APPEND;
+    var concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_SHIPMODES_APPEND;
     logger.info("getShipModes post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));	
 	
 	  var messageData = {};

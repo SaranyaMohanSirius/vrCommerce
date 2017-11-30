@@ -12,10 +12,9 @@
    "WCS_REST_URL": "/wcs/resources/store/",
    "WCS_STORE_ID": "10151",
    "WCS_CATALOG_ID": "10001",
-   "WCS_CART": "/cart/",
+   "WCS_CART": "/cart",
    "WCS_LANG_ID": "-1",
    "WCS_SHIPMODES_APPEND": "/cart/shipping_modes",
-   "WCS_SHIPMODES": "/wcs/resources/store/",
    "WCS_INV_AVL": "/inventoryavailability/",
    "WCS_UPDATE_SHIP_INFO": "/cart/@self/shipping_info",
    "WCS_LOG_DIR" : "log/wcs/trace.log",
@@ -27,6 +26,8 @@
    "SLASH" : "/",
    "SHIP_CALC_USAGE" : "-1,-2,-3,-4,-5,-6,-7",   
    "WCS_SHIP_INFO" : "/cart/@self/shipping_info",
+   "MONGO_DB_URL" : "mongodb://admin:passw0rd@ds121716.mlab.com:21716/projectc",
+
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",

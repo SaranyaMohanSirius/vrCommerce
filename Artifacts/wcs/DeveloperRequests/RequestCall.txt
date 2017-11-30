@@ -12,9 +12,11 @@
 TopCategory :
 Request : GET : http://localhost:5000/wcs/category/getTopCategories
 
-
 SubCategory :
 Request : GET :  http://localhost:5000/wcs/category/getSubCategories?identifier=10003
+
+Category Landing Page - Get Product List for Category
+Request : GET : http://localhost:5000/wcs/category/getProductsListForCategory?current=1&pagesize=18&identifier=10006
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         PDP
@@ -28,7 +30,7 @@ Request : GET :  http://localhost:5000/wcs/category/getSubCategories?identifier=
 
 Add to Cart 
 
-Request : POST : http://localhost:5000/wcs/cart/addToCart
+Request : POST : http://localhost:5000/wcs/cart/addToCart?userId=9011
 
 Input Body : 
 {

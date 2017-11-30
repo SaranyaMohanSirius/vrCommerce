@@ -1,4 +1,5 @@
-var constants = require('../../constants/wcs/constants');
+import constants from '../../constants/wcs/constants';
+import { MongoClient } from 'mongodb';
 
 module.exports = {
 	constructUrl : function  (hostname, path, isHttp) {
@@ -30,6 +31,7 @@ module.exports = {
 		return logger;
 	}, 
 	
+
 	constructRequest:function(uri,method,data){		
 		return {
 			url: uri,
@@ -42,7 +44,20 @@ module.exports = {
 			}
 		};
 	},
-	
+
+	constructRequestWithToken:function(uri,method,data,tokens){
+		return {
+			url: uri,
+			method: method,
+			json: data,
+			headers: {
+			  'Content-Type': 'application/json',
+			  'WCToken': tokens[0].WCToken,
+              'WCTrustedToken': tokens[0].WCTrustedToken
+			}
+		};
+	},
+
 	constructRequestWithoutToken:function(uri,method,data){		
 		return {
 			url: uri,
@@ -52,5 +67,26 @@ module.exports = {
 			  'Content-Type': 'application/json',
 			}
 		};
+	},
+
+	getAuthTokensFromDB: function(userId){
+
+		return new Promise(function(resolve,reject){
+		// Use connect method to connect to the Server
+		MongoClient.connect(constants.MONGO_DB_URL, function(err, db) {
+			  if (err){
+			  	reject(err);
+			  	throw err;
+			  } 
+			   db.collection("users").find({userId}).toArray(function(err, result) {
+			    if (err) throw err;
+			    resolve(result);
+			    });
+
+			  db.close();
+			});
+		
+		})
 	}
+
 };
