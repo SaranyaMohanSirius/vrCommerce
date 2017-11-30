@@ -1,38 +1,38 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var searchMapper = require('../../json_mappers/elasticPath/searchMapper');
-var request = require('request');
-var requestPromise = require('request-promise');
+import constants from '../../constants/elasticPath/constants';
+import {getLogger,
+        constructUrl,
+        constructRequest} from '../../util/elasticPath/util';
+import searchMapper from '../../json_mappers/elasticPath/searchMapper';
+import requestPromise from 'request-promise';
+let logger=getLogger();
 
-
-var logger= util.getLogger();
 
 module.exports = {
 
   /*Controller for getting the Search results for a given keyword in EP*/
   getSearchResults: function(token,res,req){
 
-	var keyword = req.query.keyword;
-	var pageSize = req.query.pageSize;
+	let keyword = req.query.keyword;
+	let pageSize = req.query.pageSize;
 	
-    var messageData = {
+    let messageData = {
         "keywords": keyword,
         "page-size": pageSize      
     };
-    var keywordSearchURL =util.constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false)
+    let keywordSearchURL =constructUrl(constants.EP_HOSTNAME, constants.EP_SEARCH, false)
     logger.info('getSearchResults post form url', keywordSearchURL);
-    var method ='POST';
-    var requestCall = util.constructRequest(keywordSearchURL,method,messageData,token)
+    let method ='POST';
+    let requestCall = constructRequest(keywordSearchURL,method,messageData,token)
     logger.info("requestCAll " + requestCall);
     requestPromise(requestCall).then(function (data) {
-         var uri = data.self.uri;
-         var concatURL = uri + constants.EP_SEARCH_ZOOM;
-         var searchUrl = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
-         var messageData = {};
+         let uri = data.self.uri;
+         let concatURL = uri + constants.EP_SEARCH_ZOOM;
+         let searchUrl = constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
+         let messageData = {};
          logger.info("getSearchResults resource url:" + searchUrl);
-         var secondRequestCall = util.constructRequest(searchUrl,"GET",messageData,token)
+         let secondRequestCall = constructRequest(searchUrl,"GET",messageData,token)
          return requestPromise(secondRequestCall).then(function (data) {
-          var result = searchMapper.mapSearchResultJSON(data);
+          let result = searchMapper.mapSearchResultJSON(data);
             res.send({
                       "success":  true ,
                       "result": result,                                            

@@ -1,14 +1,12 @@
+import express from 'express';
+let router = express.Router();
+import pdp from '../../controllers/elasticPath/pdpCtlr';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var constants = require('../../constants/elasticPath/constants');
-var pdp = require('../../controllers/elasticPath/pdpCtlr');
-var cron = require('node-cron');
-var router = express.Router();
-
-
+/**
+ * Get Product Details
+ */
 router.get('/getProductDetails', function(req, res){
-    pdp.getProductDetails(constants.EP_ACCESS_TOKEN,res,req.query.productId);
+    pdp.getProductDetails(res,req);
 });
 
-module.exports = router;
+export default router;

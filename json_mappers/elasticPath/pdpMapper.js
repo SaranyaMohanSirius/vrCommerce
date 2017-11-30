@@ -1,7 +1,5 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var JM = require('json-mapper');
-
+import constants from '../../constants/elasticPath/constants';
+import JM from 'json-mapper';
 
 
 module.exports = {
@@ -9,7 +7,7 @@ module.exports = {
   /*json Mapper for mapping the PDP header in EP*/ 
   mapPdpJSON: function(body, concatImageURL){
 		
-		var converter = JM.makeConverter({
+		let converter = JM.makeConverter({
 		
 			catalogEntryView: [{
 				
@@ -70,7 +68,7 @@ module.exports = {
 			}],
 		});
 	    
-		var result = converter(body);
+		let result = converter(body);
         return result;
 
   }          

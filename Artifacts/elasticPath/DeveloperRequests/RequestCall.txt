@@ -82,9 +82,7 @@ Request : POST : http://localhost:5000/ep/search/getSearchResults?pageSize=20&ke
                                             PDP
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Request : GET : http://localhost:5000/ep/pdp/getProductDetails?uri=10001
-
-
+Request : GET : http://localhost:5000/ep/pdp/getProductDetails?productId=/items/britney/qgqvhl2cijcvamjtgqxeo4tfpewvquy=
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                             Checkout - ADDRESS
