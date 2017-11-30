@@ -15,13 +15,13 @@ module.exports = {
     logger.info("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME, productDetailURL, false));	
 	var method ='GET';
 	var messageData = {};
-	var requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME, productDetailURL, false),method,messageData);
+	var requestCall = util.constructRequestWithoutToken(util.constructUrl(constants.WCS_HOSTNAME, productDetailURL, false),method,messageData);
 	logger.info("requestCAll " + requestCall);
 	requestPromise(requestCall).then(function (data) {
 		var body1 = data;
 		var invAvlURL = constants.WCS_SHIPMODES + constants.WCS_STORE_ID + constants.WCS_INV_AVL + productId;
 		logger.info("getInvAvl post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, invAvlURL, false));	
-		var secondRequestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, invAvlURL, false),"GET",messageData);
+		var secondRequestCall = util.constructRequestWithoutToken(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, invAvlURL, false),"GET",messageData);
 		logger.info("requestCAll " + secondRequestCall);
 		requestPromise(secondRequestCall).then(function (data) {
 			  var result = pdpMapper.mapPdpJSON(body1,data);

@@ -30,7 +30,7 @@ module.exports = {
 		return logger;
 	}, 
 	
-	constructRequest:function(uri,method,data){
+	constructRequest:function(uri,method,data){		
 		return {
 			url: uri,
 			method: method,
@@ -39,6 +39,17 @@ module.exports = {
 			  'Content-Type': 'application/json',
 			  'WCToken' : constants.WCS_AUTH_TOKEN,
 			  'WCTrustedToken' : constants.WCS_TRUSTED_TOKEN,
+			}
+		};
+	},
+	
+	constructRequestWithoutToken:function(uri,method,data){		
+		return {
+			url: uri,
+			method: method,
+			json: data,
+			headers: {
+			  'Content-Type': 'application/json',
 			}
 		};
 	}
