@@ -154,6 +154,20 @@ Input Body:
 }	
 
 
+** Selecting a Shipping address for an order
+
+Request:  http://localhost:5000/ep/address/selectShippingAddress
+
+Input Body:
+
+{
+	"orderId”   : "/orders/britney/gi2dmy3fmy3dkljxgu4tmljumuytmljzmu2dqllegmytazrqguytgmbqmi=",
+	"addressId" : "/addresses/britney/mrswmojtha3tmllgge3dgljumntdmllbgu3wmljtge4tozlemuywgnteme="
+}
+
+Note: Pass the addressId taken from get shipping address call & pass the order Id got from shopping cart
+
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
