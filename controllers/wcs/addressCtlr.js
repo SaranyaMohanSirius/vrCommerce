@@ -58,9 +58,8 @@ module.exports = {
     logger.info("addAddress POST form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true));	
 	var method ='POST';
 	var messageData = {
-		{
 		   "firstName" : req.body.firstName,
-		   "lastName" : req.body.lastName,,
+		   "lastName" : req.body.lastName,
 		   "addressType" : req.body.addressType,
 		   "zipCode" : req.body.zipCode,
 		   "addressLine": req.body.addressLine,
@@ -68,7 +67,6 @@ module.exports = {
 		   "state" : req.body.state,
 		   "country" : req.body.country,
 		   "nickName" : nickName
-		}
     };
 	var requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true),method,messageData);
 	logger.info("requestCAll " + JSON.stringify(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true)));
@@ -97,16 +95,14 @@ module.exports = {
     logger.info("updateAddress POST form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, updateAddressURL, true));	
 	var method ='PUT';
 	var messageData = {
-		{
 		   "firstName" : req.body.firstName,
-		   "lastName" : req.body.lastName,,
+		   "lastName" : req.body.lastName,
 		   "addressType" : req.body.addressType,
 		   "zipCode" : req.body.zipCode,
 		   "addressLine": req.body.addressLine[0],
 		   "city" : req.body.city,
 		   "state" : req.body.state,
 		   "country" : req.body.country
-		}
     };
 	var requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, updateAddressURL, true),method,messageData);
 	requestPromise(requestCall).then(function (data) {
@@ -164,16 +160,14 @@ module.exports = {
     logger.info('selectShippingAddress url ', selectShippingAddressURL);
     var method ='PUT';
     var messageData = {
-		{
-			"addressId": addressId,
-			"orderId": ".",
-			"orderItem": [
-				{
-					"addressId": addressId
-				}
-			],
-			"x_calculationUsage": x_calculationUsage
-		}
+		"addressId": addressId,
+		"orderId": ".",
+		"orderItem": [
+			{
+				"addressId": addressId
+			}
+		],
+		"x_calculationUsage": x_calculationUsage
     };
 	var requestCall = util.constructRequest(selectShippingAddressURL,method,messageData)
 
