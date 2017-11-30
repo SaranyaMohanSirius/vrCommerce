@@ -8,7 +8,7 @@ var router = express.Router();
 
 
 router.get('/getProductDetails', function(req, res){
-    pdp.getProductDetails(constants.EP_ACCESS_TOKEN,res,req.query.uri);
+    pdp.getProductDetails(constants.EP_ACCESS_TOKEN,res,req.query.productId);
 });
 
 module.exports = router;
