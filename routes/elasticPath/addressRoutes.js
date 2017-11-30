@@ -1,10 +1,7 @@
-
-var express = require('express');
-var bodyParser = require('body-parser');
-var constants = require('../../constants/elasticPath/constants');
-var address = require('../../controllers/elasticPath/addressCtlr');
-var cron = require('node-cron');
-var router = express.Router();
+import express from 'express';
+let router = express.Router();
+import address from '../../controllers/elasticPath/addressCtlr';
+import constants from '../../constants/elasticPath/constants';
 
 /**
  *  Add an address to a Checkout
@@ -42,4 +39,4 @@ router.post('/selectShippingAddress',function(req,res){
 	address.selectShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
 });
 
-module.exports = router;
+export default router;

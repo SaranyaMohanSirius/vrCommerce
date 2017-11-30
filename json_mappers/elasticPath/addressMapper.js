@@ -1,13 +1,12 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var JM = require('json-mapper');
+import constants from '../../constants/elasticPath/constants';
+import JM from 'json-mapper';
 
 
 module.exports = {
 
   /* Normal Response for Adding address this needs to be refine */ 
   addShippingAddressJSON: function(){
-            var jsonResponse = {userId: "",
+            let jsonResponse = {userId: "",
                     addShippingAddressMsg: constants.EP_ADDRESS_ADDED
                    };      
 			return JSON.parse(JSON.stringify(jsonResponse));
@@ -15,7 +14,7 @@ module.exports = {
 
   /* Forming shipping address JSON */
   getShippingAddressesJSON: function(body){
-            var converter = JM.makeConverter({
+            let converter = JM.makeConverter({
                 contact: ['_order.0._deliveries.0._element.0._destinationinfo', JM.map({
                       address:['_selector.0._choice',JM.map({
                           addressId: '_description.0.self.uri',
@@ -50,13 +49,13 @@ module.exports = {
                       userId : JM.helpers.def(' '),  
                 })],
             });
-            var result = converter(body);
+            let result = converter(body);
             return result;
   },
 
   /*Normal response for deleting address in EP*/
   deleteShippingAddressJSON: function(body){
-                  var jsonResponse = {
+                  let jsonResponse = {
                     deleteShippingAddressMsg: constants.EP_ADDRESS_DELETED
                    };      
       return JSON.parse(JSON.stringify(jsonResponse));
@@ -64,7 +63,7 @@ module.exports = {
 
   /*Normal response for updating address in EP*/
   updateShippingAddressJSON: function(body){
-                  var jsonResponse = {
+                  let jsonResponse = {
                     updateShippingAddressMsg: constants.EP_ADDRESS_UPDATED
                    };      
       return JSON.parse(JSON.stringify(jsonResponse));
@@ -73,7 +72,7 @@ module.exports = {
 
   /*Normal response for selecting address in EP*/
   selectShippingAddressJSON: function(body){
-                   var jsonResponse = {
+                   let jsonResponse = {
                     selectShippingAddressMsg: constants.EP_ADDRESS_SELECTED
                    };      
       return JSON.parse(JSON.stringify(jsonResponse));               

@@ -1,19 +1,18 @@
+import requestPromise from 'request-promise';
+import constants from '../../constants/elasticPath/constants';
+import addressMapper from '../../json_mappers/elasticPath/addressMapper';
+import {getLogger,
+        constructUrl,
+        constructRequest} from '../../util/elasticPath/util';
+let logger=getLogger();
 
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var addressMapper = require('../../json_mappers/elasticPath/addressMapper');
-var request = require('request');
-var requestPromise = require('request-promise');
-
-
-var logger= util.getLogger();
 
 module.exports = {
 
   /*controller for adding shipping address in EP*/
   addShippingAddress: function(token,req,res){
 
-    var  messageData = {
+    let  messageData = {
          "address":{  
             "country-name": req.body.country,
             "extended-address":"",
@@ -27,13 +26,13 @@ module.exports = {
             "given-name": req.body.firstName
          }
       };
-      var addShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME, constants.EP_ADD_SHIPPING_ADDRESS, false);   
+      let addShippingAddressURL = constructUrl(constants.EP_HOSTNAME, constants.EP_ADD_SHIPPING_ADDRESS, false);   
       logger.info('addShippingAddress url',  addShippingAddressURL);
-      var method ='POST';
-      var requestCall = util.constructRequest(addShippingAddressURL,method,messageData,token)
+      let method ='POST';
+      let requestCall = constructRequest(addShippingAddressURL,method,messageData,token)
 
       requestPromise(requestCall).then(function (data) {
-         var result = addressMapper.addShippingAddressJSON(data); 
+         let result = addressMapper.addShippingAddressJSON(data); 
               res.send({
                 "success": true ,
                 "result": result,                                            
@@ -54,16 +53,16 @@ module.exports = {
   /*Controller for getting all the shipping address in EP*/
   getShippingAddresses: function(token,req,res){
 
-      var messageData = {};
+      let messageData = {};
 
-      var conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_ZOOM;
-      var getShippingAddressesURL = util.constructUrl(constants.EP_HOSTNAME, conCatUrl, false);   
+      let conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_ZOOM;
+      let getShippingAddressesURL = constructUrl(constants.EP_HOSTNAME, conCatUrl, false);   
       logger.info('getShippingAddresses url',  getShippingAddressesURL);
-      var method ='GET';
-      var requestCall = util.constructRequest(getShippingAddressesURL,method,messageData,token)
+      let method ='GET';
+      let requestCall = constructRequest(getShippingAddressesURL,method,messageData,token)
 
       requestPromise(requestCall).then(function (data) {
-         var result = addressMapper.getShippingAddressesJSON(data); 
+         let result = addressMapper.getShippingAddressesJSON(data); 
               res.send({
                 "success": true ,
                 "result": result,                                            
@@ -81,15 +80,15 @@ module.exports = {
 
   /*Controller for deleting shipping address in EP*/
   deleteShippingAddress: function(token,req,res){
-      var messageData = {};
-      var uri= req.body.addressId;
-      var deleteShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+      let messageData = {};
+      let uri= req.body.addressId;
+      let deleteShippingAddressURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
       logger.info('deleteShippingAddress url',  deleteShippingAddressURL);
-      var method ='DELETE';
-      var requestCall = util.constructRequest(deleteShippingAddressURL,method,messageData,token)
+      let method ='DELETE';
+      let requestCall = constructRequest(deleteShippingAddressURL,method,messageData,token)
 
       requestPromise(requestCall).then(function (data) {
-             var result = addressMapper.deleteShippingAddressJSON(data); 
+             let result = addressMapper.deleteShippingAddressJSON(data); 
               res.send({
                 "success": true ,
                 "result": result,                                            
@@ -108,7 +107,7 @@ module.exports = {
   /*Controller for updating shipping address in EP*/
   updateShippingAddress: function(token,req,res){
 
-  	  var messageData = {
+  	  let messageData = {
          "address":{  
             "country-name": req.body.country,
             "extended-address":"",
@@ -122,14 +121,14 @@ module.exports = {
             "given-name": req.body.firstName
          }
       };
-  		var uri = req.body.addressId;
-  		var updateShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX,uri,false);
+  		let uri = req.body.addressId;
+  		let updateShippingAddressURL = constructUrl(constants.EP_HOSTNAME_CORTEX,uri,false);
   		logger.info('updateShippingAddress url',  updateShippingAddressURL);
-      var method ='PUT';
-      var requestCall = util.constructRequest(updateShippingAddressURL,method,messageData,token)
+      let method ='PUT';
+      let requestCall = constructRequest(updateShippingAddressURL,method,messageData,token)
 
       requestPromise(requestCall).then(function (data) {
-             var result = addressMapper.updateShippingAddressJSON(data); 
+             let result = addressMapper.updateShippingAddressJSON(data); 
               res.send({
                 "success": true ,
                 "result": result,                                            
@@ -149,26 +148,26 @@ module.exports = {
   /*Controller for selecting the shipping address in EP*/
   selectShippingAddress: function(token,req,res){
 
-    var messageData = {};
-    var addressId = req.body.addressId;
+    let messageData = {};
+    let addressId = req.body.addressId;
 
-    var conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM ;
+    let conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM ;
 
-    var selectShippingAddressURL = util.constructUrl(constants.EP_HOSTNAME , conCatUrl, false);
+    let selectShippingAddressURL = constructUrl(constants.EP_HOSTNAME , conCatUrl, false);
     logger.info('selectShippingAddress url ', selectShippingAddressURL);
-    var method ='GET';
-    var requestCall = util.constructRequest(selectShippingAddressURL,method,messageData,token)
+    let method ='GET';
+    let requestCall = constructRequest(selectShippingAddressURL,method,messageData,token)
 
     requestPromise(requestCall).then(function (data) {
-        var uri = data._order[0]._deliveries[0]._element[0]._destinationinfo[0]._selector[0].self.uri;
-        var concatURL = uri  + addressId + constants.EP_FOLLOW_LOCATION;
-        var shippingAddressSelectURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
+        let uri = data._order[0]._deliveries[0]._element[0]._destinationinfo[0]._selector[0].self.uri;
+        let concatURL = uri  + addressId + constants.EP_FOLLOW_LOCATION;
+        let shippingAddressSelectURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
         logger.info('shipping address select post url ', shippingAddressSelectURL);
 
-         var messageData = {};
-         var secondRequestCall = util.constructRequest(shippingAddressSelectURL,"POST",messageData,token)
+         let messageData = {};
+         let secondRequestCall = constructRequest(shippingAddressSelectURL,"POST",messageData,token)
          return requestPromise(secondRequestCall).then(function (data) {
-             var result = addressMapper.selectShippingAddressJSON();
+             let result = addressMapper.selectShippingAddressJSON();
               res.send({
                 "success": true ,
                 "result": result,                                            
