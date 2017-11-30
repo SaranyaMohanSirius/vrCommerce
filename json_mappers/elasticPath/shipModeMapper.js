@@ -1,13 +1,12 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var JM = require('json-mapper');
+import constants from '../../constants/elasticPath/constants';
+import JM from 'json-mapper';
 
 module.exports = {
 
   /*json Mapper for mapping the shipModes in EP*/ 
   mapShipModeJSON: function(body){
 		
-		var converter = JM.makeConverter({
+		let converter = JM.makeConverter({
 		
 			usableShippingMode: ['_deliveries.0._element.0._shippingoptioninfo.0._selector', JM.map({
 				
@@ -30,7 +29,7 @@ module.exports = {
 			})],
 		});
 	    
-		var result = converter(body);
+		let result = converter(body);
         return result;
 
   }          

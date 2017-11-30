@@ -1,10 +1,7 @@
-
-var express = require('express');
-var bodyParser = require('body-parser');
-var constants = require('../../constants/elasticPath/constants');
-var category = require('../../controllers/elasticPath/categoryCtlr');
-var cron = require('node-cron');
-var router = express.Router();
+import express from 'express';
+let router = express.Router();
+import category from '../../controllers/elasticPath/categoryCtlr';
+import constants from '../../constants/elasticPath/constants';
 
 /*App needs to pass EP access token*/
 router.get('/getTopCategories', function(req, res) {
@@ -21,9 +18,7 @@ router.get('/getProductsListForCategory', function(req, res) {
 	category.getProductsListForCategory(constants.EP_ACCESS_TOKEN,res,req.query.identifier);
 });
 
-
-
-module.exports = router;
+export default router;
 
 
 

@@ -1,7 +1,5 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var JM = require('json-mapper');
-
+import constants from '../../constants/elasticPath/constants';
+import JM from 'json-mapper';
 
 
 module.exports = {
@@ -9,7 +7,7 @@ module.exports = {
   /*json Mapper for mapping the Top level categories for header in EP*/ 
   mapTopCategoriesJSON: function(body){
     
-            var converter = JM.makeConverter({
+            let converter = JM.makeConverter({
                 
                 TopCategories: ['_element', JM.map({
                     name: 'display-name',
@@ -23,7 +21,7 @@ module.exports = {
                 }]
             });
 
-            var result = converter(body);
+            let result = converter(body);
 			return result;
   },
 
@@ -32,7 +30,7 @@ module.exports = {
   mapSubCategoriesJSON: function(body,identifier){
 
 
-              var converter = JM.makeConverter({
+              let converter = JM.makeConverter({
                 
                 SubCategories: ['_child', JM.map({
                     name: 'display-name',
@@ -46,14 +44,14 @@ module.exports = {
                 }],
             });
 
-            var result = converter(body);
+            let result = converter(body);
             return result;
   },
 
   /*json mapper for mapping the product list json for category landing page in EP*/
   mapProductsListForCategoryJSON: function(body){
 
-  			 var converter = JM.makeConverter({
+  			 let converter = JM.makeConverter({
 
               pagination: {
                   pageSize: 'pagination.page-size',
@@ -73,7 +71,7 @@ module.exports = {
                      uniqueID: '_code.0.links.0.uri',
                      store: JM.helpers.def(constants.EP_STORE),
                      thumbnail : ['_code.0.code',function(code){ 
-                          var originalCode = code.split(".")[0];
+                          let originalCode = code.split(".")[0];
                           return (constants.EP_AWS_IMAGE_PATH + originalCode + constants.EP_IMAGE_FMT ); 
 
                       }],
@@ -105,7 +103,7 @@ module.exports = {
 
           });
 
-          var result = converter(body);
+          let result = converter(body);
           return result;
   }          
 

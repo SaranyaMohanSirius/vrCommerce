@@ -1,23 +1,22 @@
+import express from 'express';
+let router = express.Router();
+import shipMode from '../../controllers/elasticPath/shipModeCtlr';
+import constants from '../../constants/elasticPath/constants';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var constants = require('../../constants/elasticPath/constants');
-var shipMode = require('../../controllers/elasticPath/shipModeCtlr');
-var cron = require('node-cron');
-var router = express.Router();
-
-
+/**
+ * Get Shipping Method Routes
+ */
 router.get('/getShippingMethods', function(req, res){
     shipMode.getShippingMethods(constants.EP_ACCESS_TOKEN,res,req);
 });
-
+/**
+ * update Shipping Method Routes
+ */
 router.get('/updateShippingMethod', function(req, res){
     shipMode.updateShippingMethods(constants.EP_ACCESS_TOKEN,res,req);
 });
 
-module.exports = router;
-
-
+export default router;
 
 
 
