@@ -1,15 +1,16 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var JM = require('json-mapper');
-var logger= util.getLogger();
+import {getLogger} from '../../util/elasticPath/util';
+import constants from '../../constants/elasticPath/constants';
+import JM from 'json-mapper';
+let logger=getLogger();
+
 
 module.exports = {
 
   /*Normal Response for Add to Cart this needs to be refine*/ 
   addToCartJSON: function(results){
-    var orderItem=[];
-    var uri;
-    for (var i = 0; i < results.length; i++) {
+    let orderItem=[];
+    let uri;
+    for (let i = 0; i < results.length; i++) {
       if(results[i].success){
         orderItem.push({"orderItemId": results[i].body.self.uri});
         uri = results[i].body.links[3].uri;
@@ -18,15 +19,15 @@ module.exports = {
         orderItem.push({"orderItemId": results[i].error.message});
       }
     }
-     var results = {"orderId":uri ,"orderItem":orderItem} 
-          return JSON.parse(JSON.stringify(results));
+      let result = {"orderId":uri ,"orderItem":orderItem} 
+          return JSON.parse(JSON.stringify(result));
   },
   /**
    * json mapper for mapping the product list json for category landing page in EP
    */
   shoppingCartJSON: function(body){
              
-             var converter = JM.makeConverter({
+             let converter = JM.makeConverter({
 
               totalQuantity: 'total-quantity',
               
@@ -88,14 +89,14 @@ module.exports = {
              totalShippingTax:JM.helpers.def(''),
              totalShippingTaxCurrency:JM.helpers.def(''),
              });
-              var result = converter(body);
+              let result = converter(body);
               return result;
       },
       /**
        * UpdateItem in Cart
        */
       updateCartItemJSON: function(lineItemIdURI){
-        var jsonResponse = {
+        let jsonResponse = {
                 orderId: "",
                 lineItem: [ {
                   lineItemId:lineItemIdURI
@@ -107,7 +108,7 @@ module.exports = {
        * DeleteItem in Cart
        */
       deleteCartItemJSON: function(){
-        var jsonResponse = {
+        let jsonResponse = {
                 orderId: "",
                };      
       return JSON.parse(JSON.stringify(jsonResponse));
@@ -116,7 +117,7 @@ module.exports = {
        * DeleteAllItem in Cart
        */
       deleteAllCartItemJSON: function(){
-        var jsonResponse = {
+        let jsonResponse = {
                 message: "All Cart Items are Deleted Successfully",
                };      
       return JSON.parse(JSON.stringify(jsonResponse));

@@ -1,27 +1,27 @@
-
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var cartMapper = require('../../json_mappers/elasticPath/cartMapper');
-var requestPromise = require('request-promise');
-var Promise = require("bluebird");
-
-var logger= util.getLogger();
+import Promise from 'bluebird';
+import requestPromise from 'request-promise';
+import cartMapper from '../../json_mappers/elasticPath/cartMapper';
+import {getLogger,
+        constructUrl,
+        constructRequest} from '../../util/elasticPath/util';
+import constants from '../../constants/elasticPath/constants';
+let logger=getLogger();
 
 module.exports = {
   /**
    * Controller to add a product to cart  in EP  
    */
   addToCart: function(req,res){
-  var token=constants.EP_ACCESS_TOKEN;
-  var requests = [];
-  for(var i = 0; i < req.body.orderItem.length; i++) {
-  var concattUrl =  req.body.orderItem[i].productId + "?followlocation";
-  var addToCartUrl=util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)
-  var messageData= {"quantity":req.body.orderItem[i].quantity};
+  let token=constants.EP_ACCESS_TOKEN;
+  let requests = [];
+  for(let i = 0; i < req.body.orderItem.length; i++) {
+  let concattUrl =  req.body.orderItem[i].productId + "?followlocation";
+  let addToCartUrl=constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)
+  let messageData= {"quantity":req.body.orderItem[i].quantity};
    requests.push(this.getAddToCartRequestPromise(token,JSON.parse(JSON.stringify(messageData)),addToCartUrl));
     }
   Promise.all(requests).then(function(results) {
-    var result = cartMapper.addToCartJSON(results); 
+    let result = cartMapper.addToCartJSON(results); 
                                   res.send({
                                     "success": true ,
                                     "result": result,                                            
@@ -35,7 +35,7 @@ module.exports = {
 
 getAddToCartRequestPromise: function(authToken,data,url) {
   return new Promise(function(resolve,reject){
-    var requestCall = util.constructRequest(url,"POST",data,authToken)
+    let requestCall = constructRequest(url,"POST",data,authToken)
     requestPromise(requestCall).then(function (data) {
           var result = cartMapper.shoppingCartJSON(data); 
              return resolve({success:true, url:url,body:data});
@@ -51,16 +51,16 @@ getAddToCartRequestPromise: function(authToken,data,url) {
  */
 
 getShoppingCart: function(req,res){
-    var token=constants.EP_ACCESS_TOKEN;
-    var messageData = {};
-    var concattUrl= constants.EP_SHOPPING_CART+constants.EP_SHOPPING_CART_ZOOM;
-    var defaultCartURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
+    let token=constants.EP_ACCESS_TOKEN;
+    let messageData = {};
+    let concattUrl= constants.EP_SHOPPING_CART+constants.EP_SHOPPING_CART_ZOOM;
+    let defaultCartURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
     
     logger.info('Get shoppingCart form url',  defaultCartURL);
-    var method ='GET';
-    var requestCall = util.constructRequest(defaultCartURL,method,messageData,token)
+    let method ='GET';
+    let requestCall = constructRequest(defaultCartURL,method,messageData,token)
     requestPromise(requestCall).then(function (data) {
-          var result = cartMapper.shoppingCartJSON(data); 
+        let result = cartMapper.shoppingCartJSON(data); 
               res.send({
                 "success": true ,
                 "result": result,                                            
@@ -80,15 +80,15 @@ getShoppingCart: function(req,res){
     */
 
     updateShoppingCartItem: function(req,res){
-      var token=constants.EP_ACCESS_TOKEN;
-      var messageData = {"quantity":req.body.lineItem[0].quantity};
-      var uri= req.body.lineItem[0].lineItemId;
-      var updateCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+      let token=constants.EP_ACCESS_TOKEN;
+      let messageData = {"quantity":req.body.lineItem[0].quantity};
+      let uri= req.body.lineItem[0].lineItemId;
+      let updateCartItemURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
       logger.info('updateShoppingCart form url',  updateCartItemURL);
-      var method ='PUT';
-      var requestCall = util.constructRequest(updateCartItemURL,method,messageData,token)
+      let method ='PUT';
+      let requestCall = constructRequest(updateCartItemURL,method,messageData,token)
       requestPromise(requestCall).then(function (data) {
-              var result = cartMapper.updateCartItemJSON(uri); 
+      let result = cartMapper.updateCartItemJSON(uri); 
               res.send({
                 "success": true ,
                 "result": result,                                            
@@ -108,15 +108,15 @@ getShoppingCart: function(req,res){
     */
 
     deleteShoppingCartItem: function(req,res){
-            var token=constants.EP_ACCESS_TOKEN;
-            var messageData = {};
-            var uri= req.body.lineItem[0].lineItemId;
-            var deleteCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+            let token=constants.EP_ACCESS_TOKEN;
+            let messageData = {};
+            let uri= req.body.lineItem[0].lineItemId;
+            let deleteCartItemURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
             logger.info('delete Item form url',  deleteCartItemURL);
-            var method ='DELETE';
-            var requestCall = util.constructRequest(deleteCartItemURL,method,messageData,token)
+            let method ='DELETE';
+            let requestCall = constructRequest(deleteCartItemURL,method,messageData,token)
             requestPromise(requestCall).then(function (data) {
-                var result = cartMapper.deleteCartItemJSON(); 
+                let result = cartMapper.deleteCartItemJSON(); 
                 res.send({
                   "success": true ,
                   "result": result,                                            
@@ -137,15 +137,15 @@ getShoppingCart: function(req,res){
       */
 
     deleteAllShoppingCartItem: function(req,res){
-            var token=constants.EP_ACCESS_TOKEN;
-            var messageData = {};
-            var uri= req.body.cartLineItemId;
-            var deleteAllCartItemURL = util.constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+            let token=constants.EP_ACCESS_TOKEN;
+            let messageData = {};
+            let uri= req.body.cartLineItemId;
+            let deleteAllCartItemURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
             logger.info('delete All Item form url',  deleteAllCartItemURL);
-            var method ='DELETE';
-            var requestCall = util.constructRequest(deleteAllCartItemURL,method,messageData,token)
+            let method ='DELETE';
+            let requestCall = constructRequest(deleteAllCartItemURL,method,messageData,token)
             requestPromise(requestCall).then(function (data) {
-                var result = cartMapper.deleteAllCartItemJSON(); 
+                let result = cartMapper.deleteAllCartItemJSON(); 
                 res.send({
                   "success": true ,
                   "result": result,                                            

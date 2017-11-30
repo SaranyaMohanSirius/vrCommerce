@@ -1,10 +1,8 @@
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var constants = require('../../constants/elasticPath/constants');
-var cart = require('../../controllers/elasticPath/cartCtlr');
-var cron = require('node-cron');
-var router = express.Router();
+
+import express from 'express';
+let router = express.Router();
+import cart from '../../controllers/elasticPath/cartCtlr';
 
 /**
  *  Add a Product to a Cart
@@ -40,4 +38,4 @@ router.delete('/deleteAllShoppingCartItem', function(req, res) {
 });
 
 
-module.exports = router;
+export default router;

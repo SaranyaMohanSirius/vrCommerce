@@ -1,14 +1,12 @@
 import express from 'express';
-//var express = require('express');
 import bodyParser from 'body-parser';
-//var bodyParser = require('body-parser');
-var request = require('request');
-var cron = require('node-cron');
-var util = require('./util/elasticPath/util');
-var logger= util.getLogger();
+import {getLogger} from './util/elasticPath/util';
+import epRoute from './routes/ep-index';
+import wcsRoute from './routes/wcs-index';
+let logger=getLogger();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-var app = express();
+let app = express();
 
 app.use(express.static('WebContent'));
 app.set('port', (process.env.PORT || 5000));
@@ -23,7 +21,8 @@ app.use(bodyParser.json());
 /**
  * App includes all the Routes
  */
-require('./routes/index')(app);
+app.all('/ep/*',epRoute);
+app.all('/wcs/*',wcsRoute);
 
 // Spin up the server
 app.listen(app.get('port'), function() {
