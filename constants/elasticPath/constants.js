@@ -47,7 +47,8 @@ module.exports = {
   "EP_CURRENT_ORDER" : "/orders/britney/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",
   "EP_ADDRESS_ADDED" : "Address Added Successfully",
 
-  "EP_FOLLOW_LOCATION" : "?followlocation",
+  "EP_WHISHLIST": "/wishlists",
+  "EP_FORM": "/form",
   
   //constants that needs to removed & got from the app
   "EP_ACCESS_TOKEN" : "9a467a10-8652-43d2-b943-31bab6efe660"

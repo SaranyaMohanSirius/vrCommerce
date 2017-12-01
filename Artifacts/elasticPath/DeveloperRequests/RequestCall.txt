@@ -194,5 +194,19 @@ ShipModes
 Request : GET : http://localhost:5000/ep/shipModes/getShippingMethods
 
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                         WishList
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+** Add to WishList
+
+Request : POST : http://localhost:5000/ep/wishlist/addToWishList
+Input Body : 
+
+		{
+	  		"productId":"/items/britney/qgqvhmccijcvamjsguxee3dbmnvs2mry=",
+	  		"quantityRequested": "2"
+		 }
+
 
 

@@ -34,6 +34,7 @@ module.exports = {
           grandTotal:'grandTotal',
           grandTotalCurrency:'grandTotalCurrency',
           orderId:'orderId',
+          cartLineItemId:  JM.helpers.def(''), 
           orderItem:['orderItem',JM.map({
               currency:'currency',
               freeGift:'freeGift',

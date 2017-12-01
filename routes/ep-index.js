@@ -7,6 +7,7 @@ import epPDPRoute from './elasticPath/pdpRoutes';
 import epCartRoute from './elasticPath/cartRoutes';
 import epShipModeRoute from './elasticPath/shipModeRoutes';
 import epAddressRoute from './elasticPath/addressRoutes';
+import epWhishListRoute from './elasticPath/wishListRoutes';
 
 let app = express();
 
@@ -17,7 +18,8 @@ let app = express();
     app.use('/ep/cart',epCartRoute);
     app.use('/ep/shipModes',epShipModeRoute);
     app.use('/ep/address',epAddressRoute);
-    
+    app.use('/ep/wishlist/',epWhishListRoute);
+
 export default app;
 
 
