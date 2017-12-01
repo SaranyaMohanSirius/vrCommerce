@@ -49,7 +49,7 @@ export default {
         let userId = req.query.userId;
         let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_CART_PROMOTIONS;
         logger.info("promocode = "+promoCode);
-        let applyUrl = (util.constructUrl(constants.WCS_HOSTNAME_NOPORT, path, true));
+        let applyUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, path, true);
         logger.info("Apply Promotion URL"+ applyUrl);
         let messageData = {
             "promoCode": promoCode
@@ -90,7 +90,7 @@ export default {
         let userId = req.query.userId;
         let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_CART_PROMOTIONS+"/"+promoCode;
         logger.info("promocode = "+promoCode);
-        let deleteUrl = util.constructUrl(constants.WCS_HOSTNAME_NOPORT, path, true);
+        let deleteUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, path, true);
         logger.info("DELETE Promotion URL "+deleteUrl);
 
         getAuthTokensFromDB(userId)
