@@ -12,24 +12,47 @@ module.exports = {
    * Controller to add a product to cart  in EP  
    */
   addToCart: function(req,res){
-  let token=constants.EP_ACCESS_TOKEN;
-  let requests = [];
-  for(let i = 0; i < req.body.orderItem.length; i++) {
-  let concattUrl =  req.body.orderItem[i].productId + "?followlocation";
-  let addToCartUrl=constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)
-  let messageData= {"quantity":req.body.orderItem[i].quantity};
-   requests.push(this.getAddToCartRequestPromise(token,JSON.parse(JSON.stringify(messageData)),addToCartUrl));
-    }
-  Promise.all(requests).then(function(results) {
-    let result = cartMapper.addToCartJSON(results); 
-                                  res.send({
-                                    "success": true ,
-                                    "result": result,                                            
-                                  }); 
-  }, function(err) {
-            logger.error('errors in service hit to login service' + err);
-            res.send({ "success": false, "error": err });
-  });
+	  let token=constants.EP_ACCESS_TOKEN;
+	  if((undefined != req.body.swatches) && (null != req.body.swatches)){
+		let swatches = req.body.swatches;
+		for(let i = 0; i < swatches.length; i++) {
+			  let uri = req.body.swatches[i].uri;
+			  let concatURL = uri + constants.EP_FOLLOW_LOCATION;
+			  let swatchSelectionUrl = constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
+			  let method = "POST";
+			  let messageData = {};
+			  let requestCall = constructRequest(swatchSelectionUrl,method,messageData,token);
+			  logger.info('Post add to cart url',  swatchSelectionUrl);
+			  requestPromise(requestCall).then(function (data) {				 
+					logger.info(constants.EP_SWATCH_SELECTED);
+			  }).catch(function (error) {
+					if(error.response.body){
+					  logger.error('errors in selecting swatch in EP: ', error.response.body);
+					  res.send({ "success": false, "error": error.response.body }); 
+					}else{
+					  logger.error('errors in selecting swatch in EP: ', error);
+					  res.send({ "success": false, "error": error});
+					}
+			  });			
+		}
+	  }
+	  let requests = [];
+	  for(let i = 0; i < req.body.orderItem.length; i++) {
+	  let concattUrl =  req.body.orderItem[i].productId + "?followlocation";
+	  let addToCartUrl=constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)
+	  let messageData= {"quantity":req.body.orderItem[i].quantity};
+	   requests.push(this.getAddToCartRequestPromise(token,JSON.parse(JSON.stringify(messageData)),addToCartUrl));
+		}
+	  Promise.all(requests).then(function(results) {
+		let result = cartMapper.addToCartJSON(results); 
+									  res.send({
+										"success": true ,
+										"result": result,                                            
+									  }); 
+	  }, function(err) {
+				logger.error('errors in service hit to login service' + err);
+				res.send({ "success": false, "error": err });
+	  });
 
 },
 
@@ -37,7 +60,7 @@ getAddToCartRequestPromise: function(authToken,data,url) {
   return new Promise(function(resolve,reject){
     let requestCall = constructRequest(url,"POST",data,authToken)
     requestPromise(requestCall).then(function (data) {
-          var result = cartMapper.shoppingCartJSON(data); 
+          let result = cartMapper.shoppingCartJSON(data); 
              return resolve({success:true, url:url,body:data});
       }).catch(function (error) {
           logger.error('errors in service to updateShoppingCartItem in EP: ', error);
@@ -60,7 +83,7 @@ getShoppingCart: function(req,res){
     let method ='GET';
     let requestCall = constructRequest(defaultCartURL,method,messageData,token)
     requestPromise(requestCall).then(function (data) {
-        let result = cartMapper.shoppingCartJSON(data); 
+          let result = cartMapper.shoppingCartJSON(data); 
               res.send({
                 "success": true ,
                 "result": result,                                            
@@ -88,7 +111,7 @@ getShoppingCart: function(req,res){
       let method ='PUT';
       let requestCall = constructRequest(updateCartItemURL,method,messageData,token)
       requestPromise(requestCall).then(function (data) {
-      let result = cartMapper.updateCartItemJSON(uri); 
+              let result = cartMapper.updateCartItemJSON(uri); 
               res.send({
                 "success": true ,
                 "result": result,                                            
