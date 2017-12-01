@@ -101,6 +101,28 @@ module.exports = {
                     catalogEntryTypeCode: 'catalogEntryTypeCode',
 
               })],
+              facets: ['facetView',JM.map({
+              	entry : ['entry', JM.map({
+              		count : 'count',
+              		uniqueId : function(input){
+              			return input.extendedData.uniqueId;
+              		},
+              		label : 'label',
+              		value : 'value',
+
+              	})],
+              	extendedData: {
+              		name: 'name',
+              		value: 'value',
+              		facet_id: 'extendedData.facet_id',
+              		fdesc: 'extendedData.fdesc',
+              		fname: 'extendedData.fname',
+              		srchattr_id: 'extendedData.srchattr_id',
+              		srchattridentifier: 'extendedData.srchattridentifier',
+              		storeent_id: 'extendedData.storeent_id'
+              	} 
+
+              })],
 
 
           });
