@@ -54,11 +54,11 @@ module.exports = {
 					options: ['_selector', JM.map({
 						choice: ['_choice', JM.map({
 							name: '_description.0.display-name',
-							href: JM.helpers.def(' '),
+							unniqueId: '_description.0.self.uri',
 						})],
 						chosen: ['_chosen', JM.map({
 							name: '_description.0.display-name',
-							href: JM.helpers.def(' '),
+							uniqueId: '_description.0.self.uri',
 						})],
 					})],
 				})],

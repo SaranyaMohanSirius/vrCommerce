@@ -18,7 +18,10 @@ module.exports = {
                 contact: ['_element.0._destinationinfo.0._selector', JM.map({
                       address:['_choice',JM.map({
                           addressId: '_description.0.self.uri',
-                          addressLine: '_description.0.address.street-address',
+                          addressLine: {
+                            addressLine1: '_description.0.address.street-address',
+                            addressLine2: '_description.0.address.extended-address',
+                          },
                           addressType: JM.helpers.def('ShippingAndBilling'),
                           country: '_description.0.address.country-name',
                           city: '_description.0.address.locality',
@@ -33,7 +36,10 @@ module.exports = {
                       })],
                       defaultAddress:['_chosen',JM.map({
                           addressId: '_description.0.self.uri',
-                          addressLine: '_description.0.address.street-address',
+                          addressLine: {
+                            addressLine1: '_description.0.address.street-address',
+                            addressLine2: '_description.0.address.extended-address',
+                          },
                           addressType: JM.helpers.def('ShippingAndBilling'),
                           country: '_description.0.address.country-name',
                           city: '_description.0.address.locality',

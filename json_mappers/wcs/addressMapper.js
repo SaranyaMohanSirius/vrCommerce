@@ -9,7 +9,10 @@ module.exports = {
 		var converter1 = JM.makeConverter({
 			address: ['contact',JM.map({
 					addressId : 'addressId',
-					addressLine : 'addressLine',
+					addressLine: {
+                            addressLine1: 'addressLine.0',
+                            addressLine2: 'addressLine.1',
+                          },
 					addressType: 'addressType',
 					country : 'country',
 					city : 'city',
@@ -28,7 +31,10 @@ module.exports = {
 		var converter = JM.makeConverter({
 			defaultAddress: ['CheckoutProfile',JM.map({
 					addressId : 'shipping_addressId',
-					addressLine : 'shipping_addressLine',
+					addressLine: {
+                            addressLine1: 'shipping_addressLine.0',
+                            addressLine2: 'shipping_addressLine.1',
+                          },
 					addressType: 'shipping_addressType',
 					country : 'shipping_country',
 					city : 'shipping_city',
