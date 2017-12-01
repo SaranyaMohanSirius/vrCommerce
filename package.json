@@ -10,7 +10,6 @@
     "test": "make test",
     "start": "node bin/index-bundle.js",
     "postinstall": "webpack -p --config ./webpack.config.js"
-
   },
   "author": "MonicaR",
   "license": "ISC",

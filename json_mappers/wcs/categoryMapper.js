@@ -1,11 +1,12 @@
 
-var JM = require('json-mapper');
-var constants = require('../../constants/wcs/constants');
+import JM from 'json-mapper';
+import constants from '../../constants/wcs/constants';
 
-module.exports = {
+export default {
+	/* Map the Top category JSON*/
 
 	mapTopCategoryJSON: function(input){
-		var converter = JM.makeConverter({
+		let converter = JM.makeConverter({
 			TopCategories: ['catalogGroupView',JM.map({
 					name : 'name',
 					identifier : 'identifier',
@@ -16,13 +17,15 @@ module.exports = {
 			totalCount : 'recordSetCount',
 			
 		});
-		var result = converter(input);
+		let result = converter(input);
         return result;
 		
 		
 	},
+		/* Map the Sub Category JSON*/
+
 	mapSubCategoryJSON: function(input){
-		var converter = JM.makeConverter({
+		let converter = JM.makeConverter({
 			SubCategories: ['catalogGroupView',JM.map({
 					name : 'name',
 					identifier : 'identifier',
@@ -33,22 +36,24 @@ module.exports = {
 			totalCount : 'recordSetCount',
 			
 		});
-		var result = converter(input);
+		let result = converter(input);
         return result;
 		
 		
 	},
-	mapProductsListForCategoryJSON: function(body,req,messageData){
-			 var totalCount = body.recordSetTotal;
+		/* Map the product list JSON for category landing page */
 
-			 var pageSize = messageData.pageSize;
-			 var totalPages;
+	mapProductsListForCategoryJSON: function(body,req,messageData){
+			 let totalCount = body.recordSetTotal;
+
+			 let pageSize = messageData.pageSize;
+			 let totalPages;
 			 if(totalCount == pageSize){
 			 	totalPages = (totalCount/pageSize);
 			 }else{
 			 	totalPages = Math.floor(totalCount/pageSize)+1;
 			 }
-			 var resultsCurrentPage;
+			 let resultsCurrentPage;
 			 if(messageData.currentPageNumber != totalPages){
 			 	resultsCurrentPage = pageSize;
 			 }else{
@@ -56,7 +61,7 @@ module.exports = {
 			 }
 
 
-  			 var converter = JM.makeConverter({
+  			 let converter = JM.makeConverter({
 
               pagination: {
                   pageSize: JM.helpers.def(messageData.pageSize),
@@ -127,7 +132,7 @@ module.exports = {
 
           });
 
-          var result = converter(body);
+          let result = converter(body);
           return result;
   		}   
 };

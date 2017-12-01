@@ -1,21 +1,21 @@
-var constants = require('../../constants/wcs/constants');
-var util = require('../../util/wcs/util');
-var categoryMapper = require('../../json_mappers/wcs/categoryMapper');
-var request = require('request');
+import constants from '../../constants/wcs/constants';
+import util from '../../util/wcs/util';
+import categoryMapper from '../../json_mappers/wcs/categoryMapper';
+import request from 'request';
 
-var logger= util.getLogger();
+let logger= util.getLogger();
 
-module.exports = {
+export default {
 
   /*Controller for getting Top Cateogries in WCS*/
 
    getTopCategories: function(res){
 	   
    			
-   			var concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_TOP +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+   			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_TOP +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
 			logger.info('Top categories WCS url: ', util.constructRequestWithoutToken(constants.WCS_HOSTNAME, concatURL, false));
  
-			var messageData = {};
+			let messageData = {};
 			request({
 			      url: util.constructRequestWithoutToken(constants.WCS_HOSTNAME, concatURL, false),
 			      method: 'GET',
@@ -26,7 +26,7 @@ module.exports = {
 			}, function(error, response, body) {
 			        if (!error) {
 			            if (!body.errors) {
-			            	  var result = categoryMapper.mapTopCategoryJSON(body);
+			            	  let result = categoryMapper.mapTopCategoryJSON(body);
 							  res.send({
 			                    "success": true ,
 			                    "result": result,                                            
@@ -46,11 +46,11 @@ module.exports = {
 		/*Controller for getting Sub Cateogries for given ParentId in WCS*/
 
 		getSubCategories: function(res,req){
-			var parentId = req.query.identifier;
-			var concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
+			let parentId = req.query.identifier;
+			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
 			logger.info('Sub categories WCS url: ', util.constructRequestWithoutToken(constants.WCS_HOSTNAME, concatURL, false));
  
-			var messageData = {};
+			let messageData = {};
 			request({
 			      url: util.constructRequestWithoutToken(constants.WCS_HOSTNAME, concatURL, false),
 			      method: 'GET',
@@ -61,7 +61,7 @@ module.exports = {
 			}, function(error, response, body) {
 			        if (!error) {
 			            if (!body.errors) {
-			            	  var result = categoryMapper.mapSubCategoryJSON(body);
+			            	  let result = categoryMapper.mapSubCategoryJSON(body);
 							  res.send({
 			                    "success": true ,
 			                    "result": result,                                            
@@ -82,12 +82,12 @@ module.exports = {
 	},
 	getProductsListForCategory: function(req,res,categoryId){
      
-    var pageSize = req.query.pagesize;
-    var currentPageNumber = req.query.current;
-    var concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+    let pageSize = req.query.pagesize;
+    let currentPageNumber = req.query.current;
+    let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
     logger.info("getProductsListForCategory post form url:" + util.constructRequestWithoutToken(constants.WCS_HOSTNAME, concatURL, false));  
 
-    var messageData = {
+    let messageData = {
       'pageSize': pageSize,
       'currentPageNumber': currentPageNumber
     };
@@ -103,7 +103,7 @@ module.exports = {
             logger.info(body);
             if (!body.errors) {
               logger.info("before mapper");
-          var result = categoryMapper.mapProductsListForCategoryJSON(body,req,messageData);
+          let result = categoryMapper.mapProductsListForCategoryJSON(body,req,messageData);
                   res.send({
                     "success": true ,
                     "result": result,                                            

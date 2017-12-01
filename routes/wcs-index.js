@@ -6,7 +6,7 @@ import wcsSearchRoute from './wcs/searchRoutes';
 import wcsAddressRoute from './wcs/addressRoutes';
 import wcsCartRoute from './wcs/cartRoutes';
 import wcsPromotionsRoute from './wcs/promotionsRoutes';
-
+import wcsWishListRoute from './wcs/wishListRoutes';
 
 let app = express();
 
@@ -17,5 +17,6 @@ app.use('/wcs/search',wcsSearchRoute);
 app.use('/wcs/address',wcsAddressRoute);
 app.use('/wcs/cart',wcsCartRoute);
 app.use('/wcs/promotions',wcsPromotionsRoute);
+app.use('/wcs/wishlist',wcsWishListRoute);
 
 export default app;

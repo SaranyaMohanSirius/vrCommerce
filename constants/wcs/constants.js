@@ -1,4 +1,4 @@
- module.exports = {
+export default {
  
    "WCS_HOSTNAME" : "34.194.115.169:3737",
    "WCS_HOSTNAME_NOPORT" : "34.194.115.169",
@@ -13,6 +13,9 @@
    "WCS_STORE_ID": "10151",
    "WCS_CATALOG_ID": "10001",
    "WCS_CART": "/cart/",
+   "WCS_DEFAULT": "/@default",
+   "WCS_WISHLIST": "/wishlist",
+   "WCS_WISHLIST_DELETE": "/wishlist/",
    "WCS_LANG_ID": "-1",
    "WCS_SHIPMODES_APPEND": "/cart/shipping_modes",
    "WCS_INV_AVL": "/inventoryavailability/",
@@ -34,6 +37,8 @@
    "WCS_UPDATECART_CALC_ORDER" : "1",  
    "WCS_CART_AT_SELF" : "/cart/@self",
    "WCS_CART_PROMOTIONS" : "/cart/@self/assigned_promotion_code", 
+   "WCS_ITEM": "item",
+
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",

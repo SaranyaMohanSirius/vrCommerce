@@ -1,9 +1,6 @@
-var express = require('express');
-var category = require('../../controllers/wcs/categoryCtlr');
-
-var router = express.Router();
-
-
+import express from 'express';
+let router = express.Router();
+import category from '../../controllers/wcs/categoryCtlr';
 
 
 router.get('/getTopCategories', function(req, res){
@@ -19,5 +16,5 @@ router.get('/getProductsListForCategory', function(req, res) {
 });
 
 
-module.exports = router;
+export default router;
 

@@ -80,6 +80,64 @@ ShipModes
 
 Request : GET : http://localhost:5000/wcs/shipModes/getShippingMethods
 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        WISHLIST
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Add Item To WishList: 
+
+Request: POST: http://localhost:5000/wcs/wishlist/addToWishList?userId=9018
+
+Request - Body: 
+{
+  "productId": "10140",
+  "quantityRequested": "1"
+}
+
+Response: 
+
+{
+    "success": true
+}
+
+Delete an item from WishList: 
+
+Request: DELETE: http://localhost:5000/wcs/wishlist/deleteFromWishList?wishListId=12526&wishListItemId=13039&userId=9018
+
+If wishListItemId is not specified in the request, the entire wishlist will be deleted. 
+Specify WishListItemId for deleting specific item from the wish list.
+
+Response: 
+
+{
+    "success": true
+}
+
+Get WishList: 
+
+Request: GET : http://localhost:5000/wcs/wishlist/getWishList?userId=9018
+
+Response: 
+
+{
+    "success": true,
+    "result": {
+        "WishListId": "12529",
+        "itemList": [
+            {
+                "wishListItemId": "13041",
+                "partNumber": "AuroraWMDRS-101",
+                "productId": "10140"
+            }
+        ],
+        "recordSetCount": "1",
+        "recordSetStartNumber": "0",
+        "recordSetTotal": "1"
+    }
+}
+
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         Search
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
