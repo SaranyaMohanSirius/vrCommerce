@@ -35,12 +35,12 @@ module.exports = {
                     }); 
                 }
                 else{
-                    logger.error('errors in service to getSearchResults in EP: ', body.errors);								
+                    logger.error('errors in service to getSearchResults in wcs: ', body.errors);								
                     res.send({ "success": false, "error": body.errors });
                   }
             }
             else{
-                logger.error('errors in service to getSearchResults in EP: ', error);								
+                logger.error('errors in service to getSearchResults in wcs: ', error);								
                 res.send({ "success": false, "error": error });
             }
         }

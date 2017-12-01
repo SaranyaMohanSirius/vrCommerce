@@ -31,7 +31,9 @@
    "WCS_UPDATE_CART" : "/update_order_item",
    "WCS_DELETE_CART" : "/delete_order_item",
    "WCS_UPDATECART_CALC_USAGE" : "-1,-2,-3,-4,-5,-6,-7",   
-   "WCS_UPDATECART_CALC_ORDER" : "1",   
+   "WCS_UPDATECART_CALC_ORDER" : "1",  
+   "WCS_CART_AT_SELF" : "/cart/@self",
+   "WCS_CART_PROMOTIONS" : "/cart/@self/assigned_promotion_code", 
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",
