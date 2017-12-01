@@ -8,7 +8,7 @@ module.exports = {
 		
 		let converter = JM.makeConverter({
 		
-			usableShippingMode: ['_deliveries.0._element.0._shippingoptioninfo.0._selector', JM.map({
+			usableShippingMode: ['_order.0._deliveries.0._element.0._shippingoptioninfo.0._selector', JM.map({
 				
 				choice: ['_choice', JM.map({
 					carrier: '_description.0.carrier',

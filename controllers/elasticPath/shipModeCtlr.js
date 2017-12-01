@@ -1,96 +1,64 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var shipModeMapper = require('../../json_mappers/elasticPath/shipModeMapper');
-var request = require('request');
-var logger= util.getLogger();
+import constants from '../../constants/elasticPath/constants';
+import util from '../../util/elasticPath/util';
+import shipModeMapper from '../../json_mappers/elasticPath/shipModeMapper';
+import request from 'request';
+let logger= util.getLogger();
+import requestPromise from 'request-promise';
 
 module.exports = {
 
   /*Controller for getting the shipping methods in EP*/
    getShippingMethods: function(token,res,req){
-		logger.info('Shipping methods EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, constants.EP_CART, false));
-		var messageData = {};
-		request({
-		  url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, constants.EP_CART, false),
-		  method: 'GET',
-		  json: messageData,
-		  headers: {
-			'Content-Type': 'application/json',
-			'Authorization': 'bearer ' + token
-		  },
-		}, function(error, response, body) {
-			  if (!error) {
-				if (!body.errors) {					
-					for(var i =0 ; i < body.links.length; i++){
-						
-						if(body.links[i].rel == 'order'){
-							console.log("getShippingMethods post form url:" + util.constructUrl(body.links[i].href + constants.EP_SHIPMODE_ZOOM, false));	
-							var messageData = {};
-							request({
-							  url: util.constructUrl(body.links[i].href + constants.EP_SHIPMODE_ZOOM, false),
-							  method: 'GET',
-							  json: messageData,
-							  headers: {
-								'Content-Type': 'application/json',
-								'Authorization': 'bearer ' + token
-							  },
-							}, function(error, response, body) {
-								  if (!error) {
-									if (!body.errors) {
-										  var result = shipModeMapper.mapShipModeJSON(body); 
-										  res.send({
-											"success": true ,
-											"result": result,                                            
-										  });                            
-
-									}
-									else {
-									  logger.error('errors in service to get Shipping methods in EP: ', body.errors);
-									  res.send({ "success": false, "error": body.errors });
-									}
-								  } else {
-									logger.error('errors in service to get Shipping methods in EP: ', error);
-									res.send({ "success": false, "error": error });
-								  }
-							});
-						}
-					}
+		console.log(token);
+		let concatURL = constants.EP_CART + constants.EP_SHIPMODE_ZOOM;
+		logger.info('Shipping methods EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false));
+		let messageData = {};
+		let method = "GET";
+		let requestCall = util.constructRequest(util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false),method,messageData,token);
+		
+		requestPromise(requestCall).then(function (data) {
+			  let result = shipModeMapper.mapShipModeJSON(data); 
+			  res.send({
+				"success": true ,
+				"result": result,                                            
+			  });                            
+		}).catch(function (error) {
+			if(error.response){
+				if(undefined != error.response.body && null != error.response.body){
+					logger.error('errors in service to get Shipping methods in EP: ', error.response.body);
+					res.send({ "success": false, "error": body.errors });
 				}
-			  }
+			}
+			else {
+				logger.error('errors in service to get Shipping methods in EP: ', error);
+				res.send({ "success": false, "error": error });
+			}
 		});
- 
-    },
+	},
 
 	/*Controller for updating the shipping method in EP*/
    updateShippingMethods: function(token,res,req){
-		var url = req.query.uri + constants.EP_FOLLOW_LOCATION;
+		let url = req.query.shipModeId + constants.EP_FOLLOW_LOCATION;
 		logger.info('Update Shipping method EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false));
-		var messageData = {};
-		request({
-		  url: util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),
-		  method: 'POST',
-		  json: messageData,
-		  headers: {
-			'Content-Type': 'application/json',
-			'Authorization': 'bearer ' + token
-		  },
-		}, function(error, response, body) {
-			  if (!error) {
-				if (!body.errors) {
-					  res.send({
-						"success": true ,
-					  }); 
-				}
-				else{
-				  logger.error('errors in service to get Shipping methods in EP: ', body.errors);
-				  res.send({ "success": false, "error": body.errors });			
-				}
+		let messageData = {};
+		let method = "POST";
+		let requestCall = util.constructRequest(util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false),method,messageData,token);
+		requestPromise(requestCall).then(function (data) {
+			  res.send({
+				"success": true ,
+				"result": {
+					'updateShipModeMsg' : constants.EP_SHIPMODE_SELECTED
+				},                                            
+			  }); 
+		}).catch(function (error) {
+			if(error.response.body){
+				  logger.error('errors in service to get Shipping methods in EP: ', error.response.body);
+				  res.send({ "success": false, "error": error.response.body });			
 			 }else{
 				logger.error('errors in service to get Shipping methods in EP: ', error);
 				res.send({ "success": false, "error": error });			 
 			 }
 		});
- 
     }
 
 };
