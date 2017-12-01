@@ -9,7 +9,7 @@ module.exports = {
             let jsonResponse = {userId: "",
                     addShippingAddressMsg: constants.EP_ADDRESS_ADDED
                    };      
-			return JSON.parse(JSON.stringify(jsonResponse));
+      return JSON.parse(JSON.stringify(jsonResponse));
   },
 
   /* Forming shipping address JSON */
@@ -82,6 +82,61 @@ module.exports = {
                     selectShippingAddressMsg: constants.EP_ADDRESS_SELECTED
                    };      
       return JSON.parse(JSON.stringify(jsonResponse));               
+  },
+  
+  /* Forming Billing Address JSON*/
+  getBillingAddressesJSON: function(body){
+            let converter = JM.makeConverter({
+                contact: ['_selector', JM.map({
+                      address:['_choice',JM.map({
+                          addressId: '_description.0.self.uri',
+                          addressLine: {
+                            addressLine1: '_description.0.address.street-address',
+                            addressLine2: '_description.0.address.extended-address',
+                          },
+                          addressType: JM.helpers.def('ShippingAndBilling'),
+                          country: '_description.0.address.country-name',
+                          city: '_description.0.address.locality',
+                          firstName: '_description.0.name.given-name',
+                          lastName: '_description.0.name.family-name',                          
+                          nickName: '_description.0.name.given-name', 
+                          zipCode: '_description.0.address.postal-code',
+                          state: '_description.0.address.region',
+                          email1: JM.helpers.def(' '),
+                          phone1: JM.helpers.def(' '),
+                          primary: JM.helpers.def('false'),
+                      })],
+                      defaultAddress:['_chosen',JM.map({
+                          addressId: '_description.0.self.uri',
+                          addressLine: {
+                            addressLine1: '_description.0.address.street-address',
+                            addressLine2: '_description.0.address.extended-address',
+                          },
+                          addressType: JM.helpers.def('ShippingAndBilling'),
+                          country: '_description.0.address.country-name',
+                          city: '_description.0.address.locality',
+                          firstName: '_description.0.name.given-name',
+                          lastName: '_description.0.name.family-name',
+                          nickName: '_description.0.name.given-name',
+                          zipCode: '_description.0.address.postal-code',
+                          state: '_description.0.address.region',
+                          email1: JM.helpers.def(' '),
+                          phone1: JM.helpers.def(' '),
+                          primary: JM.helpers.def('true'),
+                      })],
+                      userId : JM.helpers.def(' '),  
+                })],
+            });
+            let result = converter(body);
+            return result;    
+  },
+
+  /*Normal JSON response for selecting billing address*/
+  selectBillingAddressJSON: function(body){
+                   let jsonResponse = {
+                    selectBillingAddressMsg: constants.EP_ADDRESS_SELECTED
+                   };      
+      return JSON.parse(JSON.stringify(jsonResponse));    
   }
 
     

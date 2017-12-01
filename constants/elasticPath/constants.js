@@ -35,6 +35,10 @@ module.exports = {
   "EP_GET_SHIPPING_ADDRESS_ZOOM": "/deliveries?zoom=element:destinationinfo:selector:chosen:description,element:destinationinfo:selector:choice:description",  
   "EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM" : "/deliveries?zoom=element:destinationinfo:selector",
 
+  "EP_GET_BILLING_ADDRESS_ZOOM": "/billingaddressinfo?zoom=selector:choice:description,selector:chosen:description",
+
+  "EP_GET_BILLING_ADDRESS_SELECTOR": "/billingaddressinfo/selector",
+
   "EP_FOLLOW_LOCATION": "?followlocation",
   
   "HTML_DIR" : "WebContent/html/",
@@ -46,8 +50,6 @@ module.exports = {
   "EP_FOLLOW_LOCATION" : "?followlocation",
   
   //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : "891389a3-ece9-4702-bf54-263619c3aceb"
-
-
+  "EP_ACCESS_TOKEN" : "9a467a10-8652-43d2-b943-31bab6efe660"
 
 };

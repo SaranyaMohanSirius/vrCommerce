@@ -112,7 +112,7 @@ Input Body :
 
 ** Get all shipping address
 
-Request	: GET : http://localhost:5000/ep/address/getShippingAddresses
+Request	: GET : http://localhost:5000/ep/address/getShippingAddresses?orderId=/orders/britney/gi2dmy3fmy3dkljxgu4tmljumuytmljzmu2dqllegmytazrqguytgmbqmi=
 
 
 
@@ -166,6 +166,24 @@ Input Body:
 }
 
 Note: Pass the addressId taken from get shipping address call & pass the order Id got from shopping cart
+
+
+** Selecting a billing address for an order
+
+Request:  http://localhost:5000/ep/address/selectBillingAddress
+
+Input Body:
+
+{
+	"orderId"	: "/orders/britney/gi2dmy3fmy3dkljxgu4tmljumuytmljzmu2dqllegmytazrqguytgmbqmi=",
+	"addressId" : "/addresses/britney/mrsggnztmizdqljygy2weljugrtdqllcg5sdoljxmuygentdg4zgindcgq="
+}
+
+
+** Get all billing address for an order
+
+Request:  http://localhost:5000/ep/address/getBillingAddresses?orderId=/orders/britney/gi2dmy3fmy3dkljxgu4tmljumuytmljzmu2dqllegmytazrqguytgmbqmi=
+
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -39,4 +39,18 @@ router.post('/selectShippingAddress',function(req,res){
 	address.selectShippingAddress(constants.EP_ACCESS_TOKEN,req,res);
 });
 
+/**
+*	Gets the billing address associated with an order
+*/
+router.get('/getBillingAddresses',function(req,res){
+	address.getBillingAddresses(constants.EP_ACCESS_TOKEN,req,res);
+});
+
+/**
+*	Selects a billing address for an order
+*/
+router.post('/selectBillingAddress',function(req,res){
+	address.selectBillingAddress(constants.EP_ACCESS_TOKEN,req,res);
+});
+
 export default router;
