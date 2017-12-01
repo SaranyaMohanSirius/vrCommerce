@@ -19,7 +19,7 @@ module.exports = {
 	logger.info("requestCAll " + requestCall);
 	requestPromise(requestCall).then(function (data) {
 		var body1 = data;
-		var invAvlURL = constants.WCS_SHIPMODES + constants.WCS_STORE_ID + constants.WCS_INV_AVL + productId;
+		var invAvlURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_INV_AVL + productId;
 		logger.info("getInvAvl post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, invAvlURL, false));	
 		var secondRequestCall = util.constructRequestWithoutToken(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, invAvlURL, false),"GET",messageData);
 		logger.info("requestCAll " + secondRequestCall);
