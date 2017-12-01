@@ -2,7 +2,8 @@ import constants from '../../constants/wcs/constants';
 import {getLogger,
         constructUrl,
         getAuthTokensFromDB,
-        constructRequestWithToken} from '../../util/wcs/util';
+        constructRequestWithToken,
+       } from '../../util/wcs/util';
 import cartMapper from '../../json_mappers/wcs/cartMapper';
 import requestPromise from 'request-promise';
 import Promise from "bluebird";
@@ -47,6 +48,147 @@ module.exports = {
                     });
                 });
         }
-   }
+   },
+
+   /* 
+      Controller for getting Shopping Cart Item in WCS
+      Request Params : userId 
+  */
+  
+   shoppingCart: function(req,res){
+    
+    let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART + constants.WCS_GET_SHOPPINGCART;
+        getAuthTokensFromDB(req.query.userId).then(function(result){
+        logger.info("ShoppingCart URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+        let shoppingCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+        let method ='GET';
+        let messageData = {};
+        let requestCall = constructRequestWithToken(shoppingCartUrl,method,messageData,result);
+          
+        requestPromise(requestCall).then(function (data) {
+              let result = cartMapper.mapShoppingCartJSON(data); 
+                  res.send({
+                    "success": true ,
+                    "result": result                                            
+                });   
+          }).catch(function (error) {
+              if(error){
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error }); 
+              }else{
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error});
+              }
+          });
+    })
+
+  },
+
+  /* 
+      Controller for update Cart Item in WCS
+      Request Params : userId 
+  */
+  updateShoppingCartItem: function(req,res){
+
+        let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART + constants.WCS_GET_SHOPPINGCART+constants.WCS_UPDATE_CART;
+        getAuthTokensFromDB(req.query.userId).then(function(result){
+        logger.info("Update ShoppingCart URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+        let updateCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+        let method ='PUT';
+        let messageData = cartMapper.mapUpdateCartRequestJSON(req.body);
+        logger.info("request to wcs" + messageData);
+        let requestCall = constructRequestWithToken(updateCartUrl,method,messageData,result);
+          
+        requestPromise(requestCall).then(function (data) {
+              let result = cartMapper.mapUpdateCartResponseJSON(data); 
+                  res.send({
+                    "success": true ,
+                    "result": result                                            
+                });   
+          }).catch(function (error) {
+              if(error){
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error }); 
+              }else{
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error});
+              }
+          });
+    
+    })
+
+  },
+
+  /* 
+      Controller for delete Shopping Cart Item in WCS
+      Request Params : userId 
+  */
+  deleteShoppingCartItem: function(req,res){
+
+        let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART + constants.WCS_GET_SHOPPINGCART+constants.WCS_DELETE_CART;
+        getAuthTokensFromDB(req.query.userId).then(function(result){
+        logger.info("Delete ShoppingCart URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+        let updateCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+        let method ='PUT';
+        let messageData = cartMapper.mapDeleteCartRequestJSON(req.body);
+        logger.info("request to wcs" + JSON.stringify(messageData));
+        let requestCall = constructRequestWithToken(updateCartUrl,method,messageData,result);
+          
+        requestPromise(requestCall).then(function (data) {
+          result = cartMapper.mapDeleteCartResponseJSON(data);
+                  res.send({
+                    "success": true ,
+                    "result": result                                            
+                });   
+          }).catch(function (error) {
+              if(error){
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error }); 
+              }else{
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error});
+              }
+          });
+    
+    })
+  },
+
+  /* 
+      Controller for deleting All Shopping Cart Item in WCS
+      Request Params : userId 
+  */
+  
+  deleteAllShoppingCartItem: function(req,res){
+    
+    let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART + constants.WCS_GET_SHOPPINGCART;
+         getAuthTokensFromDB(req.query.userId).then(function(result){
+          logger.info("Delete All ShoppingCart Item URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+          let updateCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+          let method ='DELETE';
+          let messageData = {};
+          let requestCall = constructRequestWithToken(updateCartUrl,method,messageData,result);
+          
+        requestPromise(requestCall).then(function (data) {
+          let result = cartMapper.mapDeleteAllCartJSON(data); 
+                
+                  res.send({
+                    "success": true ,
+                    "result": result                                           
+                });   
+          }).catch(function (error) {
+              if(error){
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error }); 
+              }else{
+                logger.error('errors in service to getShoppingCart in WCS: ', error);
+                res.send({ "success": false, "error": error});
+              }
+          });
+    
+    })
+  },
+  
+
 }
+
 

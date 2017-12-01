@@ -27,8 +27,15 @@
    "SHIP_CALC_USAGE" : "-1,-2,-3,-4,-5,-6,-7",   
    "WCS_SHIP_INFO" : "/cart/@self/shipping_info",
    "MONGO_DB_URL" : "mongodb://admin:passw0rd@ds121716.mlab.com:21716/projectc",
-
+   "WCS_GET_SHOPPINGCART" : "/@self",
+   "WCS_UPDATE_CART" : "/update_order_item",
+   "WCS_DELETE_CART" : "/delete_order_item",
+   "WCS_UPDATECART_CALC_USAGE" : "-1,-2,-3,-4,-5,-6,-7",   
+   "WCS_UPDATECART_CALC_ORDER" : "1",   
+    
+  
    
+
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",
    "WCS_ADDRESS_UPDATED"  : "Address Updated Successfully",

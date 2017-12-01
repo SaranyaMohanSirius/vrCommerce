@@ -41,6 +41,7 @@ module.exports = {
 			  'Content-Type': 'application/json',
 			  'WCToken' : constants.WCS_AUTH_TOKEN,
 			  'WCTrustedToken' : constants.WCS_TRUSTED_TOKEN,
+
 			}
 		};
 	},
@@ -87,6 +88,7 @@ module.exports = {
 			});
 		
 		})
-	}
+	},
+	
 
 };
