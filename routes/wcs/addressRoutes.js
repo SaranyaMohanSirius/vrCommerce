@@ -17,7 +17,7 @@ router.get('/getShippingAddresses', function(req, res){
  *  Add an address to an user in WCS
  */
 router.get('/addShippingAddress', function(req, res){
-    address.getShippingAddresses(res,req);
+    address.addShippingAddress(res,req);
 });
 
 /**
