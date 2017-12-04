@@ -152,7 +152,7 @@ module.exports = {
   selectShippingAddress: function(req,res){
 
     messageData = {};
-    let addressId = req.body.addressId;
+    let addressId = req.query.addressId;
 	let x_calculationUsage = constants.SHIP_CALC_USAGE;
     let conCatUrl = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_SHIP_INFO;
     let selectShippingAddressURL = util.constructUrl(constants.WCS_HOSTNAME_NOPORT , conCatUrl, true);
