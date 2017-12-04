@@ -1,6 +1,6 @@
-var JM = require('json-mapper');
+import JM from 'json-mapper';
 
-module.exports = {
+export default {
     mapSearchResultJSON : function(body,messageData){
         let pageSize = Number(messageData.pageSize);
         let recordSetTotal = Number(body.recordSetTotal);
