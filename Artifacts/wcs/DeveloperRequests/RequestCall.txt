@@ -163,3 +163,43 @@ Request : DELETE : http://localhost:5000/wcs/promotions/delete/PROMO50?userId=80
 
 
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Address
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PUT : https://ep-mcommerce-app.herokuapp.com/wcs/address/setShippingAddresses?addressId=12187
+//Body will be inturn taken care in the controller.Not needed to be passed during request
+Body:
+{
+	"addressId": 12187,
+	"orderId": ".",
+	"orderItem": [
+		{
+			"addressId": 12187
+		}
+	],
+	"x_calculationUsage": "-1,-2,-3,-4,-5"
+};
+  
+  
+GET : https://ep-mcommerce-app.herokuapp.com/wcs/address/getShippingAddresses
+
+
+POST : https://ep-mcommerce-app.herokuapp.com/wcs/address/addShippingAddresses
+Body : 
+{
+		   "firstName" : "Arun",
+		   "lastName" : "lastName",
+		   "addressType" : "SB",
+		   "zipCode" : "78217",
+		   "addressLine": "dtytychjgh",
+		   "city" : "Chennai",
+		   "state" : "Texas",
+		   "country" : "US",
+		   "nickName" : "SB_6768"
+}
+
+PUT : https://ep-mcommerce-app.herokuapp.com/wcs/address/updateShippingAddresses?nickName=SB_6768
+
+DELETE : https://ep-mcommerce-app.herokuapp.com/wcs/address/deleteShippingAddresses?nickName=SB_6768
+
