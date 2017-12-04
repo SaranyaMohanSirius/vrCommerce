@@ -3,7 +3,7 @@ import util from '../../util/elasticPath/util';
 import JM from 'json-mapper';
 
 export default {
-  mapPdpJSON: function(body,inv){	
+  mapPdpJSON: function(body,inv,definingAttributes){	
 		let converter = JM.makeConverter({
 			catalogEntryView: ['catalogEntryView', JM.map({		
 				hasSingleSKU: 'hasSingleSKU',
@@ -71,6 +71,7 @@ export default {
 			jsonObj.catalogEntryView[i].availability = invAvailability;
 			jsonObj.catalogEntryView[i].quantity = quantityAvailable;
 		}
+		jsonObj.catalogEntryView[0].swatches = definingAttributes;		
         return jsonObj;
   }          
 };

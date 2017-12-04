@@ -28,7 +28,47 @@ export default {
 					logger.info("request call = "+JSON.stringify(requestCall));
 						requestPromise(requestCall).then(function (body) {
 								if(isJson(body)) body = JSON.parse(body);
-								let result = pdpMapper.mapPdpJSON(data,body);  
+								let getCatalogEntryView = data.catalogEntryView[0];
+								let getAttributes = getCatalogEntryView.attributes;
+								let i;
+								let defAttributes = [];
+								let displayNameArr = [];
+								for(i = 0; i < getAttributes.length; i++)
+								{
+									  let objects = getAttributes[i];
+									  let usage = objects.usage;
+									  let attributeValue = objects.values;
+									  if(usage == 'Defining' || usage == 'defining'){
+											defAttributes[i] = [];
+											for(let j = 0; j < attributeValue.length; j++){
+												defAttributes[i][j] = (attributeValue[j].identifier);
+											}
+											let displayName =  objects.identifier;
+											displayNameArr[i] = (displayName);
+										}
+								}			
+								let choiceName = [];
+								let definingAttributes = {
+									swatches: []
+								};
+								
+								for(let k=0; k<i ;k++) {
+									for(let l=0; l<defAttributes[k].length; l++){		
+										let choice = {
+											"name" : defAttributes[k][l]
+										};
+										choiceName.push(choice);	
+									}
+
+									definingAttributes.swatches.push({
+										"displayName": displayNameArr[k],
+										"options": {
+											"choice" : choiceName
+										}
+									});
+								}
+								
+								let result = pdpMapper.mapPdpJSON(data,body,definingAttributes);
 								res.send({
 										"success": true,
 										"result": result
