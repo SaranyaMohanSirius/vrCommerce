@@ -4,8 +4,6 @@ import JM from 'json-mapper';
 
 export default {
   mapPdpJSON: function(body,inv){	
-		let invAvailability = inv.InventoryAvailability[0].inventoryStatus;	
-		let quantityAvailable = inv.InventoryAvailability[0].availableQuantity;	
 		let converter = JM.makeConverter({
 			catalogEntryView: ['catalogEntryView', JM.map({		
 				hasSingleSKU: 'hasSingleSKU',
@@ -65,8 +63,14 @@ export default {
 		});    
 		let result = converter(body);
 		let jsonObj = result;
-		jsonObj.catalogEntryView[0].availability = invAvailability;
-		jsonObj.catalogEntryView[0].quantity = quantityAvailable;
+		
+		for(let i=0 ; i<jsonObj.catalogEntryView.length ; i++){
+			let invAvailability = inv.InventoryAvailability[i].inventoryStatus;	
+			let quantityAvailable = inv.InventoryAvailability[i].availableQuantity;	
+			
+			jsonObj.catalogEntryView[i].availability = invAvailability;
+			jsonObj.catalogEntryView[i].quantity = quantityAvailable;
+		}
         return jsonObj;
   }          
 };
