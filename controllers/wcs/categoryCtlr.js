@@ -1,7 +1,12 @@
 import constants from '../../constants/wcs/constants';
 import util from '../../util/wcs/util';
+import {getLogger,
+        constructUrl,
+        getAuthTokensFromDB,
+        constructRequestWithoutToken,
+       } from '../../util/wcs/util';
 import categoryMapper from '../../json_mappers/wcs/categoryMapper';
-import request from 'request';
+import requestPromise from 'request-promise';
 
 let logger= util.getLogger();
 
@@ -13,114 +18,89 @@ export default {
 	   
    			
    			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_TOP +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
-			logger.info('Top categories WCS url: ', util.constructUrl(constants.WCS_HOSTNAME, concatURL, false));
- 
-			let messageData = {};
-			request({
-			      url: util.constructUrl(constants.WCS_HOSTNAME, concatURL, false),
-			      method: 'GET',
-			      json: messageData,
-			      headers: {
-			        'Content-Type': 'application/json',
-			      },
-			}, function(error, response, body) {
-			        if (!error) {
-			            if (!body.errors) {
-			            	  let result = categoryMapper.mapTopCategoryJSON(body);
-							  res.send({
-			                    "success": true ,
-			                    "result": result,                                            
-			                });                            
-
-						}
-			            else {
-			            	logger.error('errors in service to get Top categories in WCS: ', body.errors);
-            				res.send({ "success": false, "error": body.errors });
-			            }
-			        } else {
-			            logger.error('errors in service to get Top categories in WCS: ', error);
-            			res.send({ "success": false, "error": error });
-			        }
-			 });
+   			let messageData = {};
+			let getTopCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+			logger.info("getTopCategoriesUrl: " +getTopCategoriesUrl);
+        	let method ='GET';
+          	let requestCall = constructRequestWithoutToken(getTopCategoriesUrl,method,messageData);
+ 			logger.info(JSON.stringify(requestCall));
+ 			requestPromise(requestCall).then(function (messageData) {
+	          let result = categoryMapper.mapTopCategoryJSON(messageData);
+	                  res.send({
+	                    "success": true ,
+	                    "result": result                                           
+	                });   
+	          }).catch(function (error) {
+	              if(error){
+	                logger.error('errors in service to getTopCategories in WCS: ', error);
+	                res.send({ "success": false, "error": error }); 
+	              }else{
+	                logger.error('errors in service to getTopCategories in WCS: ', error);
+	                res.send({ "success": false, "error": error});
+	              }
+	          });
 	},
 		/*Controller for getting Sub Cateogries for given ParentId in WCS*/
 
 		getSubCategories: function(res,req){
+
 			let parentId = req.query.identifier;
 			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
-			logger.info('Sub categories WCS url: ', util.constructUrl(constants.WCS_HOSTNAME, concatURL, false));
- 
-			let messageData = {};
-			request({
-			      url: util.constructUrl(constants.WCS_HOSTNAME, concatURL, false),
-			      method: 'GET',
-			      json: messageData,
-			      headers: {
-			        'Content-Type': 'application/json',
-			      },
-			}, function(error, response, body) {
-			        if (!error) {
-			            if (!body.errors) {
-			            	  let result = categoryMapper.mapSubCategoryJSON(body);
-							  res.send({
-			                    "success": true ,
-			                    "result": result,                                            
-			                });                            
+   			let messageData = {};
+			let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+			logger.info("getSubCategoriesUrl: " +getSubCategoriesUrl);
+        	let method ='GET';
+          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
+ 			logger.info(JSON.stringify(requestCall));
+ 			requestPromise(requestCall).then(function (messageData) {
+	          let result = categoryMapper.mapSubCategoryJSON(messageData);
+	                  res.send({
+	                    "success": true ,
+	                    "result": result                                           
+	                });   
+	          }).catch(function (error) {
+	              if(error){
+	                logger.error('errors in service to getSubCategories in WCS: ', error);
+	                res.send({ "success": false, "error": error }); 
+	              }else{
+	                logger.error('errors in service to getSubCategories in WCS: ', error);
+	                res.send({ "success": false, "error": error});
+	              }
+	          });
 
-						}
-			            else {
-			            	logger.error('errors in service to get Top categories in WCS: ', body.errors);
-            				res.send({ "success": false, "error": body.errors });
-			            }
-			        } else {
-			            logger.error('errors in service to get Top categories in WCS: ', error);
-            			res.send({ "success": false, "error": error });
-			        }
-			 });
-
-			
 	},
 	getProductsListForCategory: function(req,res,categoryId){
-     
-    let pageSize = req.query.pagesize;
-    let currentPageNumber = req.query.current;
-    let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
-    logger.info("getProductsListForCategory post form url:" + JSON.stringify(util.constructUrl(constants.WCS_HOSTNAME, concatURL,false)));  
 
-    let messageData = {
-      'pageSize': pageSize,
-      'currentPageNumber': currentPageNumber
-    };
-    request({
-      url: util.constructUrl(constants.WCS_HOSTNAME, concatURL, false),
-      method: 'GET',
-      json: messageData,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }, function(error, response, body) {
-          if (!error) {
-            logger.info(body);
-            if (!body.errors) {
-              logger.info("before mapper");
-          let result = categoryMapper.mapProductsListForCategoryJSON(body,req,messageData);
-                  res.send({
-                    "success": true ,
-                    "result": result,                                            
-                  });                            
-
-      }
-            else {
-              logger.error('errors in service to get categories in EP: ', body.errors);
-              res.send({ "success": false, "error": body.errors });
-            }
-          } else {
-            logger.error('errors in commerce: ', error);
-            res.send({ "success": false, "error": error });
-          }
-    });
-   
- 
-  } 
-
+     		let pageSize = req.query.pagesize;
+   			let currentPageNumber = req.query.current;
+    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+			let messageData = {
+			      'pageSize': pageSize,
+			      'currentPageNumber': currentPageNumber
+			    };			
+			let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+			logger.info("getProductsListForCategoryUrl: " +getProductsListForCategoryUrl);
+        	let method ='GET';
+          	let requestCall = constructRequestWithoutToken(getProductsListForCategoryUrl,method,messageData);
+ 			logger.info(JSON.stringify(requestCall));
+ 			requestPromise(requestCall).then(function (body) {
+ 				let messageData = {
+			      'pageSize': pageSize,
+			      'currentPageNumber': currentPageNumber
+			    };
+	          let result = categoryMapper.mapProductsListForCategoryJSON(body,req,messageData);
+	                  res.send({
+	                    "success": true ,
+	                    "result": result                                           
+	                });   
+	          }).catch(function (error) {
+	              if(error){
+	                logger.error('errors in service to getProductsListForCategory in WCS: ', error);
+	                res.send({ "success": false, "error": error }); 
+	              }else{
+	                logger.error('errors in service to getProductsListForCategory in WCS: ', error);
+	                res.send({ "success": false, "error": error});
+	              }
+	          });
+	        }
 };
