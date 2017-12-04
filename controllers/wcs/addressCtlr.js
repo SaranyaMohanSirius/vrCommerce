@@ -54,7 +54,7 @@ module.exports = {
 	let timeStamp = Math.round(+new Date()/1000);
 	let nickName = req.body.addressType + "_" + timeStamp;
     let addAddressURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_ADDRESS_DETAILS;
-    logger.info("addAddress POST form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true));	
+    logger.info("addAddress POST form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, addAddressURL, true));	
 	let method ='POST';
 	let messageData = {
 		   "firstName" : req.body.firstName,
@@ -66,9 +66,9 @@ module.exports = {
 		   "state" : req.body.state,
 		   "country" : req.body.country,
 		   "nickName" : nickName
-    };
-	let requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true),method,messageData);
-	logger.info("requestCAll " + JSON.stringify(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true)));
+	};
+	let requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, addAddressURL, true),method,messageData);
+	logger.info("requestCAll " + JSON.stringify(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, addAddressURL, true)));
 	requestPromise(requestCall).then(function (data) {
 	  let result = addressMapper.mapAddAddressJSON(data);
 	  res.send({
@@ -89,9 +89,9 @@ module.exports = {
 
   /*Controller for updating the shipping address in WCS*/
   updateShippingAddress: function(res,req){
-	let uri= req.body.nickName;
+	let uri= req.query.nickName;
     let updateAddressURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_ADDRESS_DETAILS + constants.SLASH + uri;
-    logger.info("updateAddress POST form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, updateAddressURL, true));	
+    logger.info("updateAddress PUT form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, updateAddressURL, true));	
 	let method ='PUT';
 	let messageData = {
 		   "firstName" : req.body.firstName,
@@ -101,7 +101,7 @@ module.exports = {
 		   "addressLine": req.body.addressLine[0],
 		   "city" : req.body.city,
 		   "state" : req.body.state,
-		   "country" : req.body.country
+		   "country" : req.body.country		   
     };
 	let requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, updateAddressURL, true),method,messageData);
 	requestPromise(requestCall).then(function (data) {
@@ -124,12 +124,12 @@ module.exports = {
   
    /*Controller for deleting the shipping address in WCS*/
    deleteShippingAddress: function(res,req){
-	let uri= req.body.nickName;
-    let updateAddressURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_ADDRESS_DETAILS + constants.SLASH + uri;
-    logger.info("deleteAddress POST form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, updateAddressURL, true));	
+	let uri= req.query.nickName;
+    let deleteAddressURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_ADDRESS_DETAILS + constants.SLASH + uri;
+    logger.info("deleteAddress POST form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, deleteAddressURL, true));	
 	let method ='DELETE';
 	let messageData = {};
-	let requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, updateAddressURL, true),method,messageData);
+	let requestCall = util.constructRequest(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, deleteAddressURL, true),method,messageData);
 	requestPromise(requestCall).then(function (data) {
 	  let result = addressMapper.mapDeleteAddressJSON(data);
 	  res.send({
