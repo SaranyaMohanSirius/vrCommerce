@@ -27,8 +27,7 @@ module.exports = {
               code:'code',
               currency:'currency',
               description: 'description',
-              displayLevel:'displayLevel',
-              usage:'usage',
+              displayLevel:'displayLevel'
             })
           ],
           grandTotal:'grandTotal',

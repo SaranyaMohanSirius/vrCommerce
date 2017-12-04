@@ -1,49 +1,37 @@
-import util from '../../util/wcs/util';
+import {getLogger,constructUrl,constructRequestWithoutToken,isJson} from '../../util/wcs/util';
 import constants from '../../constants/wcs/constants';
 import searchMapper from '../../json_mappers/wcs/searchMapper';
-import request from 'request';
+import requestPromise from 'request-promise';
 
-let logger= util.getLogger();
+let logger= getLogger();
 
-module.exports = {
-    getSearchResults: function(res,req){
+export default {
+    getSearchResults: function(req,res){
         let keyword = req.query.keyword;
         let pageSize = req.query.pageSize;
-        let currentPage = req.query.currentPage;
-        
+        let currentPage = req.query.currentPage;     
         let messageData = {
-            "keywords": keyword,
             "pageSize": pageSize,
             "currentPage": currentPage      
         };
-        let path = constants.WCS_PRODUCT_DETAILS+constants.WCS_STORE_ID+constants.WCS_PRODUCT_SEARCH_BY_KEYWORD+keyword+"?pageSize="+pageSize+"&pageNumber="+currentPage;
         logger.info(constants.WCS_HOSTNAME+path);
-        request({
-            url: util.constructUrl(constants.WCS_HOSTNAME, path, false),
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-        },function(error,response,body){
-            logger.info("error = "+error);
-            if(!error){
-                if(!body.errors){
-                    let result = searchMapper.mapSearchResultJSON(body,messageData);                 
-                    res.send({
-                        "success": true ,
-                        "result": result,                                            
-                    }); 
-                }
-                else{
-                    logger.error('errors in service to getSearchResults in wcs: ', body.errors);								
-                    res.send({ "success": false, "error": body.errors });
-                  }
+        let path = constants.WCS_PRODUCT_DETAILS+constants.WCS_STORE_ID+constants.WCS_PRODUCT_SEARCH_BY_KEYWORD+keyword+"?pageSize="+pageSize+"&pageNumber="+currentPage;
+        let searchURL = constructUrl(constants.WCS_HOSTNAME, path, false);
+        logger.info("search url = "+searchURL);
+        let requestCall = constructRequestWithoutToken(searchURL,'GET','')
+        requestPromise(requestCall).then(function (body) {
+            if(isJson(body)) body = JSON.parse(body);
+            let result = searchMapper.mapSearchResultJSON(body,messageData);  
+            res.send({
+                "success": true,
+                "result": result
+            });
+            }).catch(function (error) {
+                logger.info(error);
+            if(error){
+              logger.error('errors in service to getSearchResults in WCS: ', error);
+              res.send({ "success": false, "error": error }); 
             }
-            else{
-                logger.error('errors in service to getSearchResults in wcs: ', error);								
-                res.send({ "success": false, "error": error });
-            }
-        }
-    )
+            });
     }
 }

@@ -2,9 +2,8 @@ var JM = require('json-mapper');
 
 module.exports = {
     mapSearchResultJSON : function(body,messageData){
-        let tbody = JSON.parse(body);
         let pageSize = Number(messageData.pageSize);
-        let recordSetTotal = Number(tbody.recordSetTotal);
+        let recordSetTotal = Number(body.recordSetTotal);
         let pages = Math.floor(recordSetTotal / pageSize) +1;
         var converter = JM.makeConverter({
             pagination: {
@@ -25,7 +24,6 @@ module.exports = {
                      thumbnail : 'thumbnail',
                      attributes: ['attributes', JM.map({
                           displayable: 'displayable',
-                          usage: 'usage',
                           name: 'name',
                           identifier: 'identifier',
                           values: 'values.0.value', 
@@ -55,7 +53,7 @@ module.exports = {
 
             })], 
         });
-        var result = converter(tbody);
+        var result = converter(body);
         return result;
     }
 }
