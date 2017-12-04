@@ -10,12 +10,12 @@ import Promise from "bluebird";
 
 let logger= getLogger();
 
-module.exports = {
+export default {
   /*Controller to add a product to cart in WCS  */
    addToCart: function(req,res){
         logger.info("inside add to cart");
 
-        let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CART +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+        let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CART_EXT +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
         let addToCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true);
         let userId = req.query.userId;
         let messageData = req.body;

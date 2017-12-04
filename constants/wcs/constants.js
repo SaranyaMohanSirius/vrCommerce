@@ -13,6 +13,7 @@ export default {
    "WCS_STORE_ID": "10151",
    "WCS_CATALOG_ID": "10001",
    "WCS_CART": "/cart/",
+   "WCS_CART_EXT": "/cart",
    "WCS_DEFAULT": "/@default",
    "WCS_WISHLIST": "/wishlist",
    "WCS_WISHLIST_DELETE": "/wishlist/",

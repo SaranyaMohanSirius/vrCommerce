@@ -18,8 +18,8 @@ router.get('/getWishList', function(req, res){
 }); 
 
 /* router for addItemToShoppingCartFromWishList */
-router.post('/moveWishListToCart', function(req, res){
-    wishList.moveWishListToCart(req,res);
+router.get('/moveWishListItemToCart', function(req, res){
+    wishList.moveWishListItemToCart(req,res);
 }); 
 
 export default router;
