@@ -1,53 +1,46 @@
 import constants from '../../constants/wcs/constants';
-import util from '../../util/wcs/util';
+import  {getLogger,isJson,constructUrl,constructRequestWithoutToken} from '../../util/wcs/util';
 import pdpMapper from '../../json_mappers/wcs/pdpMapper';
-import request from 'request';
 import requestPromise from 'request-promise';
+import Promise from "bluebird";
 
-let logger = util.getLogger();
+let logger = getLogger();
 
-module.exports = {
-
-  /*Controller for getting the Product details to be displayed in the PDP page in WCS*/
-   getProductDetails: function(res,productId){
-	   
-    let productDetailURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
-    logger.info("getProductDetails post form url:" + util.constructUrl(constants.WCS_HOSTNAME, productDetailURL, false));	
-	let method ='GET';
-	let messageData = {};
-	let requestCall = util.constructRequestWithoutToken(util.constructUrl(constants.WCS_HOSTNAME, productDetailURL, false),method,messageData);
-	logger.info("requestCAll " + requestCall);
-	requestPromise(requestCall).then(function (data) {
-		let body1 = data;
-		let invAvlURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_INV_AVL + productId;
-		logger.info("getInvAvl post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, invAvlURL, false));	
-		let secondRequestCall = util.constructRequestWithoutToken(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, invAvlURL, false),"GET",messageData);
-		logger.info("requestCAll " + secondRequestCall);
-		requestPromise(secondRequestCall).then(function (data) {
-			  let result = pdpMapper.mapPdpJSON(body1,data);
-			  res.send({
-				"success": true ,
-				"result": result,
-				});   	
-		}).catch(function (error) {
-                if(error.response.body){
-                  logger.error('errors in service to get product details in EP: ', error.response.body);
-                  res.send({ "success": false, "error": error.response.body }); 
-                }else{
-									logger.error('errors in service to get product details in WCS: ', error);									
-                  res.send({ "success": false, "error": error});
-                }
-        });
-	}).catch(function (error) {
-			if(error.response.body){
-			  logger.error('errors in service to get product detailsin EP: ', error.response.body);
-			  res.send({ "success": false, "error": error.response.body }); 
-			}else{
-			  logger.error('errors in service to get product details in EP: ', error);
-			  res.send({ "success": false, "error": error});
-			}
-	});
- 
-  } 
-
-};
+export default {
+	/**
+	 * Method for getting product details
+	 */
+	getProductDetails: function(req,res){
+		let productId = req.query.productId;
+		let path = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+		let pdpURL = constructUrl(constants.WCS_HOSTNAME, path, false);
+		logger.info("getProductDetails post form url:" + pdpURL);
+    let requestCall = constructRequestWithoutToken(pdpURL,'GET','');
+		requestPromise(requestCall).then(function(result){
+			return requestFunction(result);
+		});
+		let requestFunction = function(data){
+				return new Promise(function(resolve,reject){
+					if(isJson(data)) data = JSON.parse(data);
+					let path = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_INV_AVL + productId;
+					let invAvlURL = constructUrl(constants.WCS_HOSTNAME_NOPORT, path, false);
+					let requestCall = constructRequestWithoutToken(invAvlURL,'GET','');
+					logger.info("request call = "+JSON.stringify(requestCall));
+						requestPromise(requestCall).then(function (body) {
+								if(isJson(body)) body = JSON.parse(body);
+								let result = pdpMapper.mapPdpJSON(data,body);  
+								res.send({
+										"success": true,
+										"result": result
+								});
+								}).catch(function (error) {
+										logger.info(error);
+								if(error){
+									logger.error('errors in service to getProductDetails in WCS: ', error);
+									res.send({ "success": false, "error": error }); 
+								}
+								});
+						});
+		}
+	} 
+}

@@ -1,53 +1,53 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var JM = require('json-mapper');
-var _ = require("underscore");
+import constants from '../../constants/elasticPath/constants';
+import util from '../../util/elasticPath/util';
+import JM from 'json-mapper';
 
-var globalcount = 0;
-
-module.exports = {
-
-  /*json Mapper for mapping the PDP header in WCS*/ 
-  mapPdpJSON: function(body,body1){
-		
-		var invAvailability = body1.InventoryAvailability[0].inventoryStatus;
-		
-		var quantityAvailable = body1.InventoryAvailability[0].availableQuantity;
-		
-		var converter = JM.makeConverter({
-		
-			catalogEntryView: ['catalogEntryView', JM.map({
-				
+export default {
+  mapPdpJSON: function(body,inv){	
+		let invAvailability = inv.InventoryAvailability[0].inventoryStatus;	
+		let quantityAvailable = inv.InventoryAvailability[0].availableQuantity;	
+		let converter = JM.makeConverter({
+			catalogEntryView: ['catalogEntryView', JM.map({		
 				hasSingleSKU: 'hasSingleSKU',
-
-				catalogEntryTypeCode: 'catalogEntryTypeCode',
-				
-				buyable: 'buyable',
-				
-				store: 'storeID',
-				
-				listPrice : 'price.0.value',
-				
-				purchasePrice: 'price.1.value',
-				
-				code: 'partNumber',
-				
-				resourceId : 'resourceId',
-				
-				displayName: 'name',
-				
+				catalogEntryTypeCode: 'catalogEntryTypeCode',				
+				buyable: 'buyable',				
+				store: 'storeID',			
+				listPrice : 'price.0.value',			
+				purchasePrice: 'price.1.value',			
+				code: 'partNumber',			
+				resourceId : 'resourceId',			
+				displayName: 'name',	
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
-					  usage: 'usage',
 					  name: 'name',
 					  identifier: 'identifier',
 					  values: ['values', JM.map({
 						identifier: 'identifier',
                         uniqueID: 'uniqueID',
 					  })], 
-
 				})],
-				
+				merchandisingAssociations: ['merchandisingAssociations', JM.map({
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',				
+					buyable: 'buyable',				
+					store: 'storeID',			
+					listPrice : 'price.0.value',			
+					purchasePrice: 'price.1.value',			
+					code: 'partNumber',			
+					resourceId : 'resourceId',			
+					displayName: 'name',	
+					attributes: ['attributes', JM.map({
+						  displayable: 'displayable',
+						  name: 'name',
+						  identifier: 'identifier',
+						  values: ['values', JM.map({
+							identifier: 'identifier',
+							uniqueID: 'uniqueID',
+						  })], 
+					})],
+					thumbnail: 'thumbnail',
+					fullImage: 'fullImage',			
+				})],
 				swatches: ['sKUs', JM.map({					
 					options: {
 						SKU: 'uniqueID',
@@ -58,19 +58,15 @@ module.exports = {
 							image1: 'image1',
 						})],
 					},
-				})],
-				
+				})],	
 				thumbnail: 'thumbnail',
 				fullImage: 'fullImage',
 			})],
-		});
-	    
-		var result = converter(body);
-		var jsonObj = result;
+		});    
+		let result = converter(body);
+		let jsonObj = result;
 		jsonObj.catalogEntryView[0].availability = invAvailability;
 		jsonObj.catalogEntryView[0].quantity = quantityAvailable;
         return jsonObj;
-
   }          
-
 };
