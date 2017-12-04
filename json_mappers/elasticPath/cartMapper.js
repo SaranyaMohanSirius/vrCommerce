@@ -4,7 +4,7 @@ import JM from 'json-mapper';
 let logger=getLogger();
 
 
-module.exports = {
+export default {
 
   /*Normal Response for Add to Cart this needs to be refine*/ 
   addToCartJSON: function(results){
@@ -26,12 +26,10 @@ module.exports = {
    * json mapper for mapping the product list json for category landing page in EP
    */
   shoppingCartJSON: function(body){
-             
              let converter = JM.makeConverter({
-
               totalQuantity: 'total-quantity',
-              
               adjustments : ['_discount.0.discount', JM.map({
+             
                 amount: 'display',
                 code:JM.helpers.def(''),
                 currency: 'currency',
@@ -39,8 +37,9 @@ module.exports = {
                 displayLevel:JM.helpers.def(''),
                 usage:JM.helpers.def('Discount'),
                })],
-               grandTotal:'_total.0.cost.0.display',
-               grandTotalCurrency:'_total.0.cost.0.currency',
+               
+               grandTotal:'_order.0._total.0.cost.0.display',
+               grandTotalCurrency:'_order.0_total.0.cost.0.currency',
                orderId:'_order.0.self.uri',
                cartLineItemId: '_lineitems.0.self.uri',
                orderItem : ['_lineitems.0._element', JM.map({
@@ -48,7 +47,7 @@ module.exports = {
                 freeGift:JM.helpers.def('false'),
                 orderItemId:'self.uri',
                 orderItemInventoryStatus:'_availability.0.state',
-                orderItemPrice:'_price.0.purchase-price.0.display',//Need to multiply wih Item Quantity
+                orderItemPrice:'_total.0.cost.0.display',
                 partNumber:'_item.0._code.0.code',
                 productId:'_item.0.self.uri',
                 quantity:'quantity',
@@ -66,24 +65,27 @@ module.exports = {
                       type: JM.helpers.def(''),
                       uniqueID: JM.helpers.def(''),
                   }
+                  
                 ]
              })],
 
              orderStatus:JM.helpers.def(''),
-             recordSetCount:JM.helpers.def(''),
+             recordSetCount: ['_lineitems.0._element', function(arr){
+              return arr.length;
+             }],
              recordSetStartNumber:JM.helpers.def(''),
              recordSetTotal:JM.helpers.def(''),
              resourceId:JM.helpers.def(''),
              resourceName:JM.helpers.def('cart'),
              shipAsComplete:JM.helpers.def(''),
-             storeNameIdentifier:JM.helpers.def(''),
-             storeUniqueID:JM.helpers.def(''),
+             storeNameIdentifier:JM.helpers.def(constants.EP_STORE),
+             storeUniqueID:JM.helpers.def(constants.EP_STORE),
              totalAdjustment:'_discount.0.discount.0.display',
              totalAdjustmentCurrency:'_discount.0.discount.0.currency',
-             totalProductPrice:JM.helpers.def(''),
-             totalProductPriceCurrency:JM.helpers.def(''),
-             totalSalesTax:JM.helpers.def(''),
-             totalSalesTaxCurrency:JM.helpers.def(''),
+             totalProductPrice:'_total.0.cost.0.display',
+             totalProductPriceCurrency:'_total.0.cost.0.currency',
+             totalSalesTax:'_order.0._tax.0.cost.0.display',
+             totalSalesTaxCurrency:'_order.0._tax.0.cost.0.currency',
              totalShippingCharge:JM.helpers.def(''),
              totalShippingChargeCurrency:JM.helpers.def(''),
              totalShippingTax:JM.helpers.def(''),

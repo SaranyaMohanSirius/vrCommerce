@@ -37,7 +37,7 @@ export default {
   "EP_SUB_CATEGORIES_ZOOM" : "?zoom=child",
   "EP_SEARCH_ZOOM" : "?zoom=element:availability,element:code,element:definition,element:element,element:price",
   "EP_PDP_ZOOM" : "?zoom=availability,code,definition,definition:options:element,definition:options:element:selector:choice:description,definition:options:element:selector:chosen:description,price",
-  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:price,lineitems:element:item:code,order,total",
+  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:item:code,lineitems:element:price,lineitems:element:total,order,order:tax,order:total,total",
   "EP_GET_BILLING_ADDRESS_ZOOM": "/billingaddressinfo?zoom=selector:choice:description,selector:chosen:description",
   "EP_GET_SHIPPING_ADDRESS_ZOOM": "/deliveries?zoom=element:destinationinfo:selector:chosen:description,element:destinationinfo:selector:choice:description",
   "EP_SHIPMODE_ZOOM" : "?zoom=order:deliveries:element:shippingoptioninfo:selector:choice:description,order:deliveries:element:shippingoptioninfo:selector:chosen:description",  
@@ -57,6 +57,6 @@ export default {
   
 
   //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : "9a467a10-8652-43d2-b943-31bab6efe660"
+  "EP_ACCESS_TOKEN" : storeConstants.EP_ACCESS_TOKEN
 
 };
