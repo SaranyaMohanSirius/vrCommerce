@@ -1,9 +1,9 @@
-var util = require('../../util/wcs/util');
-var constants = require('../../constants/wcs/constants');
-var searchMapper = require('../../json_mappers/wcs/searchMapper');
-var request = require('request');
+import util from '../../util/wcs/util';
+import constants from '../../constants/wcs/constants';
+import searchMapper from '../../json_mappers/wcs/searchMapper';
+import request from 'request';
 
-var logger= util.getLogger();
+let logger= util.getLogger();
 
 module.exports = {
     getSearchResults: function(res,req){
@@ -11,7 +11,7 @@ module.exports = {
         let pageSize = req.query.pageSize;
         let currentPage = req.query.currentPage;
         
-        var messageData = {
+        let messageData = {
             "keywords": keyword,
             "pageSize": pageSize,
             "currentPage": currentPage      
@@ -28,7 +28,7 @@ module.exports = {
             logger.info("error = "+error);
             if(!error){
                 if(!body.errors){
-                    var result = searchMapper.mapSearchResultJSON(body,messageData);                 
+                    let result = searchMapper.mapSearchResultJSON(body,messageData);                 
                     res.send({
                         "success": true ,
                         "result": result,                                            
