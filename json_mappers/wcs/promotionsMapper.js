@@ -1,8 +1,13 @@
-var JM = require('json-mapper');
+import JM from 'json-mapper';
 
-export default  {
+export default {
+
+    /* 
+     * JSON Mapper for mapping responses for promotions
+     */
+
     mapPromotionsResultJSON: function(body){
-        var converter = JM.makeConverter({
+        let converter = JM.makeConverter({
             promotions: ['adjustment',JM.map({
                 name: 'code',
                 description: {
@@ -13,7 +18,7 @@ export default  {
             orderId: 'orderId'
         });
         
-        var result = converter(body);
+        let result = converter(body);
         return result;
     }
 }

@@ -1,11 +1,16 @@
 import JM from 'json-mapper';
 
 export default {
+
+    /* 
+     * JSON Mapper for mapping responses for search results page 
+     */
+
     mapSearchResultJSON : function(body,messageData){
         let pageSize = Number(messageData.pageSize);
         let recordSetTotal = Number(body.recordSetTotal);
         let pages = Math.floor(recordSetTotal / pageSize) +1;
-        var converter = JM.makeConverter({
+        let converter = JM.makeConverter({
             pagination: {
                 pageSize: JM.helpers.def(messageData.pageSize),
                 currentPageNumber: JM.helpers.def(messageData.currentPage),
@@ -53,7 +58,7 @@ export default {
 
             })], 
         });
-        var result = converter(body);
+        let result = converter(body);
         return result;
     }
 }

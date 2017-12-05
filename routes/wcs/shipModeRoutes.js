@@ -1,19 +1,23 @@
+import express from'express';
+import wcsShipModeCtrl from'../../controllers/wcs/shipModeCtlr';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var constants = require('../../constants/wcs/constants');
-var wcsShipModeCtrl = require('../../controllers/wcs/shipModeCtlr');
-var cron = require('node-cron');
-var router = express.Router();
+let router = express.Router();
 
+/* 
+ * Router for getShippingMethods
+ */
 
 router.get('/getShippingMethods', function(req, res){
     wcsShipModeCtrl.getShipModes(res,req);
 });
+
+/* 
+ * Router for updateShippingMethods
+ */
 
 router.get('/updateShippingMethods', function(req, res){
     wcsShipModeCtrl.updateShipModes(res,req);
 });
 
 
-module.exports = router;
+export default router;

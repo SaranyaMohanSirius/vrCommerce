@@ -1,7 +1,10 @@
-import constants from '../../constants/wcs/constants';
 import JM from 'json-mapper';
 
 export default {
+
+  /*
+   * JSON Mapper for mapping responses for the getting wishlist items in WCS
+   */
 
   getWishListJSON: function(body,req){
 
@@ -20,6 +23,10 @@ export default {
             return result;
   },
 
+  /*
+   * JSON Mapper for mapping responses for the adding items to wishlist in WCS
+   */
+
   addToWishListRequestMapperJSON: function(body){
 
         let result= {
@@ -32,6 +39,23 @@ export default {
         }
        
         return JSON.parse(JSON.stringify(result));
+  },
+ 
+  /*
+   * JSON Mapper for mapping responses for the moving items from wishlist to cart in WCS
+   */
+
+  moveToCartMapperJSON: function(productId,quantity){
+
+      let result = {
+        orderItem: [
+        {
+          productId: productId,
+          quantity: quantity
+        }
+        ]
+      }
+      return JSON.parse(JSON.stringify(result));
   }
 
 };

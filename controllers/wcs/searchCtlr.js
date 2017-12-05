@@ -6,6 +6,13 @@ import requestPromise from 'request-promise';
 let logger= getLogger();
 
 export default {
+
+   /*
+    * Method for getting product results based on keyword  
+    * Request Method: GET
+    * Request Params: keyword, pageSize, currentPage
+    */
+
     getSearchResults: function(req,res){
         let keyword = req.query.keyword;
         let pageSize = req.query.pageSize;

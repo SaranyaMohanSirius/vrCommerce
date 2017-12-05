@@ -11,7 +11,13 @@ import Promise from "bluebird";
 let logger= getLogger();
 
 export default {
-  /*Controller to add a product to cart in WCS  */
+
+   /*
+    * Method to add a product to cart in WCS 
+    * Request params : userId
+    * Request Body : addToCart body as in WCS 
+    */
+
    addToCart: function(req,res){
         logger.info("inside add to cart");
 
@@ -51,9 +57,10 @@ export default {
    },
 
    /* 
-      Controller for getting Shopping Cart Item in WCS
-      Request Params : userId 
-  */
+    * Method for getting Shopping Cart Item in WCS
+    * Request Params : userId 
+    * Request Method : GET
+    */
   
    shoppingCart: function(req,res){
     
@@ -85,9 +92,12 @@ export default {
   },
 
   /* 
-      Controller for update Cart Item in WCS
-      Request Params : userId 
-  */
+   *  Method for updating the Cart Item in WCS
+   *  Request Params : userId 
+   *  Request Method : PUT
+   *  Request Body : updateShoppingCart body as in WCS
+   */
+   
   updateShoppingCartItem: function(req,res){
 
         let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART + constants.WCS_GET_SHOPPINGCART+constants.WCS_UPDATE_CART;
@@ -120,9 +130,12 @@ export default {
   },
 
   /* 
-      Controller for delete Shopping Cart Item in WCS
-      Request Params : userId 
-  */
+   *  Method for deleting Shopping Cart Item in WCS
+   *  Request Params : userId
+   *  Request Method : PUT
+   *  Request Body : deleteShoppingCartItem body as in WCS
+   */
+
   deleteShoppingCartItem: function(req,res){
 
         let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART + constants.WCS_GET_SHOPPINGCART+constants.WCS_DELETE_CART;
@@ -154,9 +167,10 @@ export default {
   },
 
   /* 
-      Controller for deleting All Shopping Cart Item in WCS
-      Request Params : userId 
-  */
+   * Method for deleting All Shopping Cart Items in WCS
+   * Request Params : userId 
+   * Request Method : DELETE
+   */
   
   deleteAllShoppingCartItem: function(req,res){
     
@@ -186,9 +200,9 @@ export default {
           });
     
     })
-  },
+  }
   
 
-}
+};
 
 

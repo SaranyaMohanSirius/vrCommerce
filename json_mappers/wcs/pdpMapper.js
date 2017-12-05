@@ -1,8 +1,11 @@
-import constants from '../../constants/elasticPath/constants';
-import util from '../../util/elasticPath/util';
 import JM from 'json-mapper';
 
 export default {
+
+  /* 
+   * JSON Mapper for generating responses for PDP page 
+   */
+
   mapPdpJSON: function(body,inv,definingAttributes){	
 		let converter = JM.makeConverter({
 			catalogEntryView: ['catalogEntryView', JM.map({		

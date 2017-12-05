@@ -1,20 +1,30 @@
 import constants from '../../constants/wcs/constants';
-import util from '../../util/wcs/util';
+import {
+	getLogger,
+	constructUrl,
+	constructRequestWithoutToken,
+	constructRequestWithToken
+} from '../../util/wcs/util';
 import shipModeMapper from '../../json_mappers/wcs/shipModeMapper';
 import request from 'request';
 import requestPromise from 'request-promise';
-let logger= util.getLogger();
 
-module.exports = {
+let logger= getLogger();
 
-  /*Controller for getting the Product details to be displayed in the PDP page in WCS*/
+export default {
+
+   /*
+    * Method for getting the shipping modes in WCS  
+    * Request Method: GET
+    */
+
 	getShipModes: function(res,req){
 	   
 		let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_SHIPMODES_APPEND;
-		logger.info("getShipModes post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));		
+		logger.info("getShipModes post form url:" + constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false));		
 		let messageData = {};
 		let method = "GET";
-		let requestCall = util.constructRequestWithoutToken(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false),method,messageData);
+		let requestCall = constructRequestWithoutToken(constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, false),method,messageData);
 		requestPromise(requestCall).then(function (data) {
 			  let result = shipModeMapper.mapShipModeJSON(data);
 			  res.send({
@@ -34,17 +44,23 @@ module.exports = {
  
 	},
 
+   /*
+    * Method for updating shipping modes in WCS  
+    * Request Method: PUT
+    * Request Params: shipModeId
+    */
+
 	updateShipModes: function(res,req){
 	   
 		let shipModeId = req.query.shipModeId;
 		let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_UPDATE_SHIP_INFO;
-		logger.info("updateShipModes post form url:" + util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true));		
+		logger.info("updateShipModes post form url:" + constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true));		
 		let messageData = {
 			"shipModeId": shipModeId,
 			"x_calculationUsage": constants.SHIP_CALC_USAGE
 		};
 		let method = "PUT";
-		let requestCall = util.constructRequestWithToken(util.constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true),method,messageData);
+		let requestCall = constructRequestWithToken(constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true),method,messageData);
 		requestPromise(requestCall).then(function (data) {
 			  res.send({
 				"success": true ,

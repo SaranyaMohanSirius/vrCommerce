@@ -1,12 +1,15 @@
-var JM = require('json-mapper');
-var _ = require("underscore");
-var extendify = require('extendify');
+import JM from 'json-mapper';
+import _ from 'underscore';
+import extendify from 'extendify';
 
-module.exports = {
+export default {
 
-  /*json Mapper for mapping the Addresses in WCS*/ 
+  /*
+   * json Mapper for mapping the Addresses in WCS
+   */
+
   mapGetAddressJSON: function(addressResp,checkoutResp){
-		var converter1 = JM.makeConverter({
+		let converter1 = JM.makeConverter({
 			address: ['contact',JM.map({
 					addressId : 'addressId',
 					addressLine: {
@@ -28,7 +31,7 @@ module.exports = {
 			})]			
 		});
 		
-		var converter = JM.makeConverter({
+		let converter = JM.makeConverter({
 			defaultAddress: ['CheckoutProfile',JM.map({
 					addressId : 'shipping_addressId',
 					addressLine: {
@@ -50,8 +53,8 @@ module.exports = {
 			})]			
 		});
 		
-		var defaultAddressResult = converter(checkoutResp);
-		var addressResult = converter1(addressResp);
+		let defaultAddressResult = converter(checkoutResp);
+		let addressResult = converter1(addressResp);
 		
 		_.extend = extendify({
 			inPlace: false,
@@ -59,8 +62,8 @@ module.exports = {
 			isDeep: true
 		});
 		
-		var contact = _.extend(defaultAddressResult,addressResult);
-		var result = { contact : [
+		let contact = _.extend(defaultAddressResult,addressResult);
+		let result = { contact : [
 			contact
 		]};
 		console.log(JSON.stringify(contact));	
@@ -69,9 +72,12 @@ module.exports = {
 
   },
 
-  /* Normal Response for Adding address this needs to be refined */ 
+  /* 
+   * Normal Response for Adding address this needs to be refined 
+   */ 
+
   mapAddAddressJSON: function(body){
-        var jsonResponse = {
+        let jsonResponse = {
 			userId: body.userId,			
 			addressId: body.addressId,
             addShippingAddressMsg: constants.WCS_ADDRESS_ADDED
@@ -79,26 +85,35 @@ module.exports = {
 		return JSON.parse(JSON.stringify(jsonResponse));
   }, 
 
-  /* Normal Response for Updating address this needs to be refined */ 
+  /* 
+   * Normal Response for Updating address this needs to be refined 
+   */ 
+
   mapUpdateAddressJSON: function(body){
-        var jsonResponse = {
+        let jsonResponse = {
 			addressId: body.addressId,
             updateShippingAddressMsg: constants.WCS_ADDRESS_UPDATED
         };      
 		return JSON.parse(JSON.stringify(jsonResponse));
   },   
 
-  /* Normal Response for Deleting address this needs to be refined */ 
+  /* 
+   * Normal Response for Deleting address this needs to be refined 
+   */ 
+   
   mapDeleteAddressJSON: function(body){
-        var jsonResponse = {
+        let jsonResponse = {
             deleteShippingAddressMsg: constants.WCS_ADDRESS_DELETED
         };      
 		return JSON.parse(JSON.stringify(jsonResponse));
   },
   
-  /* Normal Response for Selecting address this needs to be refined */ 
+  /* 
+   * Normal Response for Selecting address this needs to be refined 
+   */ 
+
   mapSelectAddressJSON: function(body){
-        var jsonResponse = {
+        let jsonResponse = {
             selectShippingAddressMsg: constants.WCS_ADDRESS_SELECTED
         };      
 		return JSON.parse(JSON.stringify(jsonResponse));

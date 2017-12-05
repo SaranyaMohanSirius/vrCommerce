@@ -1,13 +1,14 @@
-var constants = require('../../constants/wcs/constants');
-var util = require('../../util/wcs/util');
-var JM = require('json-mapper');
+import JM from 'json-mapper';
 
-module.exports = {
+export default {
 
-  /*json Mapper for mapping the Shipmodes in WCS*/ 
+  /*
+   * JSON Mapper for mapping the Shipmodes in WCS
+   */
+
   mapShipModeJSON: function(body){
 		
-		var converter = JM.makeConverter({
+		let converter = JM.makeConverter({
 		
 			usableShippingMode: [{
 				choice:['usableShippingMode', JM.map({
@@ -20,7 +21,7 @@ module.exports = {
 			}],
 		});
 	    
-		var result = converter(body);
+		let result = converter(body);
         return result;
 
   }          

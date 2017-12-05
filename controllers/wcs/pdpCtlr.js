@@ -7,15 +7,19 @@ import Promise from "bluebird";
 let logger = getLogger();
 
 export default {
-	/**
+
+	/*
 	 * Method for getting product details
+	 * Request Method: GET
+	 * Request Params: productId
 	 */
+
 	getProductDetails: function(req,res){
 		let productId = req.query.productId;
 		let path = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
 		let pdpURL = constructUrl(constants.WCS_HOSTNAME, path, false);
 		logger.info("getProductDetails post form url:" + pdpURL);
-    let requestCall = constructRequestWithoutToken(pdpURL,'GET','');
+   		let requestCall = constructRequestWithoutToken(pdpURL,'GET','');
 		requestPromise(requestCall).then(function(result){
 			return requestFunction(result);
 		});

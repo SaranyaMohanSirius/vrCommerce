@@ -7,11 +7,15 @@ import {getLogger,constructUrl,getAuthTokensFromDB,constructRequestWithToken,isJ
 let logger = getLogger();
 
 export default {
-    /**
+
+    /*
      * Method for getting promotions from cart
+     * Request Method : GET 
+     * Request Params : userId
      */
+
     getPromotionsAtCart: function(req,res){
-        logger.info("getPromotionsAtCart ctrl");
+        logger.info("inside getPromotionsAtCart ctrl");
         let userId = req.query.userId;
         let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_CART_AT_SELF;
         let getPromotionsAtCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,true);
@@ -41,9 +45,13 @@ export default {
         }
 
     },
-    /**
-     *   Method for applying promotion
+
+    /*
+     *  Method for applying promotion
+     *  Request Params : userId, promoCode
+     *  Request Method : POST
      */
+
     apply: function(req,res){
         let promoCode = req.query.promoCode;
         let userId = req.query.userId;
@@ -82,16 +90,20 @@ export default {
             })
         }
     },
-    /**
+
+    /*
      *  Method for deleting promotions
+     *  Request Params : promoCode,userId
+     *  Request Method : DELETE
      */
+
     delete: function(req,res){
         let promoCode = req.query.promoCode;
         let userId = req.query.userId;
         let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_CART_PROMOTIONS+"/"+promoCode;
         logger.info("promocode = "+promoCode);
         let deleteUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, path, true);
-        logger.info("DELETE Promotion URL "+deleteUrl);
+        logger.info("Delete Promotion URL "+deleteUrl);
 
         getAuthTokensFromDB(userId)
         .then(function(result){

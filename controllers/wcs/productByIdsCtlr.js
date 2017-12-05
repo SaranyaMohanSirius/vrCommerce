@@ -9,12 +9,14 @@ import Promise from "bluebird";
 
 let logger= getLogger();
 
-module.exports = {
+export default {
 
   /* 
-      Controller for getting Product Details By Ids in WCS
-      Request Params : id
-  */
+   *  Method for getting Product Details By Ids in WCS
+   *  Request Params : id
+   *  Request Method : GET
+   */
+
 	getProductDetailsByIds: function(res,req){
   	     let ids =  req.query.id;
         var urlIds= "";

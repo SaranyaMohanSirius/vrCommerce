@@ -3,7 +3,10 @@ import JM from 'json-mapper';
 import constants from '../../constants/wcs/constants';
 
 export default {
-	/* Map the Top category JSON*/
+
+	/* 
+	 * JSON Mapper for generating responses for Top category
+	 */
 
 	mapTopCategoryJSON: function(input){
 		let converter = JM.makeConverter({
@@ -22,7 +25,10 @@ export default {
 		
 		
 	},
-		/* Map the Sub Category JSON*/
+
+	 /* 
+	  * JSON Mapper for generating responses for Sub Category
+	  */
 
 	mapSubCategoryJSON: function(input){
 		let converter = JM.makeConverter({
@@ -41,11 +47,14 @@ export default {
 		
 		
 	},
-		/* Map the product list JSON for category landing page */
+
+	  /* 
+	   * JSON Mapper for generating responses for product list JSON for category landing page 
+	   */
 
 	mapProductsListForCategoryJSON: function(body,req,messageData){
 			 let totalCount = body.recordSetTotal;
-
+			 console.log("totalCount: "+totalCount + "messageData: " + messageData);
 			 let pageSize = messageData.pageSize;
 			 let totalPages;
 			 if(totalCount == pageSize){

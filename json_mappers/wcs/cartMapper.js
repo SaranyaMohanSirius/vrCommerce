@@ -1,7 +1,11 @@
 import constants from '../../constants/wcs/constants';
 import JM from 'json-mapper';
 
-module.exports = {
+export default {
+
+  /* 
+   * JSON Mapper for generating response for ADD TO CART 
+   */
 
   addToCartJSON: function(body,req){
 
@@ -19,6 +23,11 @@ module.exports = {
             let result = converter(body);
           	return result;
   },
+
+  /* 
+   * JSON Mapper for generating responses for shopping cart 
+   */
+
   mapShoppingCartJSON : function (body){
 
     let converter = JM.makeConverter({
@@ -76,6 +85,11 @@ module.exports = {
     return result;
 
   },
+
+  /* 
+   * JSON Mapper for generating request for update cart 
+   */
+
   mapUpdateCartRequestJSON : function(body){
     let converter = JM.makeConverter({
           orderItem :  ['lineItem',JM.map({
@@ -90,6 +104,11 @@ module.exports = {
     let result = converter(body);
     return result;
   },
+
+  /* 
+   * JSON Mapper for generating response for update cart 
+   */
+
   mapUpdateCartResponseJSON : function(body){
     let converter = JM.makeConverter({
           orderId : 'orderId',
@@ -102,6 +121,11 @@ module.exports = {
     let result = converter(body);
     return result;
   },
+
+  /* 
+   * JSON Mapper for generating request for delete cart 
+   */
+
   mapDeleteCartRequestJSON : function(body){
     let converter = JM.makeConverter({
             orderItemId :'lineItem.0.lineItemId',
@@ -110,6 +134,11 @@ module.exports = {
     let result = converter(body);
     return result;
   },
+
+  /* 
+   * JSON Mapper for generating response for delete cart 
+   */
+
   mapDeleteCartResponseJSON :  function(body){
     let converter = JM.makeConverter({
             orderId: ['orderId', function(arr){
@@ -119,6 +148,11 @@ module.exports = {
     let result = converter(body);
     return result;
   },
+
+  /* 
+   * JSON Mapper for generating response for delete all items in cart 
+   */
+
   mapDeleteAllCartJSON : function(body){
     let converter = JM.makeConverter({
             message: JM.helpers.def("All Cart Items are Deleted Successfully"),

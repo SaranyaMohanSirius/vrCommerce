@@ -1,5 +1,4 @@
 import constants from '../../constants/wcs/constants';
-import util from '../../util/wcs/util';
 import {getLogger,
         constructUrl,
         getAuthTokensFromDB,
@@ -8,11 +7,14 @@ import {getLogger,
 import categoryMapper from '../../json_mappers/wcs/categoryMapper';
 import requestPromise from 'request-promise';
 
-let logger= util.getLogger();
+let logger= getLogger();
 
 export default {
 
-  /*Controller for getting Top Cateogries in WCS*/
+  /*
+   * Method for getting Top Cateogries in WCS
+   * Request Method: GET
+   */
 
    getTopCategories: function(res){
 	   
@@ -40,9 +42,14 @@ export default {
 	              }
 	          });
 	},
-		/*Controller for getting Sub Cateogries for given ParentId in WCS*/
 
-		getSubCategories: function(res,req){
+	/*
+	 * Method for getting Sub Cateogries for given ParentId in WCS
+	 * Request Method : GET
+	 * Request Params : identifier
+ 	 */
+
+	getSubCategories: function(res,req){
 
 			let parentId = req.query.identifier;
 			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
@@ -69,6 +76,13 @@ export default {
 	          });
 
 	},
+
+	/* 
+	 * Method for getting product list for a given category - category landing page
+	 * Request Method : GET
+	 * Request Params : pagesize, current
+	 */
+
 	getProductsListForCategory: function(req,res,categoryId){
 
      		let pageSize = req.query.pagesize;
