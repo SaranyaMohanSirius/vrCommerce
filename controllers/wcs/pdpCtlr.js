@@ -47,17 +47,18 @@ export default {
 											displayNameArr[i] = (displayName);
 										}
 								}			
-								let choiceName = [];
+								
 								let definingAttributes = {
 									swatches: []
 								};
 								
 								for(let k=0; k<i ;k++) {
+									let choiceName = [];
 									for(let l=0; l<defAttributes[k].length; l++){		
 										let choice = {
 											"name" : defAttributes[k][l]
 										};
-										choiceName.push(choice);	
+										choiceName.push(choice);
 									}
 
 									definingAttributes.swatches.push({
