@@ -1,6 +1,6 @@
 import requestPromise from 'request-promise';
 import constants from '../../constants/elasticPath/constants';
-import addressMapper from '../../json_mappers/elasticPath/promotionsMapper';
+import promotionsMapper from '../../json_mappers/elasticPath/promotionsMapper';
 import {getLogger,
         constructUrl,
         constructRequest} from '../../util/elasticPath/util';
@@ -32,16 +32,43 @@ export default {
             });   
         }).catch(function (error) {
             if(error.response.body){
-              logger.error('errors in service to select the BillingAddress in EP: ', error.response.body);
+              logger.error('errors in service to apply promo code in EP: ', error.response.body);
               res.send({ "success": false, "error": error.response.body }); 
             }else{
-              logger.error('errors in service to select the BillingAddress in EP: ', error);
+              logger.error('errors in service to apply promo code in EP: ', error);
               res.send({ "success": false, "error": error});
             }
         });
+    },
+
+    /*Controller for getting promotions details at cart*/
+    getPromotionsAtCart: function(token,req,res){
+
+        let messageData = {};
+        let orderId = req.query.orderId;
+        let conCatUrl = constants.EP_APPLY_PROMO + orderId  + constants.EP_GET_PROMO_ZOOM;
+        let getPromoURL = constructUrl(constants.EP_HOSTNAME_CORTEX,conCatUrl,false);
+
+        logger.info('applyPromo url: ',  getPromoURL);
+        let method ='GET';
+        let requestCall = constructRequest(getPromoURL,method,messageData,token)
+        requestPromise(requestCall).then(function (data) {
+              let result = promotionsMapper.mapPromotionsResultJSON(data,orderId);
+              res.send({
+                "success": true ,
+                "result": result
+            });   
+        }).catch(function (error) {
+            if(error.response.body){
+              logger.error('errors in service to get promotion details in EP: ', error.response.body);
+              res.send({ "success": false, "error": error.response.body }); 
+            }else{
+              logger.error('errors in service to get promotion details in EP: ', error);
+              res.send({ "success": false, "error": error});
+            }
+        });
+
     }
-
-
 
 
 };
