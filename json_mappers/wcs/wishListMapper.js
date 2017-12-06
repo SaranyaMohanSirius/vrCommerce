@@ -10,7 +10,7 @@ export default {
 
         let converter = JM.makeConverter({
 
-          WishListId: "GiftList.0.uniqueID",
+          wishListId: "GiftList.0.uniqueID",
 
           itemList: ['GiftList.0.item', JM.map({
               wishListItemId: "giftListItemID",

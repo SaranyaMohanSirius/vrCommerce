@@ -62,7 +62,12 @@ export default {
    /*
     * Method to delete a product from wishlist in WCS  
     * Request Method : DELETE
-    * Request Params: userId, wishListItemId, wishListId
+    * Request Params: 
+    *  {
+    *    "userId": "9018",
+    *    "wishListItemId": "13041",
+    *    "wishListId": "12529"
+    *  }
     */
 
    deleteFromWishList: function(req,res){
@@ -152,7 +157,14 @@ export default {
    /*
     * Method to move a product from wishlist to cart in WCS  
     * Request Method: GET
-    * Request Params: wishListItemId, wishListId, quantity, productId, userId
+    * Request Params: 
+    *  {
+    *    "userId": "9018",
+    *    "wishListItemId": "13041",
+    *    "wishListId": "12529",
+    *    "quantity": "2",
+    *    "productId": "10140"
+    *  }
     */
 
     moveWishListItemToCart: function(req,res){
