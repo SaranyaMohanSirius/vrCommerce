@@ -88,6 +88,10 @@ export default {
      		let pageSize = req.query.pagesize;
    			let currentPageNumber = req.query.current;
     		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+			if(req.query.orderBy){
+   				let orderBy = req.query.orderBy;
+    			concatURL = concatURL + "&orderBy=" + orderBy; 
+    		}
 			let messageData = {
 			      'pageSize': pageSize,
 			      'currentPageNumber': currentPageNumber
