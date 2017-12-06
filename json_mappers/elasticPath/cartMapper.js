@@ -25,6 +25,7 @@ export default {
   /**
    * json mapper for mapping the product list json for category landing page in EP
    */
+  
   shoppingCartJSON: function(body){
              let converter = JM.makeConverter({
               totalQuantity: 'total-quantity',
@@ -36,20 +37,19 @@ export default {
                 description:JM.helpers.def(''),
                 displayLevel:JM.helpers.def(''),
                 usage:JM.helpers.def('Discount'),
-               })],
-               
+               })], 
                grandTotal:'_order.0._total.0.cost.0.display',
                grandTotalCurrency:'_order.0_total.0.cost.0.currency',
-               orderId:'_order.0.self.uri',
+               orderId:'_order.0._total.0.links.0.uri',
                cartLineItemId: '_lineitems.0.self.uri',
                orderItem : ['_lineitems.0._element', JM.map({
                 currency:'_price.0.purchase-price.0.currency',
                 freeGift:JM.helpers.def('false'),
-                orderItemId:'self.uri',
+                orderItemId:'_availability.0.links.0.uri',
                 orderItemInventoryStatus:'_availability.0.state',
                 orderItemPrice:'_total.0.cost.0.display',
                 partNumber:'_item.0._code.0.code',
-                productId:'_item.0.self.uri',
+                productId:'_item.0._code.0.links.0.uri',
                 quantity:'quantity',
                 salesTax:JM.helpers.def(''),
                 salesTaxCurrency:JM.helpers.def(''),
