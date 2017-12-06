@@ -141,7 +141,16 @@ Response:
 
 Move an Item from WishList to Cart 
 
-Request: GET : http://localhost:5000/wcs/wishlist/moveWishListItemToCart?productId=10140&wishListId=12536&wishListItemId=13048&userId=9023&quantity=2
+Request: POST : http://localhost:5000/wcs/wishlist/moveWishListItemToCart?userId=9023
+
+Request - Body: 
+
+{
+        "wishListItemId": "13055",
+        "wishListId": "12540",
+        "quantity": "2",
+        "productId": "10140"
+}
 
 Response: 
 
@@ -162,7 +171,7 @@ Response:
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Product View By IDs:
-Request : GET : http://localhost:5000/wcs/product/getProductDetailsByIds?ids=12847&ids=12849&ids=12851
+Request : GET : http://localhost:5000/wcs/product/getProductDetailsByIds?id=12847&id=12849&id=12851
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

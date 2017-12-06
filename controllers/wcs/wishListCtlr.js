@@ -156,10 +156,10 @@ export default {
 
    /*
     * Method to move a product from wishlist to cart in WCS  
-    * Request Method: GET
-    * Request Params: 
+    * Request Method: POST
+    * Request params: userId
+    * Request Body: 
     *  {
-    *    "userId": "9018",
     *    "wishListItemId": "13041",
     *    "wishListId": "12529",
     *    "quantity": "2",
@@ -170,10 +170,10 @@ export default {
     moveWishListItemToCart: function(req,res){
     logger.info("inside moveWishListItemToCart");
 
-    let wishListItemId = req.query.wishListItemId;
-    let wishListId = req.query.wishListId;
-    let quantity = req.query.quantity;
-    let productId = req.query.productId;
+    let wishListItemId = req.body.wishListItemId;
+    let wishListId = req.body.wishListId;
+    let quantity = req.body.quantity;
+    let productId = req.body.productId;
     
     let concatDeleteURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_WISHLIST_DELETE + wishListId + "?wishListItemId=" + wishListItemId +"&catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
     let deleteFromWishListUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatDeleteURL, true);

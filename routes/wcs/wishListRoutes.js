@@ -31,7 +31,7 @@ router.get('/getWishList', function(req, res){
  * router for addItemToShoppingCartFromWishList 
  */
 
-router.get('/moveWishListItemToCart', function(req, res){
+router.post('/moveWishListItemToCart', function(req, res){
     wishList.moveWishListItemToCart(req,res);
 }); 
 
