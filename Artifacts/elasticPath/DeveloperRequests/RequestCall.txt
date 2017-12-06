@@ -210,3 +210,7 @@ Input Body :
 
 
 
+** getWishList
+
+Request : GET : http://localhost:5000/ep/wishlist/getWishList
+

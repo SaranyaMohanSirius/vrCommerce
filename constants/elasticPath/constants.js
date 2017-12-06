@@ -43,7 +43,7 @@ export default {
   "EP_GET_SHIPPING_ADDRESS_ZOOM": "/deliveries?zoom=element:destinationinfo:selector:chosen:description,element:destinationinfo:selector:choice:description",
   "EP_SHIPMODE_ZOOM" : "?zoom=order:deliveries:element:shippingoptioninfo:selector:choice:description,order:deliveries:element:shippingoptioninfo:selector:chosen:description",  
   "EP_GET_SHIPPING_ADDRESS_SELECTOR_ZOOM" : "/deliveries?zoom=element:destinationinfo:selector",
-  "EP_WHISHLIST_CART_ZOOM" :"",
+  "EP_WHISHLIST_CART_ZOOM" :"?zoom=lineitems:element,lineitems:element:item:code",
   "EP_GET_PROMO_ZOOM" : "/info?zoom=coupon:appliedpromotions:element",
 
 
