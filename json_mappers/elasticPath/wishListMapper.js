@@ -37,6 +37,19 @@ export default {
             }
          
             return result;
-        }
-        
+        },
+        /**
+         * json mapper for mapping WishList
+         */
+        getMoveWishListJSON: function(body){
+            let jsonResponse = {
+                orderItem: [
+                    {
+                        orderItemId: body.self.uri
+                    }
+                ]
+               };      
+                return JSON.parse(JSON.stringify(jsonResponse));
+        }       
+                
 };

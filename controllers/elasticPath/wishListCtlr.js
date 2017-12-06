@@ -151,7 +151,39 @@ export default  {
                     res.send({ "success": false, "error": error});
                 }
             });
-        }
+        },
+
+   /**
+   * Controller for Moving Item to Cart
+   * Method : POST
+   * 
+   */
+
+  moveWishListItemToCart: function(req,res){
+    let token=constants.EP_ACCESS_TOKEN;
+    let messageData = {"quantity":req.body.quantity};
+    let wishListItemId = req.body.wishListItemId;
+    let concattUrl =  wishListItemId+constants.EP_CARTS+ constants.EP_FORM + constants.EP_FOLLOW_LOCATION;
+    let moveItemToCartURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)  
+    logger.info('Move Item to WishList', moveItemToCartURL);
+    let method ='POST';
+    let requestCall = constructRequest(moveItemToCartURL,method,JSON.parse(JSON.stringify(messageData)),token);
+    requestPromise(requestCall).then(function (data) { 
+             let result = wishListMapper.getMoveWishListJSON(JSON.parse(JSON.stringify(data))); 
+                  res.send({
+                    "success": true,
+                    "result" : result                                 
+                });   
+    }).catch(function (error) {
+                if(error.response.body){
+                  logger.error('errors in service to Move WishList to Cart EP: ', error.response.body);
+                  res.send({ "success": false, "error": error.response.body }); 
+                }else{
+                  logger.error('errors in service to Move WishList to Cart EP: ', error);
+                  res.send({ "success": false, "error": error});
+                }
+    });
+  }
 
 }
 

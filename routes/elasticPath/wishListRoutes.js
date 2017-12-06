@@ -23,6 +23,12 @@ router.get('/getWishList', function(req, res) {
 router.delete('/deleteFromWishList', function(req, res){
     wishList.deleteFromWishList(req,res);
 }); 
+/* 
+ * router for addItemToShoppingCartFromWishList 
+ */
 
+router.post('/moveWishListItemToCart', function(req, res){
+    wishList.moveWishListItemToCart(req,res);
+});
 
 export default router;

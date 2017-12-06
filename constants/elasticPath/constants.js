@@ -30,6 +30,7 @@ export default {
   "EP_WHISHLIST": "/wishlists",
   "HTML_DIR" : "WebContent/html/",
   "EP_FORM": "/form",
+  "EP_CARTS": "/carts",
   "EP_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "EP_IMAGE_FMT": ".jpg",
 
