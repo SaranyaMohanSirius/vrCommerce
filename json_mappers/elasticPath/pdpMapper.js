@@ -1,11 +1,15 @@
 import constants from '../../constants/elasticPath/constants';
 import JM from 'json-mapper';
+import {getLogger} from '../../util/elasticPath/util';
+import _ from 'underscore';
+import extendify from 'extendify';
+let logger=getLogger();
 
 
 module.exports = {
 
   /*json Mapper for mapping the PDP header in EP*/ 
-  mapPdpJSON: function(body, concatImageURL){
+  mapPdpJSON: function(body, concatImageURL, imageNames, recommendations){
 		
 		let converter = JM.makeConverter({
 		
@@ -42,6 +46,7 @@ module.exports = {
 				
 				attributes: ['_definition.0.details', JM.map({
 					  displayable: JM.helpers.def('true'),
+					  usage: JM.helpers.def('Descriptive'),
 					  name: 'display-name',
 					  identifier: 'name',
 					  values: 'value', 
@@ -66,8 +71,18 @@ module.exports = {
 				fullImage: JM.helpers.def(concatImageURL),
 			}],
 		});
-	    
+		
 		let result = converter(body);
+		result.catalogEntryView.merchandisingAssociations = recommendations;
+		/*
+		for(var i=0; imageNames.length; i++){
+			
+			result.catalogEntryView.merchandisingAssociations[i].fullImage = imageNames[i];
+			result.catalogEntryView.merchandisingAssociations[i].thumbnail = imageNames[i];
+			
+		}
+		*/
+
         return result;
 
   }          
