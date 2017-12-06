@@ -214,3 +214,23 @@ Input Body :
 
 Request : GET : http://localhost:5000/ep/wishlist/getWishList
 
+
+** Delete WishList 
+
+Request : DELETE : http://localhost:5000/ep/wishlist/deleteFromWishList
+
+  1) Delete Entire  Item in WishList: 
+      Input 
+      {
+       "wishListId":"/wishlists/britney/ge4wgzdfgfsggllgmu2dgljugeztgljyhbrdkllegiztenzwgrrtmmbxhe=/lineitems"
+     }
+
+  2)  Delete particular Item in WishList
+      {
+   "wishListId":"/wishlists/britney/ge4wgzdfgfsggllgmu2dgljugeztgljyhbrdkllegiztenzwgrrtmmbxhe=/lineitems",
+   "itemList":[ 
+    {
+        "wishListItemId": "/wishlists/britney/ge4wgzdfgfsggllgmu2dgljugeztgljyhbrdkllegiztenzwgrrtmmbxhe=/lineitems/mi3tomzxg44dallbga3dmljumqztkllcmnsdqljqmfrdcmzxg5tdkolfmi=" 
+    }
+   ]
+  }

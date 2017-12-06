@@ -16,4 +16,13 @@ router.get('/getWishList', function(req, res) {
 	wishList.getWishList(req,res);
 });
 
+/* 
+ * router for deleteFromWishList 
+ */
+
+router.delete('/deleteFromWishList', function(req, res){
+    wishList.deleteFromWishList(req,res);
+}); 
+
+
 export default router;

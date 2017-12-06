@@ -50,7 +50,7 @@ module.exports = {
 										"result": result,                                            
 									  }); 
 	  }, function(err) {
-				logger.error('errors in service hit to login service' + err);
+				logger.error('errors in service hit to Add to Cart service' + err);
 				res.send({ "success": false, "error": err });
 	  });
 
@@ -63,7 +63,7 @@ getAddToCartRequestPromise: function(authToken,data,url) {
           let result = cartMapper.shoppingCartJSON(data); 
              return resolve({success:true, url:url,body:data});
       }).catch(function (error) {
-          logger.error('errors in service to updateShoppingCartItem in EP: ', error);
+          logger.error('errors in service to Add to Cart in EP: ', error);
           return resolve({success:false, error:error})
       }); 
     });
@@ -117,9 +117,10 @@ getShoppingCart: function(req,res){
                 "result": result,                                            
               });   
         }).catch(function (error) {
+      
           if(error.response.body){
             logger.error('errors in service to updateShoppingCartItem in EP: ', error.response.body);
-            res.send({ "success": false, "error": error.response.body }); 
+            res.send({ "success": false, "error": error }); 
           }else{
             logger.error('errors in service to updateShoppingCartItem in EP: ', error);
             res.send({ "success": false, "error": error});

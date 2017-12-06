@@ -5,7 +5,6 @@ import {
 	getLogger
 } from '../../util/wcs/util';
 import addressMapper from '../../json_mappers/wcs/addressMapper';
-import request from 'request';
 import requestPromise from 'request-promise';
 
 let logger= getLogger();
