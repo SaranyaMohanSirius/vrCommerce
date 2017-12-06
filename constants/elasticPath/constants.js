@@ -20,7 +20,7 @@ export default {
   "EP_CART" : "/carts/"+storeName+"/default",
   "EP_CURRENT_ORDER" : "/orders/"+storeName+"/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",  
   "EP_WHISHLIST_URL" : "wishlists/"+storeName+"/default" ,
-
+  "EP_APPLY_PROMO"  : "/coupons",
 
 
   // All additional params for Url Goes here
@@ -35,7 +35,7 @@ export default {
 
   // All Zoom Constant Goes Here
   "EP_SUB_CATEGORIES_ZOOM" : "?zoom=child",
-  "EP_SEARCH_ZOOM" : "?zoom=element:availability,element:code,element:definition,element:element,element:price",
+  "EP_SEARCH_ZOOM" : "?zoom=element:availability,element:code,element:definition,element:price",
   "EP_PDP_ZOOM" : "?zoom=availability,code,definition,definition:options:element,definition:options:element:selector:choice:description,definition:options:element:selector:chosen:description,price",
   "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item,lineitems:element:item:code,lineitems:element:price,lineitems:element:total,order,order:tax,order:total,total",
   "EP_GET_BILLING_ADDRESS_ZOOM": "/billingaddressinfo?zoom=selector:choice:description,selector:chosen:description",

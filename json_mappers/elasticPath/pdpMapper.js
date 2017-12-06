@@ -42,7 +42,6 @@ module.exports = {
 				
 				attributes: ['_definition.0.details', JM.map({
 					  displayable: JM.helpers.def('true'),
-					  usage: JM.helpers.def('Descriptive'),
 					  name: 'display-name',
 					  identifier: 'name',
 					  values: 'value', 
