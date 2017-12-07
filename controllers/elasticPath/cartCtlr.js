@@ -50,8 +50,8 @@ module.exports = {
 										"result": result,                                            
 									  }); 
 	  }, function(err) {
-				logger.error('errors in service hit to Add to Cart service' + err);
-				res.send({ "success": false, "error": err });
+                logger.error('errors in service hit to Add to Cart service' + err);
+                res.send({ "success": false, "error": err });
 	  });
 
 },
@@ -59,8 +59,7 @@ module.exports = {
 getAddToCartRequestPromise: function(authToken,data,url) {
   return new Promise(function(resolve,reject){
     let requestCall = constructRequest(url,"POST",data,authToken)
-    requestPromise(requestCall).then(function (data) {
-          let result = cartMapper.shoppingCartJSON(data); 
+    requestPromise(requestCall).then(function (data) { 
              return resolve({success:true, url:url,body:data});
       }).catch(function (error) {
           logger.error('errors in service to Add to Cart in EP: ', error);
