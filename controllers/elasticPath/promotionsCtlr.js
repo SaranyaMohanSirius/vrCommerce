@@ -42,12 +42,13 @@ export default {
     },
 
     /*Controller for getting promotions details at cart*/
+
     getPromotionsAtCart: function(token,req,res){
 
         let messageData = {};
         let orderId = req.query.orderId;
-        let conCatUrl = constants.EP_APPLY_PROMO + orderId  + constants.EP_GET_PROMO_ZOOM;
-        let getPromoURL = constructUrl(constants.EP_HOSTNAME_CORTEX,conCatUrl,false);
+        let conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_PROMO_ZOOM;
+        let getPromoURL = constructUrl(constants.EP_HOSTNAME,conCatUrl,false);
 
         logger.info('applyPromo url: ',  getPromoURL);
         let method ='GET';
@@ -64,6 +65,34 @@ export default {
               res.send({ "success": false, "error": error.response.body }); 
             }else{
               logger.error('errors in service to get promotion details in EP: ', error);
+              res.send({ "success": false, "error": error});
+            }
+        });
+
+    },
+
+    /*Controller for getting coupon promotions applied to the cart*/
+
+    getPromoCodePromotionsAtCart: function(token,req,res){
+        let messageData = {};
+        let conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_COUPON_PROMO_ZOOM;
+        let getPromoCodePromoURL = constructUrl(constants.EP_HOSTNAME,conCatUrl,false);
+
+        logger.info('getPromoCodePromo url: ',  getPromoCodePromoURL);
+        let method ='GET';
+        let requestCall = constructRequest(getPromoCodePromoURL,method,messageData,token)
+        requestPromise(requestCall).then(function (data) {
+              let result = promotionsMapper.mapPromoCodePromotionsResultJSON(data);
+              res.send({
+                "success": true ,
+                "result": result
+            });   
+        }).catch(function (error) {
+            if(error.response.body){
+              logger.error('errors in service to get promo code promotion details in EP: ', error.response.body);
+              res.send({ "success": false, "error": error.response.body }); 
+            }else{
+              logger.error('errors in service to get promo code promotion details in EP: ', error);
               res.send({ "success": false, "error": error});
             }
         });

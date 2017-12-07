@@ -21,5 +21,20 @@ router.get('/getPromotionsAtCart',function(req,res){
 	promotions.getPromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
 });
 
+/**
+*	Route to get all promotion applied to the cart
+*/
+router.get('/getPromotionsAtCart',function(req,res){
+	promotions.getPromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
+});
+
+
+/**
+*	Route to get coupon promotion applied to the cart
+*/
+router.get('/getPromoCodePromotionsAtCart',function(req,res){
+	promotions.getPromoCodePromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
+});
+
 
 export default router;
