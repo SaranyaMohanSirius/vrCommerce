@@ -5,6 +5,10 @@ import {getLogger,
 import pdpMapper from '../../json_mappers/elasticPath/pdpMapper';
 import requestPromise from 'request-promise';
 let logger=getLogger();
+import JM from 'json-mapper';
+import extendify from 'extendify';
+import _ from 'underscore';
+
 
 module.exports = {
 
@@ -33,48 +37,15 @@ module.exports = {
 		  if(typeof data._recommendations != "undefined"){
 			  let merchAssoc = data._recommendations[0]._crosssell[0]._element;
 			  let merchAssocSize = merchAssoc.length;
-			  
 			  for (var i=0; i<merchAssocSize; i++){
 				codes[i] = data._recommendations[0]._crosssell[0]._element[i]._code[0].code;
-				let iName = (code.split("-")[0]).toUpperCase();
+				let iName = (codes[i].split("-")[0]).toUpperCase();
 				iName = iName.replace(".", "-");
-				imageNames[i] = iName;
+				imageNames.push(iName);
 			  }		  
 
 			  for(let i=0; i< merchAssocSize; i++){
-				  /*
-				  let listPrice = data._recommendations[0]._crosssell[0]._element[i]._price[0].list-price[0].display;
-				  let purchasePrice = data._recommendations[0]._crosssell[0]._element[i]._price[0].purchase-price[0].display;
-				  */
-				  let attributesList = data._recommendations[0]._crosssell[0]._element[i]._definition[0].details;
-				  for(let i=0; i<attributesList.length; i++){
-					attributes[i] = {
-						  displayable: 'true',
-						  usage: 'Descriptive',
-						  /*
-						  name: attributesList[i].display-name,
-						  */
-						  identifier: attributesList[i].name,
-						  values: attributesList[i].value,
-					};
-				  }
-				  crossellData[i] = {
-						hasSingleSKU: 'hasSingleSKU',
-						availability: data._recommendations[0]._crosssell[0]._element[i]._availability[0].state,
-						catalogEntryTypeCode: 'catalogEntryTypeCode',				
-						buyable: 'true',				
-						store: constants.EP_STORE,			
-						/*
-						listPrice : data._recommendations[0]._crosssell[0]._element[i]._price[0].list-price[0].display,
-						purchasePrice: data._recommendations[0]._crosssell[0]._element[i]._price[0].purchase-price[0].display,
-						*/
-						code: data._recommendations[0]._crosssell[0]._element[i]._code[0].code,
-						resourceId : data._recommendations[0]._crosssell[0]._element[i]._code[0].links[0].uri,			
-						/*
-						displayName: data._recommendations[0]._crosssell[0]._element[i]._definition[0].display-name,	
-						*/
-						attributes: attributes,
-				  };
+				  crossellData[i] = pdpMapper.convertMerchAssoc(data._recommendations[0]._crosssell[0]._element[i]);
 			  }
 		  }	
 		  
@@ -83,47 +54,15 @@ module.exports = {
 			  let merchAssocSize = merchAssoc.length;
 			  for (var i=0; i<merchAssocSize; i++){
 				codes[i] = data._recommendations[0]._upsell[0]._element[i]._code[0].code;
-				let iName = (code.split("-")[0]).toUpperCase();
+				let iName = (codes[i].split("-")[0]).toUpperCase();
 				iName = iName.replace(".", "-");
-				imageNames[i] = iName;
+				imageNames.push(iName);
 			  }		  
-			  let upsell = data._recommendations[0]._upsell[0]._element;
-			  for(let i=0; i< upsell.length; i++){
-				  /*
-				  let listPrice = data._recommendations[0]._upsell[0]._element[i]._price[0].list-price[0].display;
-				  let purchasePrice = data._recommendations[0]._upsell[0]._element[i]._price[0].purchase-price[0].display;
-				  */
-				  let attributesList = data._recommendations[0]._upsell[0]._element[i]._definition[0].details;
-				  for(let i=0; i<attributesList.length; i++){
-					attributes[i] = {
-						  displayable: 'true',
-						  usage: 'Descriptive',
-						  /*
-						  name: attributesList[i].display-name,
-						  */
-						  identifier: attributesList[i].name,
-						  values: attributesList[i].value,
-					};
-				  }
-				  upsellData[i] = {
-						hasSingleSKU: 'hasSingleSKU',
-						availability: data._recommendations[0]._upsell[0]._element[i]._availability[0].state,
-						catalogEntryTypeCode: 'catalogEntryTypeCode',				
-						buyable: 'true',				
-						store: constants.EP_STORE,			
-						/*
-						listPrice : data._recommendations[0]._upsell[0]._element[i]._price[0].list-price[0].display,
-						purchasePrice: data._recommendations[0]._upsell[0]._element[i]._price[0].purchase-price[0].display,
-						*/
-						code: data._recommendations[0]._upsell[0]._element[i]._code[0].code,
-						resourceId : data._recommendations[0]._upsell[0]._element[i]._code[0].links[0].uri,			
-						/*
-						displayName: data._recommendations[0]._upsell[0]._element[i]._definition[0].display-name,	
-						*/
-						attributes: attributes,
-				  };
+			  for(let i=0; i< merchAssocSize; i++){
+				upsellData[i] = pdpMapper.convertMerchAssoc(data._recommendations[0]._upsell[0]._element[i]);
 			  }
 		  }	
+		  
 		  let recommendations = crossellData.concat(upsellData);
 		  let result = pdpMapper.mapPdpJSON(data,concatImageURL,imageNames,recommendations); 
 		  res.send({
@@ -131,10 +70,9 @@ module.exports = {
 			"result": result,                                            
 		  });    
       }).catch(function (error) {
-		  logger.info("Error:" + error);
             logger.error('errors in service to getProduct Details in EP: ', error);
             res.send({ "success": false, "error": error});
       });
-  } 
-
+  }
+  
 };
