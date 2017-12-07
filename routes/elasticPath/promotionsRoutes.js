@@ -36,5 +36,11 @@ router.get('/getPromoCodePromotionsAtCart',function(req,res){
 	promotions.getPromoCodePromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
 });
 
+/**
+*	Route to delete promo code
+*/
+router.delete('/delete',function(req,res){
+	promotions.delete(constants.EP_ACCESS_TOKEN,req,res);
+})
 
 export default router;

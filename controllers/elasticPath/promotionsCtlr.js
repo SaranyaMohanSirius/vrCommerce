@@ -97,6 +97,35 @@ export default {
             }
         });
 
+    },
+
+    delete: function(token,req,res){
+        let messageData = {};
+        let promotionId = req.body.promotionId;
+        let promoCode = req.body.promoCode;
+        let deletePromoCodeURL = constructUrl(constants.EP_HOSTNAME_CORTEX,promotionId,false);
+
+        logger.info('deletePromoCode url: ',  deletePromoCodeURL);
+        let method ='DELETE';
+        let requestCall = constructRequest(deletePromoCodeURL,method,messageData,token)
+        requestPromise(requestCall).then(function (data) {
+           res.send({
+                "success": true ,
+                "result": {
+                    "orderId": '',
+                    "promoCode": promoCode
+                }
+             });                                          
+            }).catch(function (error) {
+            if(error.response.body){
+              logger.error('errors in service to delete promo code in EP: ', error.response.body);
+              res.send({ "success": false, "error": error.response.body }); 
+            }else{
+              logger.error('errors in service to delete promo code in EP: ', error);
+              res.send({ "success": false, "error": error});
+            }
+        });
+
     }
 
 
