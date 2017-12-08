@@ -5,17 +5,17 @@ import constants from '../../constants/elasticPath/constants';
 
 /*App needs to pass EP access token*/
 router.get('/getTopCategories', function(req, res) {
-	category.getTopCategories(constants.EP_ACCESS_TOKEN,res);
+	category.getTopCategories(req,res);
 });
 
 /*App needs to pass EP access token & category Identifier*/
 router.get('/getSubCategories', function(req, res) {
-	category.getSubCategories(constants.EP_ACCESS_TOKEN,res,req.query.identifier);
+	category.getSubCategories(req,res);
 });
 
 /*App needs to pass EP access token & category Identifier*/
 router.get('/getProductsListForCategory', function(req, res) {
-	category.getProductsListForCategory(constants.EP_ACCESS_TOKEN,res,req.query.identifier);
+	category.getProductsListForCategory(req,res);
 });
 
 export default router;

@@ -11,9 +11,10 @@ let logger=getLogger();
 module.exports = {
 
   /*Controller for getting the Top level categories for header in EP*/ 
-  getTopCategories: function(token,res){
+  getTopCategories: function(req,res){
     
       let messageData = {};
+      let token = constants.EP_ACCESS_TOKEN;
 
       let topCategoriesURL = constructUrl(constants.EP_HOSTNAME, constants.EP_TOP_CATEGORIES, false);   
       logger.info('Top categories EP url: ', topCategoriesURL);
@@ -38,9 +39,12 @@ module.exports = {
   },
 
   /*Controller for getting the Sub categories for header nav menu in EP*/
-  getSubCategories: function(token,res,identifier){
+  getSubCategories: function(req,res){
     
       let messageData = {};
+      let token = constants.EP_ACCESS_TOKEN;
+
+      let identifier = req.query.identifier;
       let concattUrl =  identifier + constants.EP_SUB_CATEGORIES_ZOOM;
       let subCategoriesURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
       logger.info('Sub Categories EP url:' , subCategoriesURL);
@@ -66,9 +70,12 @@ module.exports = {
   },
 
   /*Controller for getting the products list for a given category/subcategory in EP*/
-  getProductsListForCategory: function(token,res,identifier){
+  getProductsListForCategory: function(req,res){
 
       let messageData = {};
+      let token = constants.EP_ACCESS_TOKEN;
+      
+      let identifier = req.query.identifier;
       let n = identifier.split("/");
       let categoryIdentifier = n[n.length - 1];
       let concatURL =  constants.EP_PRODUCTS_FROM_CATEGORIES_NAV + categoryIdentifier + constants.EP_SEARCH_ZOOM;
