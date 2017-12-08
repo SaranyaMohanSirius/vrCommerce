@@ -34,7 +34,7 @@ module.exports = {
 				  crossellData[i] = pdpMapper.convertMerchAssoc(data._recommendations[0]._crosssell[0]._element[i]);
 			  }
 		  }	
-		  
+		  /*
 		  if(typeof data._recommendations != "undefined"){
 			  let merchAssoc = data._recommendations[0]._upsell[0]._element;
 			  let merchAssocSize = merchAssoc.length;
@@ -44,6 +44,8 @@ module.exports = {
 		  }	
 		  
 		  let recommendations = crossellData.concat(upsellData);
+		  */
+		  let recommendations = crossellData;
 		  let result = pdpMapper.mapPdpJSON(data,recommendations); 
 		  res.send({
 			"success": true ,
