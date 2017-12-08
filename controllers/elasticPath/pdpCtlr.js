@@ -35,6 +35,8 @@ module.exports = {
 			  }
 		  }	
 		  /*
+		  Taking out the upsell functionality
+		  
 		  if(typeof data._recommendations != "undefined"){
 			  let merchAssoc = data._recommendations[0]._upsell[0]._element;
 			  let merchAssocSize = merchAssoc.length;
@@ -45,7 +47,7 @@ module.exports = {
 		  
 		  let recommendations = crossellData.concat(upsellData);
 		  */
-		  let recommendations = crossellData;
+		  let recommendations = crossellData.concat(upsellData);
 		  let result = pdpMapper.mapPdpJSON(data,recommendations); 
 		  res.send({
 			"success": true ,
