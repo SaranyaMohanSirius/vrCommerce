@@ -4,7 +4,7 @@ import JM from 'json-mapper';
 module.exports = {
 
   /*json Mapper for mapping the PDP header in EP*/ 
-  mapPdpJSON: function(body, concatImageURL, imageNames, recommendations){
+  mapPdpJSON: function(body, recommendations){
 		
 		let converter = JM.makeConverter({
 		
@@ -62,8 +62,20 @@ module.exports = {
 					})],
 				})],
 				
-				thumbnail: JM.helpers.def(concatImageURL),
-				fullImage: JM.helpers.def(concatImageURL),
+				thumbnail : ['_code.0.code',function(code){ 
+				    let imageName = (code.split("-")[0]).toUpperCase();
+				    imageName = imageName.replace(".", "-");
+				    let concatImageURL =  constants.EP_AWS_IMAGE_PATH + imageName + constants.EP_IMAGE_FMT;		  
+					return concatImageURL;
+				}],
+
+				fullImage : ['_code.0.code',function(code){ 
+				    let imageName = (code.split("-")[0]).toUpperCase();
+				    imageName = imageName.replace(".", "-");
+				    let concatImageURL =  constants.EP_AWS_IMAGE_PATH + imageName + constants.EP_IMAGE_FMT;		  
+					return concatImageURL;
+				}],
+				
 			}],
 		});
 		
@@ -71,16 +83,6 @@ module.exports = {
 		
 		result.catalogEntryView.merchandisingAssociations = recommendations;
 		
-		let imageArray = [];		
-		for(let i=imageNames.length-1; i>=0; i--){
-			imageArray[i] = imageNames.pop();
-		}
-
-		for(var i=0; i<imageArray.length; i++){				
-			result.catalogEntryView.merchandisingAssociations[i].fullImage = imageArray[i];
-			result.catalogEntryView.merchandisingAssociations[i].thumbnail = imageArray[i];
-		}
-
         return result;
 
   },
@@ -127,19 +129,19 @@ module.exports = {
 
 			})],
 			
-			swatches: ['_definition.0._options.0._element', JM.map({
-				displayName: 'display-name',
-				options: ['_selector', JM.map({
-					choice: ['_choice', JM.map({
-						name: '_description.0.display-name',
-						unniqueId: '_description.0.self.uri',
-					})],
-					chosen: ['_chosen', JM.map({
-						name: '_description.0.display-name',
-						uniqueId: '_description.0.self.uri',
-					})],
-				})],
-			})],
+			thumbnail : ['_code.0.code',function(code){ 
+				let imageName = (code.split("-")[0]).toUpperCase();
+				imageName = imageName.replace(".", "-");
+				let concatImageURL =  constants.EP_AWS_IMAGE_PATH + imageName + constants.EP_IMAGE_FMT;		  
+				return concatImageURL;
+			}],
+
+			fullImage : ['_code.0.code',function(code){ 
+				let imageName = (code.split("-")[0]).toUpperCase();
+				imageName = imageName.replace(".", "-");
+				let concatImageURL =  constants.EP_AWS_IMAGE_PATH + imageName + constants.EP_IMAGE_FMT;		  
+				return concatImageURL;
+			}],
 			
 		});
 		

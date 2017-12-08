@@ -24,26 +24,12 @@ module.exports = {
     let method ='GET';
     let requestCall = constructRequest(pdpUrl,method,messageData,token)
     requestPromise(requestCall).then(function (data) {		
-          let code = data._code[0].code;
-		  let imageName = (code.split("-")[0]).toUpperCase();
-		  imageName = imageName.replace(".", "-");
-		  let concatImageURL =  constants.EP_AWS_IMAGE_PATH + imageName + constants.EP_IMAGE_FMT;		  
-		  let codes = [];
-		  let imageNames = [];
 		  let crossellData = [];
 		  let upsellData = [];
-		  let attributes = [];
 
 		  if(typeof data._recommendations != "undefined"){
 			  let merchAssoc = data._recommendations[0]._crosssell[0]._element;
-			  let merchAssocSize = merchAssoc.length;
-			  for (var i=0; i<merchAssocSize; i++){
-				codes[i] = data._recommendations[0]._crosssell[0]._element[i]._code[0].code;
-				let iName = (codes[i].split("-")[0]).toUpperCase();
-				iName = iName.replace(".", "-");
-				imageNames.push(iName);
-			  }		  
-
+			  let merchAssocSize = merchAssoc.length;	  
 			  for(let i=0; i< merchAssocSize; i++){
 				  crossellData[i] = pdpMapper.convertMerchAssoc(data._recommendations[0]._crosssell[0]._element[i]);
 			  }
@@ -52,19 +38,13 @@ module.exports = {
 		  if(typeof data._recommendations != "undefined"){
 			  let merchAssoc = data._recommendations[0]._upsell[0]._element;
 			  let merchAssocSize = merchAssoc.length;
-			  for (var i=0; i<merchAssocSize; i++){
-				codes[i] = data._recommendations[0]._upsell[0]._element[i]._code[0].code;
-				let iName = (codes[i].split("-")[0]).toUpperCase();
-				iName = iName.replace(".", "-");
-				imageNames.push(iName);
-			  }		  
 			  for(let i=0; i< merchAssocSize; i++){
 				upsellData[i] = pdpMapper.convertMerchAssoc(data._recommendations[0]._upsell[0]._element[i]);
 			  }
 		  }	
 		  
 		  let recommendations = crossellData.concat(upsellData);
-		  let result = pdpMapper.mapPdpJSON(data,concatImageURL,imageNames,recommendations); 
+		  let result = pdpMapper.mapPdpJSON(data,recommendations); 
 		  res.send({
 			"success": true ,
 			"result": result,                                            
