@@ -31,8 +31,8 @@ export default {
   mapShoppingCartJSON : function (body){
 
     let converter = JM.makeConverter({
-          adjustment:['adjustment',JM.map({
-              amount:'amount',
+          adjustments:['adjustment',JM.map({
+              // amount:'amount',
               code:'code',
               currency:'currency',
               description: 'description',

@@ -27,17 +27,20 @@ export default {
    */
   
   shoppingCartJSON: function(body){
+             let currency = body._order[0]._total[0].cost[0].currency;
+
              let converter = JM.makeConverter({
               totalQuantity: 'total-quantity',
-              adjustments : ['_discount.0.discount', JM.map({
-             
-                amount: 'display',
+
+              adjustments : ['_appliedpromotions.0._element', JM.map({
                 code:JM.helpers.def(''),
-                currency: 'currency',
-                description:JM.helpers.def(''),
-                displayLevel:JM.helpers.def(''),
+                currency: JM.helpers.def(currency),
+                description: 'display-description',
+                displayLevel:JM.helpers.def('Order'),
                 usage:JM.helpers.def('Discount'),
                })], 
+
+
                grandTotal:'_order.0._total.0.cost.0.display',
                grandTotalCurrency:'_order.0_total.0.cost.0.currency',
                orderId:'_order.0._total.0.links.0.uri',

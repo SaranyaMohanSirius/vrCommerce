@@ -5,21 +5,21 @@ export default {
     /**
     *   JSON Mapper for mapping responses for applied promotions
     */
-    mapPromotionsResultJSON: function(body){
-        let converter = JM.makeConverter({
-            promotions: ['_appliedpromotions.0._element',JM.map({
-                name: 'name',
-                description: {
-                    longDescription: 'display-description',
-                    shortDescription: 'display-name'
-                }
-            })],
-            orderId: JM.helpers.def('')
-        });
+    // mapPromotionsResultJSON: function(body){
+    //     let converter = JM.makeConverter({
+    //         promotions: ['_appliedpromotions.0._element',JM.map({
+    //             name: 'name',
+    //             description: {
+    //                 longDescription: 'display-description',
+    //                 shortDescription: 'display-name'
+    //             }
+    //         })],
+    //         orderId: JM.helpers.def('')
+    //     });
         
-        let result = converter(body);
-        return result;
-    },
+    //     let result = converter(body);
+    //     return result;
+    // },
 
 
 	/*JSON mapper for getting promotion details of an order*/

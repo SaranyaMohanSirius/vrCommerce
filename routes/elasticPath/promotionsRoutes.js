@@ -24,9 +24,9 @@ router.get('/getPromotionsAtCart',function(req,res){
 /**
 *	Route to get all promotion applied to the cart
 */
-router.get('/getPromotionsAtCart',function(req,res){
-	promotions.getPromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
-});
+// router.get('/getPromotionsAtCart',function(req,res){
+// 	promotions.getPromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
+// });
 
 
 /**

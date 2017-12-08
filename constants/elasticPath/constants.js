@@ -42,7 +42,7 @@ export default {
   "EP_PDP_ZOOM" : "?zoom=availability,code,price,definition,definition:options:element:selector:choice:description,definition:options:element:selector:chosen:description,recommendations:upsell:element:availability,recommendations:upsell:element:code,recommendations:upsell:element:definition,recommendations:upsell:element:price,recommendations:crosssell:element:availability,recommendations:crosssell:element:code,recommendations:crosssell:element:definition,recommendations:crosssell:element:price",
   */
   "EP_PDP_ZOOM" : "?zoom=availability,code,price,definition,definition:options:element:selector:choice:description,definition:options:element:selector:chosen:description,recommendations:crosssell:element:availability,recommendations:crosssell:element:code,recommendations:crosssell:element:definition,recommendations:crosssell:element:price",
-  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item:code,lineitems:element:price,lineitems:element:total,order:tax,order:total,total",
+  "EP_SHOPPING_CART_ZOOM": "?zoom=discount,lineitems,lineitems:element,lineitems:element:availability,lineitems:element:item:code,lineitems:element:price,lineitems:element:total,order:tax,order:total,total,appliedpromotions:element",
   "EP_GET_BILLING_ADDRESS_ZOOM": "/billingaddressinfo?zoom=selector:choice:description,selector:chosen:description",
   "EP_GET_SHIPPING_ADDRESS_ZOOM": "/deliveries?zoom=element:destinationinfo:selector:chosen:description,element:destinationinfo:selector:choice:description",
   "EP_SHIPMODE_ZOOM" : "?zoom=order:deliveries:element:shippingoptioninfo:selector:choice:description,order:deliveries:element:shippingoptioninfo:selector:chosen:description",  
