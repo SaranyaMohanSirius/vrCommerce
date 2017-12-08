@@ -243,3 +243,14 @@ PUT : https://ep-mcommerce-app.herokuapp.com/wcs/address/updateShippingAddresses
 
 DELETE : https://ep-mcommerce-app.herokuapp.com/wcs/address/deleteShippingAddresses?nickName=SB_6768
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Login
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+POST : localhost:5000/wcs/login/loginIdentityHandler
+body {
+    "logonId" : "bhuvana1@gmail.com", 
+    "logonPassword" : "123qwe"
+}
+
+POST : localhost:5000/wcs/login/guestIdentityHandler
