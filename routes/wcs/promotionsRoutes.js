@@ -12,6 +12,14 @@ router.get('/getPromotionsAtCart', function(req, res){
 });
 
 /*
+ *  Route for Get promo codes from cart
+ */
+
+router.get('/getPromoCodePromotionsAtCart', function(req, res){
+    promotions.getPromoCodePromotionsAtCart(req,res);
+});
+
+/*
  *  Route for Apply promotion
  */
  

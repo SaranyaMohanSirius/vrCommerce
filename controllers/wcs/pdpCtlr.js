@@ -79,11 +79,13 @@ export default {
 										"result": result
 								});
 								}).catch(function (error) {
-										logger.info(error);
-								if(error){
-									logger.error('errors in service to getProductDetails in WCS: ', error);
-									res.send({ "success": false, "error": error }); 
-								}
+									if(error.statusCode === 404 || error.statusCode === 500){
+										logger.error('error in service to getPromotionsAtCart in WCS: ', error);
+										res.send({ "success": false, "error": error.response.body });
+									}else{
+										logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+										res.send({ "success": false, "error": error.response.body.errors[0] }); 
+									}
 								});
 						});
 		}
