@@ -46,6 +46,9 @@ export default {
    "WCS_CART_PRECHECKOUT": "/precheckout",
    "WCS_CART_CHECKOUT": "/checkout",
    "WCS_ORDER": "/order/",
+   "WCS_HISTORY": "@history",
+   "WCS_PERSON": "/person/",
+   "WCS_PROFILE_NAME": "?profileName=IBM_User_Registration_Details",
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",
