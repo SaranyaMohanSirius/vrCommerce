@@ -205,17 +205,19 @@ Request : GET : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Get applied Promotions
-Request : GET : http://localhost:5000/wcs/promotions/getPromotionsAtCart?userId=8001
+Request : GET : http://localhost:5000/wcs/promotions/getPromotionsAtCart
 
 Apply promotion
-Request : POST : http://localhost:5000/wcs/promotions/apply?userId=8001
+Request : POST : http://localhost:5000/wcs/promotions/apply
 Input : {
             "promoCode": "PROMO50"
         };
 
 Delete promotion
-Request : DELETE : http://localhost:5000/wcs/promotions/delete/PROMO50?userId=8001
-
+Request : DELETE : http://localhost:5000/wcs/promotions/delete
+Input : {
+            "promoCode": "PROMO50"
+        };
 Promotions: 
 1) Qualifying purchase  - minimum purchase(10) - offer(30)
 2) PROMO50 - buy MCL008_081502 - offer(10% offer on MCL008_081605)

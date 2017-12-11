@@ -69,58 +69,13 @@ module.exports = {
 			}
 		};
 	},
-
-    getAuthTokensFromDB: function(userId){
-        return new Promise(function(resolve,reject){
-        // Use connect method to connect to the Server
-        MongoClient.connect(constants.MONGO_DB_URL, function(err, db) {
-              if (err){
-                reject(err);
-                throw err;
-              } 
-              db.collection("users").findOne({userId},function(err, result) {
-                if (err) throw err;
-                resolve(result);
-                });
-              db.close();
-            });
-        })
-    },
-    updateToken: function(WCToken,userId,WCTrustedToken){
-	        MongoClient.connect(constants.MONGO_DB_URL, function(err, db) {
-	            if (err) throw err;
-	            //winston.info("Database connected!");
-	            let findBy = {
-					"userId": userId
-	            }
-	            let newEntries = {
-	                "userId": userId,
-	                "WCToken": WCToken,
-	                "WCTrustedToken": WCTrustedToken
-	            };
-	            db.collection(constants.MONGO_DB_COLLECTION_USERS).updateOne(findBy, newEntries, function(err, res) {
-	                if (err) throw err;
-	                //winston.info("tokens update = "+res);
-	            });
-	            db.close();
-	        });
-	    },
-    insertToken: function(WCToken,userId,WCTrustedToken){
-        MongoClient.connect(constants.MONGO_DB_URL, function(err, db) {
-            if (err) throw err;
-            //winston.info("Database connected!");
-            let newEntries = {
-                "userId": userId,
-                "WCToken": WCToken,
-                "WCTrustedToken": WCTrustedToken
-            };
-            db.collection(constants.MONGO_DB_COLLECTION_USERS).insertOne(newEntries, function(err, res) {
-                if (err) throw err;
-                //winston.info("tokens insert = "+res);
-            });
-            db.close();
-        });
-    },
+	getTokens:function(req){
+        let authToken ={
+			"WCToken": req.cookies.access_token,
+            "WCTrustedToken": req.cookies.WCTrustedToken
+		}
+		return authToken;
+	},
 	isJson: function(str) {
 		try {
 			JSON.parse(str);

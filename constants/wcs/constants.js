@@ -49,6 +49,11 @@ export default {
    "WCS_HISTORY": "@history",
    "WCS_PERSON": "/person/",
    "WCS_PROFILE_NAME": "?profileName=IBM_User_Registration_Details",
+   "WCS_ACCESS_TOKEN": "access_token",
+   "WCS_TRUSTED_ACCESS_TOKEN": "WCTrustedToken",
+   "WCS_USER_ID": "userId",
+   "WCS_PERSONALIZATION_ID": "personalizationID",
+   "WCS_TOKEN_EXPIRATION_TIME": "1800000",
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",

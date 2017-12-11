@@ -30,14 +30,17 @@ export default {
         logger.info("messageData = "+req.body.logonId+"|"+req.body.logonPassword);
         let logonCall = constructRequestWithoutToken(loginUrl,method,messageData,'');
         requestPromise(logonCall).then(function(result){
-            updateToken(result.WCToken,result.userId,result.WCTrustedToken);
-            res.send({"userId" : result.userId, "WCToken" : result.WCToken, "WCTrustedToken" : result.WCTrustedToken});
+            res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
+            res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false})
+            res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
+            res.cookie(constants.WCS_USER_ID,result.userId,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
+            res.send({"cookies status" : "set", "userId" : result.userId, "WCToken" : result.WCToken, "WCTrustedToken" : result.WCTrustedToken});
         }).catch(function(error){
             if(error.statusCode === 404){
-                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                logger.error('errors in service to loginIdentityHandler in WCS: ', error);
                 res.send({ "success": false, "error": error.response.body });
             }else{
-                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                logger.error('errors in service to loginIdentityHandler in WCS: ', error);
                 res.send({ "success": false, "error": error.response.body.errors[0] }); 
             }
         }) 
@@ -56,14 +59,17 @@ export default {
            let guestCall = constructRequestWithoutToken(guestIdentityUrl,method,'');
            requestPromise(guestCall).then(function(result){
                result = JSON.parse(result);
-               insertToken(result.WCToken,result.userId,result.WCTrustedToken);
-               res.send({"WCToken" : result.WCToken, "WCTrustedToken" : result.WCTrustedToken});
+               res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
+               res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
+               res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
+               res.cookie(constants.WCS_USER_ID,result.userId,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
+               res.send({"cookies status" : "set", "userId" : result.userId, "WCToken" : result.WCToken, "WCTrustedToken" : result.WCTrustedToken});
           }).catch(function(error){
             if(error.statusCode === 404){
-                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                logger.error('errors in service to guestIdentityHandler in WCS: ', error);
                 res.send({ "success": false, "error": error.response.body });
             }else{
-                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                logger.error('errors in service to guestIdentityHandler in WCS: ', error);
                 res.send({ "success": false, "error": error.response.body.errors[0] }); 
             }
         }) 
