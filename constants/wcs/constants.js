@@ -43,6 +43,9 @@ export default {
    "WCS_CART_PROMOTIONS" : "/cart/@self/assigned_promotion_code", 
    "WCS_ITEM": "item",
    "WCS_PRODUCT_BYIDS": "/productview/byIds?",
+   "WCS_CART_PRECHECKOUT": "/precheckout",
+   "WCS_CART_CHECKOUT": "/checkout",
+   "WCS_ORDER": "/order/",
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",

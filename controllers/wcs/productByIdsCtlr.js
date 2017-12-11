@@ -18,8 +18,8 @@ export default {
    */
 
 	getProductDetailsByIds: function(res,req){
-  	     let ids =  req.query.id;
-        var urlIds= "";
+  	    let ids = req.query.id;
+        let urlIds= "";
         for (let x of ids) { 
              urlIds = urlIds+"id="+x+"&";          
         }

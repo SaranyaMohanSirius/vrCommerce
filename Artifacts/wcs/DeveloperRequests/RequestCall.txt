@@ -78,6 +78,14 @@ Delete All Shopping Cart Item:
 Request: DELETE : localhost:5000/wcs/cart/deleteAllShoppingCartItem?userId=9014
 
 
+Submit order and Checkout Items in Cart:
+Request: POST : http://localhost:5000/wcs/cart/submitOrder?userId=9002
+Request Body: 
+{
+  "orderId": "21066"
+}
+
+
 ShipModes
 
 Request : GET : http://localhost:5000/wcs/shipModes/getShippingMethods
@@ -105,10 +113,21 @@ Response:
 
 Delete an item from WishList: 
 
-Request: DELETE: http://localhost:5000/wcs/wishlist/deleteFromWishList?wishListId=12526&wishListItemId=13039&userId=9018
+Request: DELETE: http://localhost:5000/wcs/wishlist/deleteFromWishList?userId=9018
 
 If wishListItemId is not specified in the request, the entire wishlist will be deleted. 
 Specify WishListItemId for deleting specific item from the wish list.
+
+Request Body: 
+
+{
+  "wishListId": "12542",
+        "itemList": [
+            {
+                "wishListItemId": "13059"
+            }
+        ]
+}
 
 Response: 
 

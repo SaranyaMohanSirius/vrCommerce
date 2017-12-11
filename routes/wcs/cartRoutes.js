@@ -43,4 +43,12 @@ router.delete('/deleteAllShoppingCartItem',function(req,res){
 	cart.deleteAllShoppingCartItem(req,res);
 });
 
+/* 
+ * router for submitting order
+ */
+
+router.post('/submitOrder',function(req,res){
+	cart.submitOrder(req,res);
+});
+
 export default router;
