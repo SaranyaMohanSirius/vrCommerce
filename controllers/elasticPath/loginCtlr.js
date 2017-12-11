@@ -28,9 +28,39 @@ module.exports = {
                 } else{
                     return callBack(token);
                 }       
+        },
 
+        /*Controller for login a registered user*/  
+        loginIdentityHandler: function(req,res){
+
+              let  messageData = {};
+              let username = req.body.logonId;
+              let password = req.body.logonPassword;
+              let concatURL = constants.EP_LOGIN + constants.EP_USER_NAME + username + constants.EP_PASSWORD + password;
+ 
+              let logonURL = constructUrl(constants.EP_HOSTNAME, concatURL, false);   
+              logger.info('logon url: ',  logonURL);
+              let method ='POST';
+
+              let requestCall = constructRequestWithoutToken(logonURL,method,messageData);
+
+              requestPromise(requestCall).then(function (result) {
+                      res.cookie(constants.EP_COOKIE_NAME, result.access_token, { maxAge: constants.EP_TOKEN_EXPIRATION_TIME, httpOnly: false });
+                      res.send({
+                        "success": true,
+                        "access_token" : result.access_token,
+                        "userId" : ''                                         
+                    });   
+              }).catch(function (error) {
+                    if(error.response.body){
+                      logger.error('errors in service to logon in EP: ', error.response.body);
+                      res.send({ "success": false, "error": error.response.body }); 
+                    }else{
+                      logger.error('errors in service to logon in EP: ', error);
+                      res.send({ "success": false, "error": error});
+                    }
+              });
 
         }
-
 
 };

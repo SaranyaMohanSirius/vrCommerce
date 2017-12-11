@@ -1,7 +1,6 @@
 import express from 'express';
 let router = express.Router();
 import category from '../../controllers/elasticPath/categoryCtlr';
-import constants from '../../constants/elasticPath/constants';
 
 /*App needs to pass EP access token*/
 router.get('/getTopCategories', function(req, res) {
