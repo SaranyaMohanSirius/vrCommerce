@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import {getLogger} from './util/elasticPath/util';
 import epRoute from './routes/ep-index';
 import wcsRoute from './routes/wcs-index';
+import cookieParser from 'cookie-parser';
+
 let logger=getLogger();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -10,6 +12,7 @@ let app = express();
 
 app.use(express.static('WebContent'));
 app.set('port', (process.env.PORT || 5000));
+app.use(cookieParser());
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({

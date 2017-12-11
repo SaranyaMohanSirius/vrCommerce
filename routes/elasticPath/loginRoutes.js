@@ -1,19 +1,14 @@
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var login = require('../../controllers/elasticPath/loginCtlr');
-var cron = require('node-cron');
-var router = express.Router();
+import express from 'express';
+let router = express.Router();
+import login from '../../controllers/elasticPath/loginCtlr';
 
 
 router.get('/accessToken', function(req, res){
     // Template we can handle any request 
 });
-router.get('/', function(req, res){
-     login.guestLogin(res);
-});
 
-module.exports = router;
+export default router;
 
 
 

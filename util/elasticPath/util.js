@@ -48,6 +48,17 @@ module.exports = {
 			  'Authorization': 'bearer ' + token
 			}
 		};
-	}
+	},
+
+	constructRequestWithoutToken:function(uri,method,data){
+		return {
+			uri: uri,
+			method: method,
+			json: data,
+			headers: {
+			  'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		};
+	}	
 
 };

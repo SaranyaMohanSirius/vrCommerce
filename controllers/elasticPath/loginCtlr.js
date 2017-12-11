@@ -1,45 +1,36 @@
-var constants = require('../../constants/elasticPath/constants');
-var util = require('../../util/elasticPath/util');
-var request = require('request');
+import requestPromise from 'request-promise';
+import constants from '../../constants/elasticPath/constants';
+import {getLogger,
+        constructUrl,
+        constructRequestWithoutToken} from '../../util/elasticPath/util';
+let logger=getLogger();
 
-var logger= util.getLogger();
 
 module.exports = {
 
-  guestLogin: function(res) {
+     /*Function to authenticate for a guest user*/ 
+    checkAndGetAuthToken: function(req,res,callBack) {
 
-	var messageData = {};
-	logger.info("url:" + util.constructUrl(constants.EP_HOSTNAME, constants.EP_GUEST_LOGIN, false));
-	
-	request({
-      url: util.constructUrl(constants.EP_HOSTNAME, constants.EP_GUEST_LOGIN, false),
-      method: 'POST',
-	  json: messageData,
-	  headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Authorization': 'none'
-      },
-    }, function(error, response, body) {
-      if (!error) {
-        if (!body.errors) {
-		  logger.info("access_token: " + body.access_token);
-		  res.send({
-                "success": true,
-                "authorization_code": body.access_token
-              });
-		   		
-			  
-		  
-        } else {
-          logger.error('errors in service hit to login service'+body.errors);
-          res.send({ "success": false, "error": body.errors });
+              let token = req.cookies.access_token;
+              
+              if(token == undefined){
+                  let messageData = {};
+                  let guestLoginURL = constructUrl(constants.EP_HOSTNAME, constants.EP_GUEST_LOGIN, false);
+                  logger.info('guestLoginURL: ',guestLoginURL);
+
+                  let method ='POST';
+                  let requestCall = constructRequestWithoutToken(guestLoginURL,method,messageData);
+                  requestPromise(requestCall).then(function (result) {
+                        res.cookie(constants.EP_COOKIE_NAME, result.access_token, { maxAge: constants.EP_TOKEN_EXPIRATION_TIME, httpOnly: false });
+                        return callBack(result.access_token);
+                  });
+
+                } else{
+                    return callBack(token);
+                }       
+
+
         }
-      } else {
-        logger.error('commerce error'+error);
-        res.send({ "success": false, "error": error });
-      }
-    });
 
-  }
 
 };

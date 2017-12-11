@@ -8,6 +8,7 @@ export default {
   "EP_HOSTNAME_CORTEX" : storeConstants.EP_HOSTNAME_CORTEX,
   "EP_STORE" : storeName,
   "EP_LOG_DIR" : "log/elasticPath/trace.log",
+  "EP_COOKIE_NAME" : "access_token",
 
   //All Definite Url Contansts Goes Here
   "EP_GUEST_LOGIN" : "/cortex/oauth2/tokens?grant_type=password&role=PUBLIC&scope="+storeName,
@@ -61,7 +62,7 @@ export default {
   "EP_SHIPMODE_SELECTED" : "Ship mode updated successfully",
  
   
-
+  "EP_TOKEN_EXPIRATION_TIME" : storeConstants.EP_TOKEN_EXPIRATION_TIME,
   //constants that needs to removed & got from the app
   "EP_ACCESS_TOKEN" : storeConstants.EP_ACCESS_TOKEN
 
