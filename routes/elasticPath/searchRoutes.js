@@ -8,7 +8,7 @@ import constants from '../../constants/elasticPath/constants';
  * get Search Results
  */
 router.get('/getSearchResults', function(req, res){
-    search.getSearchResults(constants.EP_ACCESS_TOKEN,res,req);
+    search.getSearchResults(req,res);
 });
 
 export default router;

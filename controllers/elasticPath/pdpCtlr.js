@@ -13,7 +13,7 @@ import _ from 'underscore';
 module.exports = {
 
   /*Controller for getting the Product details to be displayed in the PDP page in EP*/
-   getProductDetails: function(res,req){
+   getProductDetails: function(req,res){
 
 	  let requestFunction = function(token){
 	            return new Promise(function(resolve,reject){

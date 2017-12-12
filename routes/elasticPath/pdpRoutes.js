@@ -6,7 +6,7 @@ import pdp from '../../controllers/elasticPath/pdpCtlr';
  * Get Product Details
  */
 router.get('/getProductDetails', function(req, res){
-    pdp.getProductDetails(res,req);
+    pdp.getProductDetails(req,res);
 });
 
 export default router;
