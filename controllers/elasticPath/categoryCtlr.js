@@ -3,8 +3,7 @@ import constants from '../../constants/elasticPath/constants';
 import categoryMapper from '../../json_mappers/elasticPath/categoryMapper';
 import {getLogger,
         constructUrl,
-        constructRequest,
-      constructRequestWithoutToken} from '../../util/elasticPath/util';
+        constructRequest} from '../../util/elasticPath/util';
 import {checkAndGetAuthToken } from '../../controllers/elasticPath/loginCtlr';
 let logger=getLogger();
 
