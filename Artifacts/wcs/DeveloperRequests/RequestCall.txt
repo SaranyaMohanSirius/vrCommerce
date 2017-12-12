@@ -275,3 +275,14 @@ body {
 }
 
 POST : localhost:5000/wcs/login/guestIdentityHandler
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        My Account
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Personal Information
+GET : http://localhost:5000/wcs/userProfile/getPersonalInformation?userId=9002
+
+Order History
+GET : http://localhost:5000/wcs/userProfile/getOrderHistory?userId=9002
