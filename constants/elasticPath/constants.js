@@ -16,6 +16,7 @@ export default {
   "EP_GUEST_LOGIN" : "/cortex/oauth2/tokens?grant_type=password&role=PUBLIC&scope="+storeName,
   "EP_LOGIN" : "/cortex/oauth2/tokens?grant_type=password&role=REGISTERED&scope="+storeName,
   "EP_LOGOUT" : "/cortex/oauth2/tokens",
+  "EP_REGISTER" : "/cortex/registrations/"+storeName+"/newaccount/form?followlocation",
   "EP_TOP_CATEGORIES" : "/cortex/navigations/"+storeName+"?zoom=element",
   "EP_PRODUCTS_FROM_CATEGORIES_NAV" : "/searches/"+storeName+"/navigations/items/",
   "EP_SEARCH" : "/cortex/searches/"+storeName+"/keywords/items?followlocation",

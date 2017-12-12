@@ -2,6 +2,7 @@ import requestPromise from 'request-promise';
 import constants from '../../constants/elasticPath/constants';
 import {getLogger,
         constructUrl,
+        constructRequest,
         constructRequestWithoutToken} from '../../util/elasticPath/util';
 let logger=getLogger();
 
@@ -33,7 +34,8 @@ module.exports = {
         /*Controller for login a registered user*/  
         loginIdentityHandler: function(req,res){
 
-              let  messageData = {};
+              let token = req.cookies.access_token;
+              let messageData = {};
               let username = req.body.logonId;
               let password = req.body.logonPassword;
               let concatURL = constants.EP_LOGIN + constants.EP_USER_NAME + username + constants.EP_PASSWORD + password;
@@ -42,7 +44,7 @@ module.exports = {
               logger.info('logon url: ',  logonURL);
               let method ='POST';
 
-              let requestCall = constructRequestWithoutToken(logonURL,method,messageData);
+              let requestCall = constructRequest(logonURL,method,messageData,token);
 
               requestPromise(requestCall).then(function (result) {
                       res.cookie(constants.EP_COOKIE_NAME, result.access_token, { maxAge: constants.EP_TOKEN_EXPIRATION_TIME, httpOnly: false });
@@ -89,8 +91,6 @@ module.exports = {
                     }
               });
 
-
-
-        }
+        },
 
 };

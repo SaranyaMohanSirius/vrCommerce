@@ -18,7 +18,8 @@ router.post('/loginIdentityHandler', function(req, res){
 */
 router.delete('/logout',function(req,res){
 	login.logout(req,res);
-}) 
+});
+
 
 export default router;
 

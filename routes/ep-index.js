@@ -9,6 +9,7 @@ import epShipModeRoute from './elasticPath/shipModeRoutes';
 import epAddressRoute from './elasticPath/addressRoutes';
 import epWhishListRoute from './elasticPath/wishListRoutes';
 import epPromotionsRoute from './elasticPath/promotionsRoutes';
+import epRegisterRoute from './elasticPath/registerRoutes';
 
 let app = express();
 
@@ -21,6 +22,7 @@ let app = express();
     app.use('/ep/address',epAddressRoute);
     app.use('/ep/wishlist/',epWhishListRoute);
     app.use('/ep/promotions/',epPromotionsRoute);
+    app.use('/ep/register/',epRegisterRoute);
 
 export default app;
 
