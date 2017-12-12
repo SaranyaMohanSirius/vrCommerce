@@ -13,6 +13,13 @@ router.post('/loginIdentityHandler', function(req, res){
     login.loginIdentityHandler(req,res);
 });
 
+/**
+* router for logging out a user	
+*/
+router.delete('/logout',function(req,res){
+	login.logout(req,res);
+}) 
+
 export default router;
 
 

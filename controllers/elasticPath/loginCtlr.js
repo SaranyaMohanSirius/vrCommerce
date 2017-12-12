@@ -61,6 +61,36 @@ module.exports = {
                     }
               });
 
+        },
+
+        /*Controller for logging out an EP user*/  
+        logout: function(req,res){
+              
+              let  messageData = {};
+ 
+              let logoutURL = constructUrl(constants.EP_HOSTNAME, constants.EP_LOGOUT, false);   
+              logger.info('logout url: ',  logoutURL);
+              let method ='DELETE';
+
+              let requestCall = constructRequestWithoutToken(logoutURL,method,messageData);
+
+              requestPromise(requestCall).then(function (result) {
+                      res.clearCookie(constants.EP_COOKIE_NAME, { path: '/' });
+                      res.send({
+                        "success": true
+                    });   
+              }).catch(function (error) {
+                    if(error.response.body){
+                      logger.error('errors in service to logout in EP: ', error.response.body);
+                      res.send({ "success": false, "error": error.response.body }); 
+                    }else{
+                      logger.error('errors in service to logout in EP: ', error);
+                      res.send({ "success": false, "error": error});
+                    }
+              });
+
+
+
         }
 
 };
