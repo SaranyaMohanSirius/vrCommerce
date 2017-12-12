@@ -74,7 +74,11 @@ export default {
 
              orderStatus:JM.helpers.def(''),
              recordSetCount: ['_lineitems.0._element', function(arr){
-              return arr.length;
+                if(arr){
+                  return arr.length;
+                }else{
+                    return 0;
+                }
              }],
              recordSetStartNumber:JM.helpers.def(''),
              recordSetTotal:JM.helpers.def(''),

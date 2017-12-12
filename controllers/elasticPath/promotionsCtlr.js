@@ -10,7 +10,9 @@ let logger=getLogger();
 export default {
 
   /*Controller for applying coupon promotions in EP*/
-  apply: function(token,req,res){
+  apply: function(req,res){
+
+        let token = req.cookies.access_token;
 
         let messageData = {
             "code" : req.body.promoCode
@@ -73,7 +75,9 @@ export default {
 
     /*Controller for getting coupon promotions applied to the cart*/
 
-    getPromoCodePromotionsAtCart: function(token,req,res){
+    getPromoCodePromotionsAtCart: function(req,res){
+
+        let token = req.cookies.access_token;
         let messageData = {};
         let conCatUrl = constants.EP_DEFAULT_CART + constants.EP_GET_COUPON_PROMO_ZOOM;
         let getPromoCodePromoURL = constructUrl(constants.EP_HOSTNAME,conCatUrl,false);
@@ -99,7 +103,9 @@ export default {
 
     },
 
-    delete: function(token,req,res){
+    delete: function(req,res){
+
+        let token = req.cookies.access_token;
         let messageData = {};
         let promotionId = req.body.promotionId;
         let promoCode = req.body.promoCode;

@@ -10,7 +10,7 @@ let router = express.Router();
  */
  
 router.post('/apply', function(req, res){
-    promotions.apply(constants.EP_ACCESS_TOKEN,req,res);
+    promotions.apply(req,res);
 });
 
 /*
@@ -18,7 +18,7 @@ router.post('/apply', function(req, res){
 */
 
 router.get('/getPromotionsAtCart',function(req,res){
-	promotions.getPromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
+	promotions.getPromotionsAtCart(req,res);
 });
 
 /**
@@ -33,14 +33,14 @@ router.get('/getPromotionsAtCart',function(req,res){
 *	Route to get coupon promotion applied to the cart
 */
 router.get('/getPromoCodePromotionsAtCart',function(req,res){
-	promotions.getPromoCodePromotionsAtCart(constants.EP_ACCESS_TOKEN,req,res);
+	promotions.getPromoCodePromotionsAtCart(req,res);
 });
 
 /**
 *	Route to delete promo code
 */
 router.delete('/delete',function(req,res){
-	promotions.delete(constants.EP_ACCESS_TOKEN,req,res);
+	promotions.delete(req,res);
 })
 
 export default router;
