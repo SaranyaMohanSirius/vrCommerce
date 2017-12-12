@@ -10,8 +10,9 @@ let logger=getLogger();
 module.exports = {
 
   /*controller for adding shipping address in EP*/
-  addShippingAddress: function(token,req,res){
+  addShippingAddress: function(req,res){
 
+    let token = req.cookies.access_token;
     let  messageData = {
          "address":{  
             "country-name": req.body.country,
@@ -51,8 +52,9 @@ module.exports = {
   },
 
   /*Controller for getting all the shipping address in EP*/
-  getShippingAddresses: function(token,req,res){
+  getShippingAddresses: function(req,res){
 
+      let token = req.cookies.access_token;
       let messageData = {};
 
       let conCatUrl = req.query.orderId + constants.EP_GET_SHIPPING_ADDRESS_ZOOM;
@@ -79,7 +81,9 @@ module.exports = {
   },
 
   /*Controller for deleting shipping address in EP*/
-  deleteShippingAddress: function(token,req,res){
+  deleteShippingAddress: function(req,res){
+
+      let token = req.cookies.access_token;
       let messageData = {};
       let uri= req.body.addressId;
       let deleteShippingAddressURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
@@ -105,8 +109,9 @@ module.exports = {
   },
 
   /*Controller for updating shipping address in EP*/
-  updateShippingAddress: function(token,req,res){
+  updateShippingAddress: function(req,res){
 
+      let token = req.cookies.access_token;
       let messageData = {
          "address":{  
             "country-name": req.body.country,
@@ -146,8 +151,9 @@ module.exports = {
   },
 
   /*Controller for selecting the shipping address in EP*/
-  selectShippingAddress: function(token,req,res){
+  selectShippingAddress: function(req,res){
 
+    let token = req.cookies.access_token;
     let messageData = {};
     let addressId = req.body.addressId;
 
@@ -194,8 +200,9 @@ module.exports = {
   },
 
     /*Controller for getting the billing address in EP*/
-    getBillingAddresses: function(token,req,res){
+    getBillingAddresses: function(req,res){
 
+        let token = req.cookies.access_token;
         let messageData = {};
 
         let conCatUrl = req.query.orderId + constants.EP_GET_BILLING_ADDRESS_ZOOM;
@@ -224,8 +231,9 @@ module.exports = {
     },
 
   /*Controller for selecting the Billing address in EP*/
-  selectBillingAddress: function(token,req,res){
+  selectBillingAddress: function(req,res){
 
+        let token = req.cookies.access_token;
         let messageData = {};
         let addressId = req.body.addressId;
 
