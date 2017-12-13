@@ -22,7 +22,7 @@ module.exports = {
                   let method ='POST';
                   let requestCall = constructRequestWithoutToken(guestLoginURL,method,messageData);
                   requestPromise(requestCall).then(function (result) {
-                        res.cookie(constants.EP_COOKIE_NAME, result.access_token, { maxAge: constants.EP_TOKEN_EXPIRATION_TIME, httpOnly: false });
+                        res.cookie(constants.EP_COOKIE_NAME, result.access_token, {  httpOnly: false });
                         return callBack(result.access_token);
                   });
 
@@ -47,11 +47,9 @@ module.exports = {
               let requestCall = constructRequest(logonURL,method,messageData,token);
 
               requestPromise(requestCall).then(function (result) {
-                      res.cookie(constants.EP_COOKIE_NAME, result.access_token, { maxAge: constants.EP_TOKEN_EXPIRATION_TIME, httpOnly: false });
+                      res.cookie(constants.EP_COOKIE_NAME, result.access_token, {  httpOnly: false });
                       res.send({
-                        "success": true,
-                        "access_token" : result.access_token,
-                        "userId" : ''                                         
+                        "success": true                                       
                     });   
               }).catch(function (error) {
                     if(error.response.body){
