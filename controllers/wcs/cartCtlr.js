@@ -1,7 +1,7 @@
 import constants from '../../constants/wcs/constants';
 import {getLogger,
         constructUrl,
-        getAuthTokensFromDB,
+        getTokens,
         constructRequestWithToken,
         isJson,
        } from '../../util/wcs/util';
@@ -24,33 +24,21 @@ export default {
 
         let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CART_EXT +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
         let addToCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true);
-        let userId = req.query.userId;
         let messageData = req.body;
         let method ='POST';
-        logger.info("addToCartUrl:" + addToCartUrl +"userId: "+ userId + "messageData: "+ JSON.stringify(messageData));
+        logger.info("addToCartUrl:" + addToCartUrl + "messageData: "+ JSON.stringify(messageData));
 
-        getAuthTokensFromDB(userId)
-        .then(function(result){
-          return requestFunction(result);
-        });
-
-        let requestFunction = function(authToken){
-            return new Promise(function(resolve,reject){
-
-                logger.info("authTokens: "+JSON.stringify(authToken));
-                let requestCall = constructRequestWithToken(addToCartUrl,method,messageData,authToken)
-                requestPromise(requestCall).then(function (messageData) {
-                    let result = cartMapper.addToCartJSON(messageData); 
-                    res.send({
-                        "success": true ,
-                        "result": result                                          
-                    });
-                    }).catch(function (error) {
-                        logger.error('errors in service to addToCart in WCS: ', JSON.stringify(error));
-                        res.send({ "success": false, "error": error.response.body.errors[0]}); 
-                    });
-                });
-        }
+        let requestCall = constructRequestWithToken(addToCartUrl,method,messageData,getTokens(req))
+        requestPromise(requestCall).then(function (messageData) {
+            let result = cartMapper.addToCartJSON(messageData); 
+            res.send({
+                "success": true ,
+                "result": result                                          
+            });
+            }).catch(function (error) {
+                logger.error('errors in service to addToCart in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0]}); 
+            });
     
    },
 
@@ -205,8 +193,6 @@ export default {
 
   submitOrder : function(req,res){
 
-    let userId = req.query.userId;
-
     let concatpreCheckOutURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART_EXT + constants.WCS_GET_SHOPPINGCART + constants.WCS_CART_PRECHECKOUT;
     let preCheckOutUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatpreCheckOutURL,true);
     let methodForPreCheckOut ='PUT';
@@ -215,39 +201,33 @@ export default {
     let checkOutUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatCheckOutURL,true)
     let methodForCheckOut = 'POST';
 
-    getAuthTokensFromDB(userId)
-        .then(function(result){
-          return preCheckOut(result);
-        });
+    let authToken = getTokens(req);
 
-        /* 
-         * Method for preparing order for checkout in WCS
-         * Request Params : userId 
-         * Request Method : PUT
-         */
+      /* 
+       * Method for preparing order for checkout in WCS
+       * Request Method : PUT
+       */
 
-        let preCheckOut = function(authToken){
-          return new Promise(function(resolve,reject){
+      let preCheckOut = function(authToken){
+        return new Promise(function(resolve,reject){
 
-                logger.info("inside preCheckOut of submitOrder"+preCheckOutUrl);
+              logger.info("inside preCheckOut of submitOrder"+preCheckOutUrl);
 
-                let messageData = req.body;
-                logger.info("messageData: "+ messageData);
+              let messageData = req.body;
+              logger.info("messageData: "+ messageData);
 
-                let requestCall = constructRequestWithToken(preCheckOutUrl,methodForPreCheckOut,messageData,authToken)
-                requestPromise(requestCall).then(function (data) {
-
-                      return checkOut(data,authToken);
-                    }).catch(function (error) {
-                      logger.error('errors in service preCheckOut of submitOrder in WCS: ', JSON.stringify(error));
-                      res.send({ "success": false, "error": error.response.body.errors[0] });    
-                    });
-                });
+              let requestCall = constructRequestWithToken(preCheckOutUrl,methodForPreCheckOut,messageData,authToken)
+              requestPromise(requestCall).then(function (data) {
+                    resolve(data);
+                  }).catch(function (error) {
+                    logger.error('errors in service preCheckOut of submitOrder in WCS: ', JSON.stringify(error));
+                    res.send({ "success": false, "error": error.response.body.errors[0] });    
+                  });
+              });
         }
 
         /* 
          * Method for checkout in WCS
-         * Request Params : userId 
          * Request Method : POST
          */
         
@@ -269,7 +249,6 @@ export default {
 
         /* 
          * Method for Order Confirmation in WCS
-         * Request Params : userId 
          * Request Method : GET
          */
 
@@ -319,6 +298,11 @@ export default {
                     });
           });
         }
+
+         preCheckOut(authToken)
+        .then(function(data){
+          return checkOut(data, authToken);
+        });
   } 
 };
 
