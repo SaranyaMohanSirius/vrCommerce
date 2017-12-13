@@ -39,10 +39,10 @@ export default {
             });
             }).catch(function (error) {
                 if(error.statusCode === 404){
-                    logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                    logger.error('errors in service to getSearchResults in WCS: ', error);
                     res.send({ "success": false, "error": error.response.body });
                 }else{
-                    logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                    logger.error('errors in service to getSearchResults in WCS: ', error);
                     res.send({ "success": false, "error": error.response.body.errors[0] }); 
                 }
             });

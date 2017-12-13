@@ -10,6 +10,7 @@ import wcsWishListRoute from './wcs/wishListRoutes';
 import wcsProductByIdsRoute from './wcs/productByIdsRoutes';
 import wcsLoginRoute from './wcs/loginRoute';
 import wcsUserProfileRoute from './wcs/userProfileRoutes';
+import wcsMyAccountRoutes from './wcs/myAccountRoutes';
 
 let app = express();
 
@@ -24,5 +25,6 @@ app.use('/wcs/wishlist',wcsWishListRoute);
 app.use('/wcs/product',wcsProductByIdsRoute);
 app.use('/wcs/login',wcsLoginRoute);
 app.use('/wcs/userProfile',wcsUserProfileRoute);
+app.use('/wcs/myAccount',wcsMyAccountRoutes);
 
 export default app;

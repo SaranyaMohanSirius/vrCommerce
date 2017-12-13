@@ -286,3 +286,11 @@ GET : http://localhost:5000/wcs/userProfile/getPersonalInformation
 
 Order History
 GET : http://localhost:5000/wcs/userProfile/getOrderHistory
+
+Reset Password
+PUT : http://localhost:5000/wcs/myAccount/resetPassword
+Body { 
+    "logonId" : "bhuvana1@gmail.com", 
+    "logonPassword" : "123qwe", 
+    "logonPasswordVerify" : "123qwe"
+}
