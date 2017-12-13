@@ -34,7 +34,7 @@ Request : GET : http://localhost:5000/wcs/PDP/getProductDetails?productId=10843
 
 
 Add to Cart :
-Request : POST : http://localhost:5000/wcs/cart/addToCart?userId=9011
+Request : POST : http://localhost:5000/wcs/cart/addToCart
 Input Body : 
 {
    "orderItem": [
@@ -79,7 +79,7 @@ Request: DELETE : localhost:5000/wcs/cart/deleteAllShoppingCartItem?userId=9014
 
 
 Submit order and Checkout Items in Cart:
-Request: POST : http://localhost:5000/wcs/cart/submitOrder?userId=9002
+Request: POST : http://localhost:5000/wcs/cart/submitOrder
 Request Body: 
 {
   "orderId": "21066"
@@ -97,7 +97,7 @@ Request : GET : http://localhost:5000/wcs/shipModes/getShippingMethods
 
 Add Item To WishList: 
 
-Request: POST: http://localhost:5000/wcs/wishlist/addToWishList?userId=9018
+Request: POST: http://localhost:5000/wcs/wishlist/addToWishList
 
 Request - Body: 
 {
@@ -113,7 +113,7 @@ Response:
 
 Delete an item from WishList: 
 
-Request: DELETE: http://localhost:5000/wcs/wishlist/deleteFromWishList?userId=9018
+Request: DELETE: http://localhost:5000/wcs/wishlist/deleteFromWishList
 
 If wishListItemId is not specified in the request, the entire wishlist will be deleted. 
 Specify WishListItemId for deleting specific item from the wish list.
@@ -137,7 +137,7 @@ Response:
 
 Get WishList: 
 
-Request: GET : http://localhost:5000/wcs/wishlist/getWishList?userId=9018
+Request: GET : http://localhost:5000/wcs/wishlist/getWishList
 
 Response: 
 
@@ -160,7 +160,7 @@ Response:
 
 Move an Item from WishList to Cart 
 
-Request: POST : http://localhost:5000/wcs/wishlist/moveWishListItemToCart?userId=9023
+Request: POST : http://localhost:5000/wcs/wishlist/moveWishListItemToCart
 
 Request - Body: 
 
@@ -282,7 +282,7 @@ POST : localhost:5000/wcs/login/guestIdentityHandler
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Personal Information
-GET : http://localhost:5000/wcs/userProfile/getPersonalInformation?userId=9002
+GET : http://localhost:5000/wcs/userProfile/getPersonalInformation
 
 Order History
-GET : http://localhost:5000/wcs/userProfile/getOrderHistory?userId=9002
+GET : http://localhost:5000/wcs/userProfile/getOrderHistory
