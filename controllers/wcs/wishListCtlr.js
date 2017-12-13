@@ -38,13 +38,13 @@ export default {
                 "success": true
             });
             }).catch(function (error) {
-            if(error){
-              logger.error('errors in service to addToWishList in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            if(error.statusCode === 404 || error.statusCode === 400){
+                logger.error('errors in service to addToWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
             }else{
-              logger.error('errors in service to addToWishList in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0]});
-            }
+                logger.error('errors in service to addToWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
             });
    },
 
@@ -85,14 +85,14 @@ export default {
               "success": true 
           });
           }).catch(function (error) {
-          if(error){
-            logger.error('errors in service to deleteFromWishList in WCS: ', JSON.stringify(error));
-            res.send({ "success": false, "error": error.response.body.errors[0] }); 
-          }else{
-            logger.error('errors in service to deleteFromWishList in WCS: ', JSON.stringify(error));
-            res.send({ "success": false, "error": error.response.body.errors[0]});
-          }
-          });
+            if(error.statusCode === 404 || error.statusCode === 400){
+                logger.error('errors in service to deleteFromWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to deleteFromWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
+        });
    },
 
    /*
@@ -117,13 +117,13 @@ export default {
                 "result": result
             });
             }).catch(function (error) {
-            if(error){
-              logger.error('errors in service to getWishList in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            if(error.statusCode === 404 || error.statusCode === 400){
+                logger.error('errors in service to getWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
             }else{
-              logger.error('errors in service to getWishList in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0]});
-            }
+                logger.error('errors in service to getWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
             });
    },
 
@@ -166,13 +166,13 @@ export default {
                 requestPromise(requestCall).then(function () {
                     resolve(authToken);
                     }).catch(function (error) {
-                    if(error){
-                      logger.error('errors in service to moveWishListItemToCart in WCS: ', JSON.stringify(error));
-                      res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                    if(error.statusCode === 404 || error.statusCode === 400){
+                        logger.error('errors in service to deleteItemsFromWishList in WCS: ', JSON.stringify(error));
+                        res.send({ "success": false, "error": error.response.body });
                     }else{
-                      logger.error('errors in service to moveWishListItemToCart in WCS: ', JSON.stringify(error));
-                      res.send({ "success": false, "error": error.response.body.errors[0]});
-                    }
+                        logger.error('errors in service to deleteItemsFromWishList in WCS: ', JSON.stringify(error));
+                        res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                    } 
                     });
                 });
     }
@@ -191,13 +191,13 @@ export default {
                         "result": result                                          
                     });
                     }).catch(function (error) {
-                    if(error){
-                      logger.error('errors in service to moveWishListItemToCart in WCS: ', JSON.stringify(error));
-                      res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                    if(error.statusCode === 404 || error.statusCode === 400){
+                        logger.error('errors in service to addToCartFunction in WCS: ', JSON.stringify(error));
+                        res.send({ "success": false, "error": error.response.body });
                     }else{
-                      logger.error('errors in service to moveWishListItemToCart in WCS: ', JSON.stringify(error));
-                      res.send({ "success": false, "error": error.response.body.errors[0]});
-                    }
+                        logger.error('errors in service to addToCartFunction in WCS: ', JSON.stringify(error));
+                        res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                    } 
                     });
                 });
         }

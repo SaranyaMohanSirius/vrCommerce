@@ -35,9 +35,14 @@ export default {
                 "result": result                                          
             });
             }).catch(function (error) {
+            if(error.statusCode === 404 || error.statusCode === 400){
                 logger.error('errors in service to getOrderHistory in WCS: ', JSON.stringify(error));
-                res.send({ "success": false, "error": error.response.body.errors[0]}); 
-            });
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to getOrderHistory in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
+        });
              
     },
 
@@ -66,9 +71,14 @@ export default {
                 "result": result                                          
             });
             }).catch(function (error) {
+            if(error.statusCode === 404 || error.statusCode === 400){
                 logger.error('errors in service to getPersonalInformation in WCS: ', JSON.stringify(error));
-                res.send({ "success": false, "error": error.response.body.errors[0]}); 
-            });
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to getPersonalInformation in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
+        });
     }
 
 };

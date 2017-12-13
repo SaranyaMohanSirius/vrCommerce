@@ -36,8 +36,13 @@ export default {
                 "result": result                                          
             });
             }).catch(function (error) {
-                logger.error('errors in service to addToCart in WCS: ', JSON.stringify(error));
-                res.send({ "success": false, "error": error.response.body.errors[0]}); 
+                if(error.statusCode === 404 || error.statusCode === 400){
+                    logger.error('errors in service to addToCartFunction in WCS: ', JSON.stringify(error));
+                    res.send({ "success": false, "error": error.response.body });
+                }else{
+                    logger.error('errors in service to addToCartFunction in WCS: ', JSON.stringify(error));
+                    res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                } 
             });
     
    },
@@ -197,8 +202,13 @@ export default {
               requestPromise(requestCall).then(function (data) {
                     resolve(data);
                   }).catch(function (error) {
-                    logger.error('errors in service preCheckOut of submitOrder in WCS: ', JSON.stringify(error));
-                    res.send({ "success": false, "error": error.response.body.errors[0] });    
+                      if(error.statusCode === 404 || error.statusCode === 400){
+                          logger.error('errors in service to preCheckOut of submitOrder in WCS: ', JSON.stringify(error));
+                          res.send({ "success": false, "error": error.response.body });
+                      }else{
+                          logger.error('errors in service to preCheckOut of submitOrder in WCS: ', JSON.stringify(error));
+                          res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                      } 
                   });
               });
         }
@@ -218,8 +228,13 @@ export default {
                     
                     return getOrderConfirmationDetails(result, authToken);
                     }).catch(function (error) {
-                      logger.error('errors in service checkOut of submitOrder in WCS: ', JSON.stringify(error));
-                      res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                        if(error.statusCode === 404 || error.statusCode === 400){
+                            logger.error('errors in service to checkOut of submitOrder in WCS: ', JSON.stringify(error));
+                            res.send({ "success": false, "error": error.response.body });
+                        }else{
+                            logger.error('errors in service to checkOut of submitOrder in WCS: ', JSON.stringify(error));
+                            res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                        } 
                     });
                 });
         }
@@ -270,8 +285,13 @@ export default {
                       "result": finalResponse
                     });
                     }).catch(function (error) {
-                      logger.error('errors in service getOrderConfirmationDetails of submitOrder in WCS: ', JSON.stringify(error));
-                      res.send({ "success": false, "error": error }); 
+                        if(error.statusCode === 404 || error.statusCode === 400){
+                            logger.error('errors in service to getOrderConfirmationDetails of submitOrder in WCS: ', JSON.stringify(error));
+                            res.send({ "success": false, "error": error.response.body });
+                        }else{
+                            logger.error('errors in service to getOrderConfirmationDetails of submitOrder in WCS: ', JSON.stringify(error));
+                            res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                        } 
                     });
           });
         }
