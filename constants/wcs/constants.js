@@ -56,6 +56,8 @@ export default {
    "WCS_USER_ID": "userId",
    "WCS_PERSONALIZATION_ID": "personalizationID",
    "WCS_TOKEN_EXPIRATION_TIME": "1800000",
+   "WCS_PERSON_AT_SELF": "/person/@self",
+
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",

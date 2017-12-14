@@ -19,4 +19,12 @@ router.get('/getPersonalInformation', function(req, res){
     userProfile.getPersonalInformation(req,res);
 });
 
+/* 
+ * router for getting Address Book
+ */
+ 
+router.get('/getAddressBook', function(req, res){
+    userProfile.getAddressBook(req,res);
+});
+
 export default router;

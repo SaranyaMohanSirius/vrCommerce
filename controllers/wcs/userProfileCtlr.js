@@ -78,7 +78,41 @@ export default {
                 logger.error('errors in service to getPersonalInformation in WCS: ', JSON.stringify(error));
                 res.send({ "success": false, "error": error.response.body.errors[0] }); 
             } 
-        });
+            });
+    },
+
+   /*
+    * Method to get My Account - Address Book of an user in WCS 
+    * Request Method : GET
+    */
+
+    getAddressBook : function(req,res){
+        logger.info("inside getAddressBook");
+
+        let concatAddressBookUrl = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_PERSON_AT_SELF;
+        let getAddressBookUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatAddressBookUrl,true);
+        let methodForAddressBook = 'GET';
+        let messageData = {};
+
+        logger.info("getAddressBookUrl: "+ getAddressBookUrl);
+        let requestCall = constructRequestWithToken(getAddressBookUrl,methodForAddressBook,messageData,getTokens(req))
+        requestPromise(requestCall).then(function (body) {
+
+            let result = userProfileMapper.addressBookJSON(body); 
+            res.send({
+                "success": true ,
+                "result": result                                          
+            });
+            }).catch(function (error) {
+            if(error.statusCode === 404 || error.statusCode === 400){
+                logger.error('errors in service to getAddressBook in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to getAddressBook in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
+            });
     }
+
 
 };
