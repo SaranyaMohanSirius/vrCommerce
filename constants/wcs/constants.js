@@ -35,7 +35,7 @@ export default {
    "MONGO_DB_URL" : "mongodb://admin:passw0rd@ds121716.mlab.com:21716/projectc",
    "MONGO_DB_COLLECTION_USERS" : "users",
    "WCS_GET_SHOPPINGCART" : "/@self",
-   "WCS_AT_SELF" : "@self",
+   "WCS_AT_SELF" : "/@self",
    "WCS_UPDATE_CART" : "/update_order_item",
    "WCS_DELETE_CART" : "/delete_order_item",
    "WCS_UPDATECART_CALC_USAGE" : "-1,-2,-3,-4,-5,-6,-7",   
@@ -43,7 +43,6 @@ export default {
    "WCS_CART_AT_SELF" : "/cart/@self",
    "WCS_CART_PROMOTIONS" : "/cart/@self/assigned_promotion_code", 
    "WCS_ITEM": "item",
-   "WCS_UPDATE_USER_REGISTRATOIN": "updateUserRegistration",
    "WCS_PRODUCT_BYIDS": "/productview/byIds?",
    "WCS_CART_PRECHECKOUT": "/precheckout",
    "WCS_CART_CHECKOUT": "/checkout",
@@ -56,8 +55,7 @@ export default {
    "WCS_USER_ID": "userId",
    "WCS_PERSONALIZATION_ID": "personalizationID",
    "WCS_TOKEN_EXPIRATION_TIME": "1800000",
-   "WCS_PERSON_AT_SELF": "/person/@self",
-
+   "WCS_REGISTRATION" : "/person?mode=self",
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",
