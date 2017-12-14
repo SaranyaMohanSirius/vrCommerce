@@ -16,4 +16,12 @@ router.post('/guestIdentityHandler', function(req, res){
     login.guestIdentityHandler(req,res);
 });
 
+/**
+ * router for logout
+ */
+router.delete('/logoutUser', function(req, res){
+    console.log("logout handler");
+    login.logoutUser(req,res);
+});
+
 export default router;

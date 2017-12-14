@@ -30,12 +30,14 @@ export default {
         logger.info("messageData = "+req.body.logonId+"|"+req.body.logonPassword);
         let logonCall = constructRequestWithoutToken(loginUrl,method,messageData,'');
         requestPromise(logonCall).then(function(result){
-            res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
-            res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false})
-            res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
-            res.cookie(constants.WCS_USER_ID,result.userId,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
-            res.send({"cookies status" : "set", "userId" : result.userId, "WCToken" : result.WCToken, "WCTrustedToken" : result.WCTrustedToken});
-        }).catch(function(error){
+            res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken);
+            res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken)
+            res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID);
+            res.cookie(constants.WCS_USER_ID,result.userId);
+            res.send({
+                    "success": true                         
+                });  
+          }).catch(function(error){
             if(error.statusCode === 404){
                 logger.error('errors in service to loginIdentityHandler in WCS: ', error);
                 res.send({ "success": false, "error": error.response.body });
@@ -59,12 +61,14 @@ export default {
            let guestCall = constructRequestWithoutToken(guestIdentityUrl,method,'');
            requestPromise(guestCall).then(function(result){
                result = JSON.parse(result);
-               res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
-               res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
-               res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
-               res.cookie(constants.WCS_USER_ID,result.userId,{maxAge:constants.WCS_TOKEN_EXPIRATION_TIME, httpOnly:false});
-               res.send({"cookies status" : "set", "userId" : result.userId, "WCToken" : result.WCToken, "WCTrustedToken" : result.WCTrustedToken});
-          }).catch(function(error){
+               res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken);
+               res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken);
+               res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID);
+               res.cookie(constants.WCS_USER_ID,result.userId);
+               res.send({
+                    "success": true                         
+                });  
+             }).catch(function(error){
             if(error.statusCode === 404){
                 logger.error('errors in service to guestIdentityHandler in WCS: ', error);
                 res.send({ "success": false, "error": error.response.body });
@@ -74,5 +78,39 @@ export default {
             }
         }) 
         });
-    }
+    },
+
+    /**
+     * Method for creating guest user
+     * Request method - DELETE
+     */
+    logoutUser: function(req,res){
+        logger.info("inside logout user");
+        return new Promise(function(resolve,reject){
+           let concatUrl = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_LOGIN_IDENTITY+constants.WCS_SELF;
+           let logoutUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatUrl, true);
+           logger.info("Logout user = "+logoutUrl);
+           let method = 'DELETE';
+            let messageData = {};
+           let guestCall = constructRequestWithoutToken(logoutUrl,method,messageData);
+           requestPromise(guestCall).then(function(result){
+               res.clearCookie(constants.WCS_ACCESS_TOKEN);
+               res.clearCookie(constants.WCS_TRUSTED_ACCESS_TOKEN);
+               res.clearCookie(constants.WCS_PERSONALIZATION_ID);
+               res.clearCookie(constants.WCS_USER_ID);
+               res.send({
+                    "success": true                         
+                });  
+            }).catch(function(error){
+            if(error.statusCode === 404){
+                logger.error('errors in service to logout in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to logout in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            }
+        }) 
+        });
+    },
+
 }
