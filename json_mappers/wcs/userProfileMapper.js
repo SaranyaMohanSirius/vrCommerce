@@ -82,6 +82,51 @@ export default {
   	})
   	let result = converter(body);
     return result;
+  },
+
+
+  /* 
+   * JSON Mapper for generating response for Address Book of an user
+   */
+
+  addressBookJSON: function(body){
+
+    let converter = JM.makeConverter({
+
+      resourceId: 'resourceId',
+      defaultAddress: {
+        firstName: 'firstName',
+        lastName: 'lastName',
+        nickName: 'nickName',
+        email1: 'email1',
+        phone1: 'phone1',
+        addressType: 'addressType',
+        addressId: 'addressId',
+        addressLine: 'addressLine',
+        zipCode: 'zipCode',
+        city: 'city',
+        state: 'state',
+        country: 'country',
+        primary: 'primary'
+      },
+      addressList: ['contact', JM.map({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        nickName: 'nickName',
+        email1: 'email1',
+        phone1: 'phone1',
+        addressType: 'addressType',
+        addressId: 'addressId',
+        addressLine: 'addressLine',
+        zipCode: 'zipCode',
+        city: 'city',
+        state: 'state',
+        country: 'country',
+        primary: 'primary'
+      })]
+    })
+    let result = converter(body);
+    return result;
   }
 
 };
