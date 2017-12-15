@@ -17,7 +17,7 @@ export default  {
    */
 
    addToWishList: function(req,res){
-    let token=constants.EP_ACCESS_TOKEN;
+    let token = req.cookies.access_token;
     let messageData = {};
     let concattUrl =  constants.EP_WHISHLIST+ req.body.productId  + constants.EP_FORM + constants.EP_FOLLOW_LOCATION;
     let addToWishListUrl = constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false)  
@@ -44,7 +44,7 @@ export default  {
      */
 
     getWishList: function(req,res){
-        let token=constants.EP_ACCESS_TOKEN;
+        let token = req.cookies.access_token;
         let messageData = {};
         let concattUrl= constants.EP_WHISHLIST_URL+constants.EP_WHISHLIST_CART_ZOOM;
         let defautWishListURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
@@ -74,7 +74,7 @@ export default  {
      */
 
     deleteFromWishList: function(req,res){
-        let token=constants.EP_ACCESS_TOKEN;
+        let token = req.cookies.access_token;
         let messageData = {};
         let wishListId
         if(req.body.itemList){
@@ -160,7 +160,7 @@ export default  {
    */
 
   moveWishListItemToCart: function(req,res){
-    let token=constants.EP_ACCESS_TOKEN;
+    let token = req.cookies.access_token;
     let messageData = {"quantity":req.body.quantity};
     let wishListItemId = req.body.wishListItemId;
     let concattUrl =  wishListItemId+constants.EP_CARTS+ constants.EP_FORM + constants.EP_FOLLOW_LOCATION;
