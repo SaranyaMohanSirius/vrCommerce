@@ -27,6 +27,7 @@ export default {
   "EP_CURRENT_ORDER" : "/orders/"+storeName+"/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",  
   "EP_WHISHLIST_URL" : "/wishlists/"+storeName+"/default" ,
   "EP_APPLY_PROMO"  : "/coupons",
+  "EP_ADDRESS_BOOK" : "/cortex/addresses/"+storeName,
 
 
 
@@ -56,6 +57,7 @@ export default {
   "EP_WHISHLIST_CART_ZOOM" :"?zoom=lineitems:element,lineitems:element:item:code",
   "EP_GET_COUPON_PROMO_ZOOM" : "?zoom=order:couponinfo:coupon,order:couponinfo:coupon:appliedpromotions:element",
   "EP_GET_PROMO_ZOOM" : "?zoom=appliedpromotions:element",
+  "EP_ADDRESS_BOOK_ZOOM"  : "?zoom=element",
 
 
   // All Custome Message Goes Here

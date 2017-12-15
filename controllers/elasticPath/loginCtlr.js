@@ -2,7 +2,7 @@ import requestPromise from 'request-promise';
 import constants from '../../constants/elasticPath/constants';
 import {getLogger,
         constructUrl,
-        constructRequest,
+        constructRequestForLogin,
         constructRequestWithoutToken} from '../../util/elasticPath/util';
 let logger=getLogger();
 
@@ -44,7 +44,7 @@ module.exports = {
               logger.info('logon url: ',  logonURL);
               let method ='POST';
 
-              let requestCall = constructRequest(logonURL,method,messageData,token);
+              let requestCall = constructRequestForLogin(logonURL,method,messageData,token);
 
               requestPromise(requestCall).then(function (result) {
                       res.cookie(constants.EP_COOKIE_NAME, result.access_token, {  httpOnly: false });

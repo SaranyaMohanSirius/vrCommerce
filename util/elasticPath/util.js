@@ -49,6 +49,19 @@ module.exports = {
 			}
 		};
 	},
+	constructRequestForLogin: function(uri,method,data,token){
+		if(token == undefined)
+			token = '';
+		return {
+			uri: uri,
+			method: method,
+			json: data,
+			headers: {
+			  'Content-Type': 'application/x-www-form-urlencoded',
+			  'Authorization': 'bearer ' + token
+			}
+		};
+	}, 
 
 	constructRequestWithoutToken:function(uri,method,data){
 		return {

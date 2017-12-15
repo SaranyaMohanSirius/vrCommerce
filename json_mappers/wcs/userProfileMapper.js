@@ -102,7 +102,10 @@ export default {
         phone1: 'phone1',
         addressType: 'addressType',
         addressId: 'addressId',
-        addressLine: 'addressLine',
+        addressLine: {
+                  addressLine1: 'addressLine.0',
+                  addressLine2: 'addressLine.1',
+                },
         zipCode: 'zipCode',
         city: 'city',
         state: 'state',
@@ -117,7 +120,10 @@ export default {
         phone1: 'phone1',
         addressType: 'addressType',
         addressId: 'addressId',
-        addressLine: 'addressLine',
+        addressLine: {
+                  addressLine1: 'addressLine.0',
+                  addressLine2: 'addressLine.1',
+                },
         zipCode: 'zipCode',
         city: 'city',
         state: 'state',
