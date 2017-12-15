@@ -12,7 +12,7 @@ module.exports = {
    * Controller to add a product to cart  in EP  
    */
   addToCart: function(req,res){
-	  let token=constants.EP_ACCESS_TOKEN;
+    let token = req.cookies.access_token;
 	  if((undefined != req.body.swatches) && (null != req.body.swatches)){
 		let swatches = req.body.swatches;
 		for(let i = 0; i < swatches.length; i++) {
@@ -73,7 +73,7 @@ getAddToCartRequestPromise: function(authToken,data,url) {
  */
 
 getShoppingCart: function(req,res){
-    let token=constants.EP_ACCESS_TOKEN;
+    let token = req.cookies.access_token;
     let messageData = {};
     let concattUrl= constants.EP_SHOPPING_CART+constants.EP_SHOPPING_CART_ZOOM;
     let defaultCartURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);
@@ -102,7 +102,7 @@ getShoppingCart: function(req,res){
     */
 
     updateShoppingCartItem: function(req,res){
-      let token=constants.EP_ACCESS_TOKEN;
+      let token = req.cookies.access_token;
       let messageData = {"quantity":req.body.lineItem[0].quantity};
       let uri= req.body.lineItem[0].lineItemId;
       let updateCartItemURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
@@ -131,7 +131,7 @@ getShoppingCart: function(req,res){
     */
 
     deleteShoppingCartItem: function(req,res){
-            let token=constants.EP_ACCESS_TOKEN;
+            let token = req.cookies.access_token;
             let messageData = {};
             let uri= req.body.lineItem[0].lineItemId;
             let deleteCartItemURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
@@ -160,7 +160,7 @@ getShoppingCart: function(req,res){
       */
 
     deleteAllShoppingCartItem: function(req,res){
-            let token=constants.EP_ACCESS_TOKEN;
+            let token = req.cookies.access_token;
             let messageData = {};
             let uri= req.body.cartLineItemId;
             let deleteAllCartItemURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
