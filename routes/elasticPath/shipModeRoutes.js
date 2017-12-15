@@ -7,13 +7,13 @@ import constants from '../../constants/elasticPath/constants';
  * Get Shipping Method Routes
  */
 router.get('/getShippingMethods', function(req, res){
-    shipMode.getShippingMethods(constants.EP_ACCESS_TOKEN,res,req);
+    shipMode.getShippingMethods(req,res);
 });
 /**
  * update Shipping Method Routes
  */
 router.get('/updateShippingMethod', function(req, res){
-    shipMode.updateShippingMethods(constants.EP_ACCESS_TOKEN,res,req);
+    shipMode.updateShippingMethods(req,res);
 });
 
 export default router;

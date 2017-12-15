@@ -8,8 +8,9 @@ import requestPromise from 'request-promise';
 module.exports = {
 
   /*Controller for getting the shipping methods in EP*/
-   getShippingMethods: function(token,res,req){
-		console.log(token);
+   getShippingMethods: function(req,res){
+
+	    let token = req.cookies.access_token;
 		let concatURL = constants.EP_CART + constants.EP_SHIPMODE_ZOOM;
 		logger.info('Shipping methods EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false));
 		let messageData = {};
@@ -37,7 +38,9 @@ module.exports = {
 	},
 
 	/*Controller for updating the shipping method in EP*/
-   updateShippingMethods: function(token,res,req){
+   updateShippingMethods: function(req,res){
+
+	    let token = req.cookies.access_token;
 		let url = req.query.shipModeId + constants.EP_FOLLOW_LOCATION;
 		logger.info('Update Shipping method EP url: ', util.constructUrl(constants.EP_HOSTNAME_CORTEX, url, false));
 		let messageData = {};

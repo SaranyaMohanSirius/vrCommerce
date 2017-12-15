@@ -70,7 +70,5 @@ export default {
  
   
   "EP_TOKEN_EXPIRATION_TIME" : storeConstants.EP_TOKEN_EXPIRATION_TIME,
-  //constants that needs to removed & got from the app
-  "EP_ACCESS_TOKEN" : storeConstants.EP_ACCESS_TOKEN
 
 };

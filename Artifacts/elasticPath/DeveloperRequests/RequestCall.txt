@@ -245,3 +245,73 @@ Input
         "quantity": "2",                 
         "productId": ""
  }
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                         Promotions
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+** Get Promo code promotions at cart
+
+Request: GET: localhost:5000/ep/promotions/getPromoCodePromotionsAtCart
+
+
+** Apply promotion 
+
+Request: POST: localhost:5000/ep/promotions/apply
+
+{
+	"orderId": "/orders/britney/hfqtomztguztcllehbswiljugfsdkllcgi2gkljwmq2tenzvmm2wcnjwgy=",
+	"promoCode": "BB10PERCENT"
+}
+
+
+** Delete Promotion
+
+Request: DELETE: localhost:5000/ep/promotions/delete
+
+{
+	"promotionId": "/coupons/orders/britney/hfqtomztguztcllehbswiljugfsdkllcgi2gkljwmq2tenzvmm2wcnjwgy=/jbhuyskeifmq=",
+	"promoCode": "BB10PERCENT"
+}
+
+  
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				LOGIN
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+** LOGIN
+
+Request: POST: localhost:5000/ep/login/loginIdentityHandler
+
+{
+	"logonId": "veerraghs02@yopmail.com",
+	"logonPassword": "Gandhi@8"
+}
+
+** LOGOUT
+
+Request: DELETE:  localhost:5000/ep/login/logout
+
+
+
+** REGISTER
+
+Request: POST: http://localhost:5000/ep/register/register
+
+{
+	"logonId" : "veerraghs07@yopmail.com",
+	"logonPassword" : "gandhi@8",
+	"logonPasswordVerify" : "gandhi@8",
+	"firstName" : "veer",
+        "lastName" : "raghs"
+} 
+ 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
