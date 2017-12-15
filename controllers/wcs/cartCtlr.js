@@ -293,14 +293,46 @@ export default {
                             res.send({ "success": false, "error": error.response.body.errors[0] }); 
                         } 
                     });
-          });
-        }
+                  });
+               }
 
-         preCheckOut(authToken)
-        .then(function(data){
-          return checkOut(data, authToken);
-        });
-  } 
+               preCheckOut(authToken)
+              .then(function(data){
+                return checkOut(data, authToken);
+              });
+          },
+
+         /* 
+          * Method for getting Order Payment Summary in WCS
+          * Request Method : GET
+          */
+          
+         orderPaymentSummary: function(req,res){
+          
+              let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_CART_AT_SELF;
+              
+              logger.info("orderPaymentSummary URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+              let orderPaymentSummaryUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+              let method ='GET';
+              let messageData = {};
+              let requestCall = constructRequestWithToken(orderPaymentSummaryUrl,method,messageData,getTokens(req));
+                
+              requestPromise(requestCall).then(function (data) {
+                    let result = cartMapper.mapOrderPaymentSummaryJSON(data); 
+                        res.send({
+                          "success": true ,
+                          "result": result                                            
+                      });   
+                }).catch(function (error) {
+                              if(error.statusCode === 404 || error.statusCode === 400){
+                                  logger.error('errors in service to orderPaymentSummary in WCS: ', JSON.stringify(error));
+                                  res.send({ "success": false, "error": error.response.body });
+                              }else{
+                                  logger.error('errors in service to orderPaymentSummary in WCS: ', JSON.stringify(error));
+                                  res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                              } 
+                   });
+           }, 
 };
 
 

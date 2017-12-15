@@ -262,6 +262,31 @@ export default {
     }
     return jsonObj; 
    
-   }
+   },
+
+  /* 
+   * JSON Mapper for generating response for orderPaymentSummary
+   */
+
+    mapOrderPaymentSummaryJSON : function (body){
+
+    let converter = JM.makeConverter({
+          shipAsComplete:'shipAsComplete',
+          storeUniqueID:'storeUniqueID',
+          totalAdjustment:'totalAdjustment',
+          totalAdjustmentCurrency:'totalAdjustmentCurrency',
+          totalProductPrice:'totalProductPrice',
+          totalProductPriceCurrency:'totalProductPriceCurrency',
+          totalSalesTax:'totalSalesTax',
+          totalSalesTaxCurrency:'totalSalesTaxCurrency',
+          totalShippingCharge:'totalShippingCharge',
+          totalShippingChargeCurrency:'totalShippingChargeCurrency',
+          totalShippingTax:'totalShippingTax',
+          totalShippingTaxCurrency:'totalShippingTaxCurrency',
+    });
+    let result = converter(body);
+    return result;
+
+  },
 
 };

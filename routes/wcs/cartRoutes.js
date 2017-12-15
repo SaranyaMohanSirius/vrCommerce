@@ -51,4 +51,13 @@ router.post('/submitOrder',function(req,res){
 	cart.submitOrder(req,res);
 });
 
+/* 
+ * router for orderPaymentSummary 
+ */
+
+router.get('/orderPaymentSummary',function(req,res){
+	cart.orderPaymentSummary(req,res);
+});
+
+
 export default router;
