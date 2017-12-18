@@ -87,7 +87,7 @@ export default {
     logoutUser: function(req,res){
         logger.info("inside logout user");
         return new Promise(function(resolve,reject){
-           let concatUrl = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_LOGIN_IDENTITY+constants.WCS_SELF;
+           let concatUrl = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_LOGIN_IDENTITY+constants.WCS_AT_SELF;
            let logoutUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatUrl, true);
            logger.info("Logout user = "+logoutUrl);
            let method = 'DELETE';
