@@ -10,4 +10,13 @@ router.get('/getAddressBook', function(req, res) {
 	userProfile.getAddressBook(req,res);
 });
 
+/* 
+ * router for getting Order History
+ */
+
+router.get('/getOrderHistory', function(req, res){
+    userProfile.getOrderHistory(req,res);
+});
+
+
 export default router;

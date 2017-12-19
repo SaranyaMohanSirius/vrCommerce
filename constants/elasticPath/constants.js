@@ -22,6 +22,7 @@ export default {
   "EP_SEARCH" : "/cortex/searches/"+storeName+"/keywords/items?followlocation",
   "EP_ADD_SHIPPING_ADDRESS" : "/cortex/addresses/"+storeName+"?followlocation",  
   "EP_DEFAULT_CART" : "/cortex/carts/"+storeName+"/default",
+  "EP_DEFAULT_PROFILE" : "/profiles/"+storeName+"/default",
   "EP_SHOPPING_CART" : "/carts/"+storeName+"/default",
   "EP_CART" : "/carts/"+storeName+"/default",
   "EP_CURRENT_ORDER" : "/orders/"+storeName+"/g5qwknzvgq4wkljqgfrtaljuga4dgllbmqytcljqmjstsntbg5rtqojsgq=",  
@@ -58,7 +59,7 @@ export default {
   "EP_GET_COUPON_PROMO_ZOOM" : "?zoom=order:couponinfo:coupon,order:couponinfo:coupon:appliedpromotions:element",
   "EP_GET_PROMO_ZOOM" : "?zoom=appliedpromotions:element",
   "EP_ADDRESS_BOOK_ZOOM"  : "?zoom=element",
-
+  "EP_GET_ORDER_HISTORY_ZOOM" : "?zoom=purchases:element,purchases:element:appliedpromotions:element,purchases:element:discount,purchases:element:lineitems:element:list:element",
 
   // All Custome Message Goes Here
   "EP_PRODUCT_ADDED" : "Product Added Successfully",
