@@ -1,5 +1,5 @@
 import constants from '../../constants/wcs/constants';
-import  {getLogger,isJson,constructUrl,constructRequestWithoutToken} from '../../util/wcs/util';
+import  {getLogger,isJson,constructUrl,constructRequestWithoutToken,constructRequestWithToken,getTokens} from '../../util/wcs/util';
 import pdpMapper from '../../json_mappers/wcs/pdpMapper';
 import requestPromise from 'request-promise';
 import Promise from "bluebird";
@@ -89,5 +89,28 @@ export default {
 								});
 						});
 		}
+	},
+	getRecentlyViewedProducts: function(req,res){
+		logger.info("inside getRecentlyViewedProducts ctrl");
+        let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
+        let getRecentlyViewedProductsUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,true);
+        logger.info("Get recently viewed products URL" +getRecentlyViewedProductsUrl);
+        let requestCall = constructRequestWithToken(getRecentlyViewedProductsUrl,'GET','',getTokens(req))
+        requestPromise(requestCall).then(function (body) {
+            let result = pdpMapper.mapRecentlyViewedProductsJSON(body);  
+            res.send({
+                "success": true,
+                "result": result
+            });
+            }).catch(function (error) {
+                if(error.statusCode === 404 || error.statusCode === 401){
+                    logger.error('errors in service to getRecentlyViewedProducts in WCS: ', error);
+                    res.send({ "success": false, "error": error.response.body });
+                }else{
+                    logger.error('errors in service to getRecentlyViewedProducts in WCS: ', error);
+                    res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                }
+            });
+
 	} 
 }

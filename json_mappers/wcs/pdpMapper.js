@@ -76,5 +76,32 @@ export default {
 		}
 		jsonObj.catalogEntryView[0].swatches = definingAttributes;		
         return jsonObj;
-  }          
+  },  
+  mapRecentlyViewedProductsJSON: function(body){
+	  let converter = JM.makeConverter({
+		  resourceId: 'resourceId',
+		  recentlyViewedProducts: [ 'MarketingSpotData.0.baseMarketingSpotActivityData', JM.map({
+			catalogEntryTypeCode: 'catalogEntryTypeCode',
+			currency: 'currency',
+			partNumber: 'productPartNumber',
+			productId: 'productId',
+			purchasePrice: 'standardPrice',
+			listPrice: 'listPrice',
+			description: ['description', JM.map({
+				thumbnail: 'thumbnail',
+				shortDescription: 'shortDescription',
+				longDescription: 'longDescription',
+				language: 'language',
+				productName: 'productName'
+			})],
+			attributes: ['attributes', JM.map({
+				name: 'name',
+				stringValue: 'stringValue'
+			})]
+		  })]
+
+	  });
+	  let result = converter(body);
+	  return result;
+  }        
 };

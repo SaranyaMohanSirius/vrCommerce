@@ -57,6 +57,7 @@ export default {
    "WCS_TOKEN_EXPIRATION_TIME": "1800000",
    "WCS_REGISTRATION" : "/person?mode=self",
    "WCS_PERSON_AT_SELF": "/person/@self",
+   "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD":"/espot/RecViewed_CatEntries",
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",

@@ -11,4 +11,11 @@ router.get('/getProductDetails', function(req, res){
     pdp.getProductDetails(req,res);
 });
 
+/**
+ * Router for getting recently viewed products
+ */
+router.get('/getRecentlyViewedProducts', function(req, res){
+    pdp.getRecentlyViewedProducts(req,res);
+})
+
 export default router;
