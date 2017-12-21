@@ -2,8 +2,6 @@ import constants from '../../constants/wcs/constants';
 import {getLogger,
         isJson,
         constructUrl,
-        insertToken,
-        updateToken,
         constructRequestWithoutToken,
        } from '../../util/wcs/util';
 import requestPromise from 'request-promise';
@@ -18,7 +16,6 @@ export default {
      * Request body - logonId,logonPassword
      */
     loginIdentityHandler: function(req,res){
-        logger.info("inside update token");
         let concatUrl = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_LOGIN_IDENTITY;
         let loginUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatUrl , true);
         logger.info("Login url = "+loginUrl);

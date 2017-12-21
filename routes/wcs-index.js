@@ -12,6 +12,7 @@ import wcsLoginRoute from './wcs/loginRoute';
 import wcsUserProfileRoute from './wcs/userProfileRoutes';
 import wcsRegistrationRoute from './wcs/registrationRoutes';
 import wcsMyAccountRoutes from './wcs/myAccountRoutes';
+import wcsPaymentRoutes from './wcs/paymentRoutes';
 
 let app = express();
 
@@ -28,6 +29,7 @@ app.use('/wcs/login',wcsLoginRoute);
 app.use('/wcs/userProfile',wcsUserProfileRoute);
 app.use('/wcs/register',wcsRegistrationRoute);
 app.use('/wcs/myAccount',wcsMyAccountRoutes);
+app.use('/wcs/payment',wcsPaymentRoutes);
 
 
 export default app;

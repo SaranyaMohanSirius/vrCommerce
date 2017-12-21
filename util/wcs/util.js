@@ -83,7 +83,21 @@ module.exports = {
 			return false;
 		}
 		return true;
-	}
-	
+	},
+	requiredProtocolData: function(body){
 
+		let paymentDataArray = ["account","cc_cvc","expire_month","cc_brand","payment_method","expire_year"];
+		let objectToBePassed = {
+		  totalPaymentDataArray: []
+		};
+		body.paymentInstruction.filter(function(paymentInstructionData){
+		  let protocolArray = paymentInstructionData.protocolData;
+		  let totalPaymentArray = protocolArray.filter(function(paymentData){
+			if(paymentDataArray.indexOf(paymentData.name) > -1)
+			  return paymentData; 
+			});
+		  objectToBePassed.totalPaymentDataArray.push(totalPaymentArray);
+		});
+		return objectToBePassed;
+	}
 };

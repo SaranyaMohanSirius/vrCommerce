@@ -317,3 +317,44 @@ Body {
     "logonPassword" : "123qwe", 
     "logonPasswordVerify" : "123qwe"
 }
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Payment Instrucitons
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Payment Instrucitons
+GET : localhost:5000/wcs/payment/getPaymentInstruction
+
+Create Payment Instrucitons
+POST : localhost:5000/wcs/payment/createPaymentInstruction
+Body : {
+	"account": "4012888888881881",
+	"billing_address_id": "16398",
+	"cc_brand": "VISA",
+	"cc_cvc": "121",
+	"expire_month": "11",
+	"expire_year": "2019",
+	"payMethodId": "VISA",
+	"piAmount": "90.00000"
+}
+
+Update Payment Instrucitons
+PUT : localhost:5000/wcs/payment/putPaymentInstruction
+Body : {
+    "account": "4012888888881881",
+    "piId":"15056",
+    "billing_address_id": "16398",
+    "cc_brand": "VISA",
+    "cc_cvc": "111",
+    "expire_month": "12",
+    "expire_year": "2020",
+    "piAmount": "90.00000",
+    "payMethodId": "VISA",
+    "orderId": "21077"
+}
+
+Delete Payment Instructions
+DELETE : localhost:5000/wcs/payment/deletePaymentInstruction
+Body : {
+	"piId": "15045"
+}

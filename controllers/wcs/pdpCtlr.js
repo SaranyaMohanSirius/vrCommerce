@@ -91,7 +91,6 @@ export default {
 		}
 	},
 	getRecentlyViewedProducts: function(req,res){
-		logger.info("inside getRecentlyViewedProducts ctrl");
         let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
         let getRecentlyViewedProductsUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,true);
         logger.info("Get recently viewed products URL" +getRecentlyViewedProductsUrl);
