@@ -4,6 +4,7 @@ import {getLogger,
         getTokens,
         constructRequestWithToken,
         isJson,
+        requiredProtocolData,
        } from '../../util/wcs/util';
 import cartMapper from '../../json_mappers/wcs/cartMapper';
 import requestPromise from 'request-promise';
@@ -260,24 +261,9 @@ export default {
                     if(isJson(result)){ result = JSON.parse(result);}
                     logger.info(JSON.stringify(result));
 
-                    let paymentDataArray = ["account","cc_cvc","expire_month","cc_brand","payment_method","expire_year"];
-                    logger.info(paymentDataArray);
-
-                    let objectToBePassed = {
-                      totalPaymentDataArray: []
-                    };
-                    logger.info(objectToBePassed);
-
-                    result.paymentInstruction.filter(function(paymentInstructionData){
-                      let protocolArray = paymentInstructionData.protocolData;
-                      let totalPaymentArray = protocolArray.filter(function(paymentData){
-                        if(paymentDataArray.indexOf(paymentData.name) > -1)
-                          return paymentData; 
-                        });
-                      objectToBePassed.totalPaymentDataArray.push(totalPaymentArray);
-                    });
+                    let objectToBePassed = requiredProtocolData(result);
                     logger.info(JSON.stringify(objectToBePassed));
-
+                    
                     let finalResponse = cartMapper.mapOrderConfirmationResponseJSON(result,objectToBePassed);
                     logger.info("finalResponse: "+JSON.stringify(finalResponse));
                     res.send({
@@ -333,6 +319,7 @@ export default {
                               } 
                    });
            }, 
+
 };
 
 
