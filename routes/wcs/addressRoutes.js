@@ -15,7 +15,7 @@ router.get('/getShippingAddresses', function(req, res){
  *  Add an address to an user in WCS
  */
 
-router.get('/addShippingAddress', function(req, res){
+router.post('/addShippingAddress', function(req, res){
     address.addShippingAddress(res,req);
 });
 
@@ -23,7 +23,7 @@ router.get('/addShippingAddress', function(req, res){
  *	Updtes an address in WCS
  */
 
-router.get('/updateShippingAddress', function(req, res){
+router.put('/updateShippingAddress', function(req, res){
     address.updateShippingAddress(res,req);
 });
 
@@ -31,7 +31,7 @@ router.get('/updateShippingAddress', function(req, res){
  *	Deletes an address in WCS
  */
 
-router.get('/deleteShippingAddress', function(req, res){
+router.delete('/deleteShippingAddress', function(req, res){
     address.deleteShippingAddress(res,req);
 });
 
@@ -39,7 +39,7 @@ router.get('/deleteShippingAddress', function(req, res){
  *	Associates an address to the order
  */
 
-router.get('/selectShippingAddress', function(req, res){
+router.put('/selectShippingAddress', function(req, res){
     address.selectShippingAddress(res,req);
 });
 
