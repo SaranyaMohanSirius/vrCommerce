@@ -320,6 +320,47 @@ export default {
                    });
            }, 
 
+         /* 
+          * Method for getting Order Review in WCS
+          * Request Method : POST
+          */
+          
+         orderReview: function(req,res){
+
+              let data = req.body;
+              let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_ORDER + data.orderId;
+              
+              logger.info("orderReview URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+              let orderReviewUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+              let method ='GET';
+              let messageData = {};
+              let requestCall = constructRequestWithToken(orderReviewUrl,method,messageData,getTokens(req));
+              logger.info("review: "+JSON.stringify(requestCall));
+              requestPromise(requestCall).then(function (result) {
+                
+                    if(isJson(result)){ result = JSON.parse(result);}
+                    logger.info(JSON.stringify(result));
+
+                    let objectToBePassed = requiredProtocolData(result);
+                    logger.info(JSON.stringify(objectToBePassed));
+
+                    let finalResponse = cartMapper.mapOrderConfirmationResponseJSON(result,objectToBePassed);
+                    logger.info("finalResponse: "+JSON.stringify(finalResponse));
+                    res.send({
+                      "success": true,
+                      "result": finalResponse
+                    });
+                }).catch(function (error) {
+                              if(error.statusCode === 404 || error.statusCode === 400){
+                                  logger.error('errors in service to orderReview in WCS: ', JSON.stringify(error));
+                                  res.send({ "success": false, "error": error.response.body });
+                              }else{
+                                  logger.error('errors in service to orderReview in WCS: ', JSON.stringify(error));
+                                  res.send({ "success": false, "error": error.response.body.errors[0] }); 
+                              } 
+                   });
+           }, 
+
 };
 
 

@@ -59,5 +59,12 @@ router.get('/orderPaymentSummary',function(req,res){
 	cart.orderPaymentSummary(req,res);
 });
 
+/* 
+ * router for orderReview	 
+ */
+
+router.post('/orderReview',function(req,res){
+	cart.orderReview(req,res);
+});
 
 export default router;
