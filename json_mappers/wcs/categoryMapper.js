@@ -67,41 +67,27 @@ export default {
                 resultsTotal: 'recordSetTotal',
                 resultsCurrentPage: 'recordSetCount',
                 pages: JM.helpers.def(pages),
-              },
-              productsList: ['catalogEntryView', JM.map({
-                                       
+			  },
+			  resourceIdentifier: 'resourceId',
+              productsList: ['catalogEntryView', JM.map({                     
                      availability: '',
-
                      listPrice : 'price.0.value',
-				
 					 purchasePrice: 'price.1.value',
-
                      displayName: 'name',
-
                      code: 'partNumber',
-
-                     uniqueID: 'uniqueID',
-
+					 uniqueID: 'uniqueID',
                      store: 'storeID',
-
-                     thumbnail : ['thumbnail',function(url){ 
-                          
+                     thumbnail : ['thumbnail',function(url){              
                           return (constants.WCS_HOSTNAME_NOPORT+url); 
-
                       }],
-
                       attributes: ['attributes', JM.map({
 						  displayable: 'displayable',
 						  name: 'name',
 						  identifier: 'identifier',
-						  values: 'values.0.value',
-						  	 
+						  values: 'values.0.value',					  	 
 					  })],
-
                     hasSingleSKU: 'hasSingleSKU',
-
                     catalogEntryTypeCode: 'catalogEntryTypeCode',
-
               })],
               facets: ['facetView',JM.map({
               	entry : ['entry', JM.map({
@@ -111,7 +97,6 @@ export default {
               		},
               		label : 'label',
               		value : 'value',
-
               	})],
               	extendedData: {
               		name: 'name',

@@ -18,13 +18,13 @@ export default {
                 resultsCurrentPage: 'recordSetCount',
                 pages: JM.helpers.def(pages),
              },
+            resourceIdentifier: 'resourceId',
             searchResults: ['catalogEntryView', JM.map({                                    
                      availability: 'uniqueID',
                      listPrice: 'price.0.value',
                      purchasePrice: 'price.1.value',
                      displayName: 'name',
                      code: 'partNumber',
-                     resourceIdentifier: 'resourceId',
                      store: 'storeID',
                      thumbnail : 'thumbnail',
                      attributes: ['attributes', JM.map({
