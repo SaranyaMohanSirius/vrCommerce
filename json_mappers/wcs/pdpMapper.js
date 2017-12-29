@@ -17,7 +17,7 @@ export default {
 				purchasePrice: 'price.1.value',			
 				code: 'partNumber',			
 				resourceId : 'resourceId',			
-				displayName: 'name',	
+				displayName: 'name',
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -71,6 +71,8 @@ export default {
 					})],
 					thumbnail: 'thumbnail',
 				})],
+				thumbnail: 'thumbnail',
+				fullImage: 'fullImage',	
 			})],	
 		});    
 		let result = converter(body);
@@ -132,6 +134,8 @@ export default {
 					})],
 					thumbnail: 'thumbnail',
 				})],
+				thumbnail: 'thumbnail',
+				fullImage: 'fullImage',	
 			})],	
 		});    
 		let result = converter(body);
