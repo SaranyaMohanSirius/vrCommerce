@@ -19,6 +19,28 @@ Category Landing Page - Get Product List for Category
 Request : GET : http://localhost:5000/wcs/category/getProductsListForCategory?currentPage=6&pagesize=5&identifier=10006
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Facets
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+For Category:
+Request : GET :  http://localhost:5000/wcs/category/getProductsListForCategory?currentPage=6&pagesize=5&identifier=10006&facet=mfName_ntk_cs%3A%22Luigi+Valenti%22
+
+For Search:
+Request : GET : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&pageSize=5&currentPage=1&facet=mfName_ntk_cs%3A%22Luigi+Valenti%22
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Sort
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Request : GET : http://localhost:5000/wcs/category/getProductsListForCategory?currentPage=6&pagesize=5&identifier=10006&orderBy=4
+
+orderBy
+1 ->  mfName_ntk_cs ascending
+2 -> name_ntk ascending
+3 -> price ascending
+4 -> price descending
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         PDP
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

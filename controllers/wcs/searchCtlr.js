@@ -21,12 +21,15 @@ export default {
             "pageSize": pageSize,
             "currentPage": currentPage      
         };
-        logger.info(constants.WCS_HOSTNAME+path);
         let path = constants.WCS_PRODUCT_DETAILS+constants.WCS_STORE_ID+constants.WCS_PRODUCT_SEARCH_BY_KEYWORD+keyword+"?pageSize="+pageSize+"&pageNumber="+currentPage;
         if(req.query.orderBy){
                 let orderBy = req.query.orderBy;
                 path = path + "&orderBy=" + orderBy; 
         }
+        if(req.query.facet){
+                let facet = req.query.facet;
+                path = path + "&facet=" + facet; 
+            }
         let searchURL = constructUrl(constants.WCS_HOSTNAME, path, false);
         logger.info("search url = "+searchURL);
         let requestCall = constructRequestWithoutToken(searchURL,'GET','')

@@ -88,14 +88,18 @@ export default {
 	    	let pageSize = req.query.pagesize;
    			let currentPageNumber = req.query.currentPage;
     		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
-			  if(req.query.orderBy){
+			 if(req.query.orderBy){
    				let orderBy = req.query.orderBy;
     			concatURL = concatURL + "&orderBy=" + orderBy; 
-    		}			
+    		}		
+    		if(req.query.facet){
+   				let facet = req.query.facet;
+    			concatURL = concatURL + "&facet=" + facet; 
+    		}	
 		   	let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
 		  	logger.info("getProductsListForCategoryUrl: " +getProductsListForCategoryUrl);
-        let method ='GET';
-        let requestCall = constructRequestWithoutToken(getProductsListForCategoryUrl,method,'');
+        	let method ='GET';
+        	let requestCall = constructRequestWithoutToken(getProductsListForCategoryUrl,method,'');
  		  	logger.info(JSON.stringify(requestCall));
  		  	requestPromise(requestCall).then(function (body) {
  				let messageData = {
