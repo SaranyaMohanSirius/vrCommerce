@@ -2,7 +2,8 @@ import constants from '../../constants/wcs/constants';
 import {getLogger,
         constructUrl,
         getAuthTokensFromDB,
-        constructRequestWithoutToken,
+				constructRequestWithoutToken,
+				isJson
        } from '../../util/wcs/util';
 import categoryMapper from '../../json_mappers/wcs/categoryMapper';
 import requestPromise from 'request-promise';
@@ -84,29 +85,25 @@ export default {
 	 */
 
 	getProductsListForCategory: function(req,res,categoryId){
-
-     		let pageSize = req.query.pagesize;
-   			let currentPageNumber = req.query.current;
-    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
-			if(req.query.orderBy){
+	    	let pageSize = req.query.pagesize;
+   			let currentPageNumber = req.query.currentPage;
+    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
+			  if(req.query.orderBy){
    				let orderBy = req.query.orderBy;
     			concatURL = concatURL + "&orderBy=" + orderBy; 
-    		}
-			let messageData = {
-			      'pageSize': pageSize,
-			      'currentPageNumber': currentPageNumber
-			    };			
-			let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
-			logger.info("getProductsListForCategoryUrl: " +getProductsListForCategoryUrl);
-        	let method ='GET';
-          	let requestCall = constructRequestWithoutToken(getProductsListForCategoryUrl,method,messageData);
- 			logger.info(JSON.stringify(requestCall));
- 			requestPromise(requestCall).then(function (body) {
+    		}			
+		   	let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+		  	logger.info("getProductsListForCategoryUrl: " +getProductsListForCategoryUrl);
+        let method ='GET';
+        let requestCall = constructRequestWithoutToken(getProductsListForCategoryUrl,method,'');
+ 		  	logger.info(JSON.stringify(requestCall));
+ 		  	requestPromise(requestCall).then(function (body) {
  				let messageData = {
 			      'pageSize': pageSize,
-			      'currentPageNumber': currentPageNumber
-			    };
-	          let result = categoryMapper.mapProductsListForCategoryJSON(body,req,messageData);
+			      'currentPage': currentPageNumber
+					};
+				if(isJson(body)) body = JSON.parse(body);
+	          let result = categoryMapper.mapProductsListForCategoryJSON(body,messageData);
 	                  res.send({
 	                    "success": true ,
 	                    "result": result                                           
@@ -120,5 +117,5 @@ export default {
 	                res.send({ "success": false, "error": error});
 	              }
 	          });
-	        }
+	}
 };

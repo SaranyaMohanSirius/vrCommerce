@@ -52,34 +52,22 @@ export default {
 	   * JSON Mapper for generating responses for product list JSON for category landing page 
 	   */
 
-	mapProductsListForCategoryJSON: function(body,req,messageData){
-			 let totalCount = body.recordSetTotal;
-			 console.log("totalCount: "+totalCount + "messageData: " + messageData);
-			 let pageSize = messageData.pageSize;
-			 let totalPages;
-			 if(totalCount == pageSize){
-			 	totalPages = (totalCount/pageSize);
-			 }else{
-			 	totalPages = Math.floor(totalCount/pageSize)+1;
-			 }
-			 let resultsCurrentPage;
-			 if(messageData.currentPageNumber != totalPages){
-			 	resultsCurrentPage = pageSize;
-			 }else{
-			 	resultsCurrentPage = totalCount%pageSize;
-			 }
-
-
+	mapProductsListForCategoryJSON: function(body,messageData){
+			 let pageSize = Number(messageData.pageSize);
+			 let recordSetTotal = Number(body.recordSetTotal);
+			 let pages = Math.floor(recordSetTotal / pageSize) +1;
+			 console.log("pagesize = "+pageSize);
+			 console.log("record set total = "+recordSetTotal);
+			 console.log("pages = "+pages);
+			 console.log("body = "+body);
   			 let converter = JM.makeConverter({
-
               pagination: {
-                  pageSize: JM.helpers.def(messageData.pageSize),
-                  currentPageNumber: JM.helpers.def(messageData.currentPageNumber),
-                  resultsTotal: JM.helpers.def(totalCount.toString()),
-                  resultsCurrentPage: JM.helpers.def(resultsCurrentPage.toString()),
-                  pages: JM.helpers.def(totalPages.toString()),
-
-               },
+                pageSize: JM.helpers.def(messageData.pageSize),
+                currentPageNumber: JM.helpers.def(messageData.currentPage),
+                resultsTotal: 'recordSetTotal',
+                resultsCurrentPage: 'recordSetCount',
+                pages: JM.helpers.def(pages),
+              },
               productsList: ['catalogEntryView', JM.map({
                                        
                      availability: '',
