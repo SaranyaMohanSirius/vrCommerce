@@ -16,6 +16,8 @@ export default {
 
 	getProductDetails: function(req,res){
 		let productId = req.query.productId;
+		let resourceName = req.query.resourceName;
+		let result;
 		let path = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
 		let pdpURL = constructUrl(constants.WCS_HOSTNAME, path, false);
 		logger.info("getProductDetails post form url:" + pdpURL);
@@ -32,48 +34,12 @@ export default {
 					logger.info("request call = "+JSON.stringify(requestCall));
 						requestPromise(requestCall).then(function (body) {
 								if(isJson(body)) body = JSON.parse(body);
-								let getCatalogEntryView = data.catalogEntryView[0];
-								let getAttributes = getCatalogEntryView.attributes;
-								let i;
-								let defAttributes = [];
-								let displayNameArr = [];
-								for(i = 0; i < getAttributes.length; i++)
-								{
-									  let objects = getAttributes[i];
-									  let usage = objects.usage;
-									  let attributeValue = objects.values;
-									  if(usage == 'Defining' || usage == 'defining'){
-											defAttributes[i] = [];
-											for(let j = 0; j < attributeValue.length; j++){
-												defAttributes[i][j] = (attributeValue[j].identifier);
-											}
-											let displayName =  objects.identifier;
-											displayNameArr[i] = (displayName);
-										}
-								}			
-								
-								let definingAttributes = {
-									swatches: []
-								};
-								
-								for(let k=0; k<i ;k++) {
-									let choiceName = [];
-									for(let l=0; l<defAttributes[k].length; l++){		
-										let choice = {
-											"name" : defAttributes[k][l]
-										};
-										choiceName.push(choice);
-									}
-
-									definingAttributes.swatches.push({
-										"displayName": displayNameArr[k],
-										"options": {
-											"choice" : choiceName
-										}
-									});
+								if(resourceName == "pdp"){
+									result = pdpMapper.mapPdpJSON(data,body);
 								}
-								
-								let result = pdpMapper.mapPdpJSON(data,body,definingAttributes);
+								else if(resourceName == "qv"){
+									result = pdpMapper.mapQuickViewJSON(data);
+								}
 								res.send({
 										"success": true,
 										"result": result
@@ -86,10 +52,10 @@ export default {
 										logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
 										res.send({ "success": false, "error": error.response.body.errors[0] }); 
 									}
-								});
 						});
+				});
 		}
-	},
+	} ,
 	getRecentlyViewedProducts: function(req,res){
         let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
         let getRecentlyViewedProductsUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,true);

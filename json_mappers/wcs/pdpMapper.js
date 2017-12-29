@@ -6,7 +6,7 @@ export default {
    * JSON Mapper for generating responses for PDP page 
    */
 
-  mapPdpJSON: function(body,inv,definingAttributes){	
+   mapPdpJSON: function(body,inv){	
 		let converter = JM.makeConverter({
 			catalogEntryView: ['catalogEntryView', JM.map({		
 				hasSingleSKU: 'hasSingleSKU',
@@ -49,20 +49,29 @@ export default {
 					thumbnail: 'thumbnail',
 					fullImage: 'fullImage',			
 				})],
-				swatches: ['sKUs', JM.map({					
-					options: {
-						SKU: 'uniqueID',
-						partNumber: 'partNumber',
-						attributes: ['attributes', JM.map({
-							name: 'name',
-							value: 'values.0.value',
-							image1: 'image1',
-						})],
-					},
-				})],	
-				thumbnail: 'thumbnail',
-				fullImage: 'fullImage',
-			})],
+				skus: ['sKUs',JM.map({
+					
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',				
+					buyable: 'buyable',				
+					store: 'storeID',			
+					listPrice : 'price.0.value',			
+					purchasePrice: 'price.1.value',			
+					code: 'partNumber',			
+					resourceId : 'resourceId',			
+					displayName: 'name',
+					attributes: ['attributes', JM.map({
+					  displayable: 'displayable',
+					  name: 'name',
+					  identifier: 'identifier',
+					  values: ['values', JM.map({
+						identifier: 'identifier',
+                        uniqueID: 'uniqueID',
+					  })], 	
+					})],
+					thumbnail: 'thumbnail',
+				})],
+			})],	
 		});    
 		let result = converter(body);
 		let jsonObj = result;
@@ -73,10 +82,70 @@ export default {
 			
 			jsonObj.catalogEntryView[i].availability = invAvailability;
 			jsonObj.catalogEntryView[i].quantity = quantityAvailable;
-		}
-		jsonObj.catalogEntryView[0].swatches = definingAttributes;		
+		}	
         return jsonObj;
-  },  
+  },
+    /* 
+   * JSON Mapper for generating responses for Quick View page 
+   */
+
+  mapQuickViewJSON: function(body,inv){	
+		let converter = JM.makeConverter({
+			catalogEntryView: ['catalogEntryView', JM.map({		
+				hasSingleSKU: 'hasSingleSKU',
+				catalogEntryTypeCode: 'catalogEntryTypeCode',				
+				buyable: 'buyable',				
+				store: 'storeID',			
+				listPrice : 'price.0.value',			
+				purchasePrice: 'price.1.value',			
+				code: 'partNumber',			
+				resourceId : 'resourceId',			
+				displayName: 'name',	
+				attributes: ['attributes', JM.map({
+					  displayable: 'displayable',
+					  name: 'name',
+					  identifier: 'identifier',
+					  values: ['values', JM.map({
+						identifier: 'identifier',
+                        uniqueID: 'uniqueID',
+					  })], 
+				})],
+				skus: ['sKUs',JM.map({
+					
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',				
+					buyable: 'buyable',				
+					store: 'storeID',			
+					listPrice : 'price.0.value',			
+					purchasePrice: 'price.1.value',			
+					code: 'partNumber',			
+					resourceId : 'resourceId',			
+					displayName: 'name',
+					attributes: ['attributes', JM.map({
+					  displayable: 'displayable',
+					  name: 'name',
+					  identifier: 'identifier',
+					  values: ['values', JM.map({
+						identifier: 'identifier',
+                        uniqueID: 'uniqueID',
+					  })], 	
+					})],
+					thumbnail: 'thumbnail',
+				})],
+			})],	
+		});    
+		let result = converter(body);
+		let jsonObj = result;
+		
+		for(let i=0 ; i<jsonObj.catalogEntryView.length ; i++){
+			let invAvailability = inv.InventoryAvailability[i].inventoryStatus;	
+			let quantityAvailable = inv.InventoryAvailability[i].availableQuantity;	
+			
+			jsonObj.catalogEntryView[i].availability = invAvailability;
+			jsonObj.catalogEntryView[i].quantity = quantityAvailable;
+		}	
+        return jsonObj;
+  },
   mapRecentlyViewedProductsJSON: function(body){
 	  let converter = JM.makeConverter({
 		  resourceId: 'resourceId',

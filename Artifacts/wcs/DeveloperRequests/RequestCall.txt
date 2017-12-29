@@ -46,7 +46,10 @@ orderBy
 
 
 Get product details :
-Request : GET : http://localhost:5000/wcs/PDP/getProductDetails?productId=10843
+Request : GET : http://localhost:5000/wcs/PDP/getProductDetails?productId=10843&resourceName=pdp
+
+* resourceName=pdp for PDP 
+* resourceName=qv for QuickView
 
 * catentry_id = 10843 contains 8 merchandisinf association products
 
