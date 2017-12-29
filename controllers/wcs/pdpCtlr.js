@@ -38,7 +38,7 @@ export default {
 									result = pdpMapper.mapPdpJSON(data,body);
 								}
 								else if(resourceName == "qv"){
-									result = pdpMapper.mapQuickViewJSON(data);
+									result = pdpMapper.mapQuickViewJSON(data,body);
 								}
 								res.send({
 										"success": true,
