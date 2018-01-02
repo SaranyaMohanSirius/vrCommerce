@@ -37,6 +37,12 @@ export default {
 					identifier : 'identifier',
 					id: 'uniqueID',
 					store : 'storeID',
+					thumbnail : ['thumbnail',function(url){ 
+                          
+                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+
+                    }],
+
 					
 			}) ],
 			totalCount : 'recordSetCount',
@@ -56,11 +62,7 @@ export default {
 			 let pageSize = Number(messageData.pageSize);
 			 let recordSetTotal = Number(body.recordSetTotal);
 			 let pages = Math.floor(recordSetTotal / pageSize) +1;
-			 console.log("pagesize = "+pageSize);
-			 console.log("record set total = "+recordSetTotal);
-			 console.log("pages = "+pages);
-			 console.log("body = "+body);
-  			 let converter = JM.makeConverter({
+			 let converter = JM.makeConverter({
               pagination: {
                 pageSize: JM.helpers.def(messageData.pageSize),
                 currentPageNumber: JM.helpers.def(messageData.currentPage),
@@ -77,9 +79,12 @@ export default {
                      code: 'partNumber',
 					 uniqueID: 'uniqueID',
                      store: 'storeID',
-                     thumbnail : ['thumbnail',function(url){              
-                          return (constants.WCS_HOSTNAME_NOPORT+url); 
+                     thumbnail : ['thumbnail',function(url){ 
+                          
+                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+
                       }],
+
                       attributes: ['attributes', JM.map({
 						  displayable: 'displayable',
 						  name: 'name',
@@ -97,6 +102,12 @@ export default {
               		},
               		label : 'label',
               		value : 'value',
+              		image : ['image',function(url){ 
+                          if(url){
+                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+                      }
+
+                    }],
               	})],
               	extendedData: {
               		name: 'name',

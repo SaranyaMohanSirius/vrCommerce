@@ -26,7 +26,11 @@ export default {
                      displayName: 'name',
                      code: 'partNumber',
                      store: 'storeID',
-                     thumbnail : 'thumbnail',
+                     thumbnail : ['thumbnail',function(url){ 
+                          
+                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+
+                      }],
                      attributes: ['attributes', JM.map({
                           displayable: 'displayable',
                           name: 'name',
@@ -43,6 +47,11 @@ export default {
                     },
                     label : 'label',
                     value : 'value',
+                    image : ['image',function(url){ 
+                        if(url){
+                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+                        }
+                    }],
 
                 })],
                 extendedData: {

@@ -1,4 +1,5 @@
 import JM from 'json-mapper';
+import constants from '../../constants/wcs/constants';
 
 export default {
 
@@ -46,8 +47,13 @@ export default {
 							uniqueID: 'uniqueID',
 						  })], 
 					})],
-					thumbnail: 'thumbnail',
-					fullImage: 'fullImage',			
+					
+                    thumbnail : ['thumbnail',function(url){ 
+                          
+                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+
+                     }],
+                    fullImage: 'fullImage',			
 				})],
 				skus: ['sKUs',JM.map({
 					
