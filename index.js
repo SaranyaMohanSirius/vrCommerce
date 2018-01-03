@@ -15,7 +15,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(cookieParser());
 
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://project-c-web-app.herokuapp.com/home');
+    res.header('Access-Control-Allow-Origin', 'http://project-c-web-app.herokuapp.com');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
