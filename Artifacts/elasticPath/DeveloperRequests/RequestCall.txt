@@ -312,6 +312,14 @@ Request: POST: http://localhost:5000/ep/register/register
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+Order Review :
+
+POST : http://localhost:5000/ep/cart/orderReview
+
+Input :
+{
+	"orderId":"/orders/britney/mzsgizrtmezdsllggzrtoljumvrgcllbgqywmljrgjqwgodbgnrtayldmu="
+}
 
 
 

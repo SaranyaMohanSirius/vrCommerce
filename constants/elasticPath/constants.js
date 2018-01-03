@@ -61,8 +61,8 @@ export default {
   "EP_ADDRESS_BOOK_ZOOM"  : "?zoom=element",
   "EP_GET_PERSONAL_INFO_ZOOM" : "?zoom=addresses:billingaddresses:default,emails:element",
   "EP_GET_ORDER_HISTORY_ZOOM" : "?zoom=purchases:element,purchases:element:appliedpromotions:element,purchases:element:discount,purchases:element:lineitems:element:list:element",
-
-  // All Custome Message Goes Here
+  "EP_GET_ORDER_REVIEW" : "?zoom=cart:appliedpromotions:element,cart:discount,cart:lineitems,cart:lineitems:element,cart:lineitems:element:item:code,cart:lineitems:element:price,cart:lineitems:element:total,cart:total,deliveries:element:destinationinfo:selector:chosen:description,deliveries:element:shippingoptioninfo:selector:chosen:description,paymentmethodinfo:paymentmethod,tax,total",
+    // All Custome Message Goes Here
   "EP_PRODUCT_ADDED" : "Product Added Successfully",
   "EP_ADDRESS_ADDED" : "Address Added Successfully",
   "EP_ADDRESS_DELETED" : "Address Deleted Successfully",

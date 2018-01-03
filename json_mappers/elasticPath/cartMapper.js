@@ -130,7 +130,101 @@ export default {
                 message: "All Cart Items are Deleted Successfully",
                };      
       return JSON.parse(JSON.stringify(jsonResponse));
-    }
+    },
 
-    
+      /**
+       * order Review 
+       */
+      mapOrderReviewJSON: function(body){
+
+       
+        let converter = JM.makeConverter({
+  
+              adjustment:['_cart.0._appliedpromotions.0._element',JM.map({
+                  code:JM.helpers.def(''),
+                  currency: JM.helpers.def('USD'),
+                  description: 'display-description',
+                  displayLevel:JM.helpers.def('Order'),
+                  usage:JM.helpers.def('Discount'),
+              })],
+              grandTotal: '_total.0.cost.0.display',
+              grandTotalCurrency: '_total.0.cost.0.currency',
+              locked: JM.helpers.def(''),
+              orderId: '_total.0.links.0.uri',
+              lineItem:['_cart.0._lineitems.0._element',JM.map({
+                  adjustment:['_appliedpromotions.0._element',JM.map({
+                      code:JM.helpers.def(''),
+                      currency: JM.helpers.def('USD'),
+                      description: 'display-description',
+                      usage:JM.helpers.def('Discount'),
+                  })],  
+                  currency: '_price.0.purchase-price.0.currency',
+                  freeGift: JM.helpers.def('false'),
+                  lineItemId: '_availability.0.links.0.uri',
+                  lineItemPrice: '_total.0.cost.0.display',
+                  adjustedPrice: '_total.0.cost.0.display',
+                  partNumber:'_item.0._code.0.code',
+                  productId:'_item.0._code.0.links.0.uri',
+                  quantity:'quantity',
+                  unitPrice:'_price.0.purchase-price.0.display',
+                  unitQuantity:JM.helpers.def('1'),
+              })], 
+              shipping: {
+                  firstName: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.name.family-name',
+                  lastName: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.name.given-name',
+                  middleName: JM.helpers.def(' '),
+                  email1: JM.helpers.def(' '),
+                  addressId: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.self.uri',
+                  addressLine: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.address.street-address',
+                  city: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.address.locality',
+                  state: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.address.region',
+                  country: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.address.country-name',
+                  postalCode: '_deliveries.0._element.0._destinationinfo.0._selector.0._chosen.0._description.0.address.postal-code',
+                  carrier: '_deliveries.0._element.0._shippingoptioninfo.0._selector.0._chosen.0._description.0.carrier',
+                  expectedShipDate: JM.helpers.def(' '),
+                  shipModeCode: '_deliveries.0._element.0._shippingoptioninfo.0._selector.0._chosen.0._description.0.name',
+                  shipModeDescription: '_deliveries.0._element.0._shippingoptioninfo.0._selector.0._chosen.0._description.0.display-name',
+                  shipModeId: '_deliveries.0._element.0._shippingoptioninfo.0._selector.0._chosen.0._description.0.self.uri', 
+              },          
+              paymentInstruction:['_paymentmethodinfo.0._paymentmethod',JM.map({
+                    firstName: JM.helpers.def(''),
+                    lastName: JM.helpers.def(''),
+                    middleName: JM.helpers.def(''),
+                    email1: JM.helpers.def(''),
+                    addressId: JM.helpers.def(''),
+                    addressLine: JM.helpers.def(''),
+                    city: JM.helpers.def(''),
+                    state: JM.helpers.def(''),
+                    country: JM.helpers.def(''),
+                    postalCode: JM.helpers.def(''),
+                    payMethodId: 'self.uri',  
+                    piId: 'token',    
+                    piAmount: JM.helpers.def(''),
+                    piCurrency: JM.helpers.def(''),
+                    piDescription:'display-name', 
+              })],  
+              placedDate:JM.helpers.def(''),
+              recordSetComplete:JM.helpers.def(''),
+              recordSetCount: JM.helpers.def(''),
+              recordSetStartNumber: JM.helpers.def(''),
+              recordSetTotal: JM.helpers.def(''),
+              resourceId: JM.helpers.def(''),
+              totalAdjustment: '_cart.0._discount.0.discount.0.display',
+              totalAdjustmentCurrency: '_cart.0._discount.0.discount.0.currency',
+              totalProductPrice: '_cart.0._total.0.cost.0.display',
+              totalProductPriceCurrency: '_cart.0._total.0.cost.0.currency',
+              totalSalesTax: '_tax.0.cost.0.display',
+              totalSalesTaxCurrency: '_tax.0.cost.0.currency',
+              totalShippingCharge:'_deliveries.0._element.0._shippingoptioninfo.0._selector.0._chosen.0._description.0.cost.0.display',
+              totalShippingChargeCurrency:'_deliveries.0._element.0._shippingoptioninfo.0._selector.0._chosen.0._description.0.cost.0.currency',
+              totalShippingTax:JM.helpers.def(''),
+              totalShippingTaxCurrency:JM.helpers.def(''),          
+
+        });
+  
+      let result = converter(body);
+      let jsonObj = result;
+      return jsonObj; 
+     
+    }
 };

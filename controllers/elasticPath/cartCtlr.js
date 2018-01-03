@@ -182,5 +182,36 @@ getShoppingCart: function(req,res){
                     res.send({ "success": false, "error": error});
                   }
               });
+            },
+
+              /**
+              *  Order Review 
+              */
+
+
+            orderReview: function(req,res){
+              let token = req.cookies.access_token;
+              let messageData = {};
+              let uri = req.body.orderId + constants.EP_GET_ORDER_REVIEW;
+              let orderReviewURL = constructUrl(constants.EP_HOSTNAME_CORTEX, uri, false);   
+              logger.info('Order Review',  orderReviewURL);
+              let method ='GET';
+              let requestCall = constructRequest(orderReviewURL,method,messageData,token)
+              requestPromise(requestCall).then(function (data) {
+                  let result = cartMapper.mapOrderReviewJSON(data); 
+                  res.send({
+                    "success": true ,
+                    "result": result,                                            
+                  });      
+                }).catch(function (error) {
+                    if(error.response.body){
+                      logger.error('errors in service to order Review in EP: ', error.response.body);
+                      res.send({ "success": false, "error": error.response.body }); 
+                    }else{
+                      logger.error('errors in service to order Review in EP: ', error);
+                      res.send({ "success": false, "error": error});
+                    }
+                }); 
+
             }
 };

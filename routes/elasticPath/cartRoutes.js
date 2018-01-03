@@ -37,5 +37,11 @@ router.delete('/deleteAllShoppingCartItem', function(req, res) {
 	cart.deleteAllShoppingCartItem(req,res);
 });
 
+/**
+ * Order Review
+ */
+router.post('/orderReview', function(req, res) {
+	cart.orderReview(req,res);
+});
 
 export default router;
