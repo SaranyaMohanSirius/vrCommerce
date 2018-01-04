@@ -1,4 +1,5 @@
 import JM from 'json-mapper';
+import constants from '../../constants/wcs/constants';
 
 export default {
 
