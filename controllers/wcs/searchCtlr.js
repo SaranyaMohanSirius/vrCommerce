@@ -26,10 +26,23 @@ export default {
                 let orderBy = req.query.orderBy;
                 path = path + "&orderBy=" + orderBy; 
         }
+        if(req.query.categoryId){
+                let categoryId= req.query.categoryId;
+                path = path + "&categoryId=" + categoryId;
+        }
         if(req.query.facet){
                 let facet = req.query.facet;
-                path = path + "&facet=" + facet; 
-            }
+                logger.info("Multiple facets" + Array.isArray(facet));          
+                if(Array.isArray(facet)){
+                  
+                        var facetIterator = facet[Symbol.iterator]();
+                        for (let facetvalue of facetIterator) {
+                           path = path + "&facet=" + facetvalue; 
+                        }
+                }
+                else
+                    path = path + "&facet=" + facet; 
+        }
         let searchURL = constructUrl(constants.WCS_HOSTNAME, path, false);
         logger.info("search url = "+searchURL);
         let requestCall = constructRequestWithoutToken(searchURL,'GET','')
@@ -48,6 +61,6 @@ export default {
                     logger.error('errors in service to getSearchResults in WCS: ', error);
                     res.send({ "success": false, "error": error.response.body.errors[0] }); 
                 }
-            });
+        });
     }
 }
