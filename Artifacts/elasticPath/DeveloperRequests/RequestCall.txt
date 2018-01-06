@@ -321,5 +321,11 @@ Input :
 	"orderId":"/orders/britney/mzsgizrtmezdsllggzrtoljumvrgcllbgqywmljrgjqwgodbgnrtayldmu="
 }
 
+Order Submit & Confirmation :
 
+POST : http://localhost:5000/ep/cart/orderSubmit
+
+{
+	"orderId":"/orders/britney/mvtgkmzrmjqwgljxmntgcljumqywcljyga3tclldgnrggzdgmu4dsyrzhe="
+}
 

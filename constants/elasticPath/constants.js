@@ -29,6 +29,7 @@ export default {
   "EP_WHISHLIST_URL" : "/wishlists/"+storeName+"/default" ,
   "EP_APPLY_PROMO"  : "/coupons",
   "EP_ADDRESS_BOOK" : "/cortex/addresses/"+storeName,
+  "EP_PURCHASES" : "/purchases",
 
 
 
@@ -62,6 +63,7 @@ export default {
   "EP_GET_PERSONAL_INFO_ZOOM" : "?zoom=addresses:billingaddresses:default,emails:element",
   "EP_GET_ORDER_HISTORY_ZOOM" : "?zoom=purchases:element,purchases:element:appliedpromotions:element,purchases:element:discount,purchases:element:lineitems:element:list:element",
   "EP_GET_ORDER_REVIEW" : "?zoom=cart:appliedpromotions:element,cart:discount,cart:lineitems,cart:lineitems:element,cart:lineitems:element:item:code,cart:lineitems:element:price,cart:lineitems:element:total,cart:total,deliveries:element:destinationinfo:selector:chosen:description,deliveries:element:shippingoptioninfo:selector:chosen:description,paymentmethodinfo:paymentmethod,tax,total",
+  "EP_PURCHASE_ZOOM" : "?zoom=billingaddress,discount,lineitems,lineitems:element,paymentmeans:element,shipments:element:destination,shipments:element:shippingoption,shipments:element:tax",
     // All Custome Message Goes Here
   "EP_PRODUCT_ADDED" : "Product Added Successfully",
   "EP_ADDRESS_ADDED" : "Address Added Successfully",

@@ -213,5 +213,51 @@ getShoppingCart: function(req,res){
                     }
                 }); 
 
+            },
+            /**
+             * Submit Order
+             */
+            submitOrder: function(req,res){
+              let token = req.cookies.access_token;
+              let messageData = {};
+              let concattUrl =  constants.EP_PURCHASES +req.body.orderId + constants.EP_FOLLOW_LOCATION;
+              let orderSubmitURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concattUrl, false);   
+              logger.info('Order Review',  orderSubmitURL);
+              let method ='POST';
+              let requestCall = constructRequest(orderSubmitURL,method,messageData,token)
+              requestPromise(requestCall).then(function (data) {
+                let uri = data.self.uri;
+                let concatURL = uri + constants.EP_PURCHASE_ZOOM;
+                let orderConfirmURL = constructUrl(constants.EP_HOSTNAME_CORTEX, concatURL, false);
+                let messageData = {};
+                logger.info("order Confirmation resource url:" + orderConfirmURL);
+                let secondRequestCall = constructRequest(orderConfirmURL,"GET",messageData,token)
+                return requestPromise(secondRequestCall).then(function (data) {
+                  let result = cartMapper.mapOrderConfirmationJSON(data);
+                   res.send({
+                             "success":  true ,
+                             "result": result,                                            
+                         });   
+                   }).catch(function (error) {
+                       if(error.response.body){
+                         logger.error('errors in service to orderConfirmation in EP: ', error.response.body);
+                         res.send({ "success": false, "error": error.response.body }); 
+                       }else{
+                         logger.error('errors in service to orderConfirmation in EP: ', error);
+                         res.send({ "success": false, "error": error});
+                       }
+                   });
+                }).catch(function (error) {
+                    if(error.response.body){
+                      logger.error('errors in service to Submit Order in EP: ', error.response.body);
+                      res.send({ "success": false, "error": error.response.body }); 
+                    }else{
+                      logger.error('errors in service to Submit Order in EP: ', error);
+                      res.send({ "success": false, "error": error});
+                    }
+                }); 
+
             }
+
+         
 };
