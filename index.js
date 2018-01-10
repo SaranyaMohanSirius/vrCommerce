@@ -14,8 +14,9 @@ app.use(express.static('WebContent'));
 app.set('port', (process.env.PORT || 5000));
 app.use(cookieParser());
 
+//To Allow Cross Domain
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://project-c-web-app.herokuapp.com');
+    res.header('Access-Control-Allow-Origin', 'http://project-c-web-app.herokuapp.com,https://project-c-web-app.herokuapp.com');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -25,8 +26,6 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
     
-
-
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
   extended: false

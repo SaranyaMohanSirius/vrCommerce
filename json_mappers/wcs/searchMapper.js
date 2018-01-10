@@ -28,10 +28,10 @@ export default {
                      code: 'partNumber',
                      store: 'storeID',
                      thumbnail : ['thumbnail',function(url){ 
-                          
+                        if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
-
-                      }],
+                        }
+                     }],
                      attributes: ['attributes', JM.map({
                           displayable: 'displayable',
                           name: 'name',
