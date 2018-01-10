@@ -59,7 +59,7 @@ export default {
 	mapProductsListForCategoryJSON: function(body,messageData){
 			 let pageSize = Number(messageData.pageSize);
 			 let recordSetTotal = Number(body.recordSetTotal);
-			 let pages = Math.floor(recordSetTotal / pageSize) +1;
+			 let pages = Math.ceil(recordSetTotal / pageSize);
 			 let converter = JM.makeConverter({
               pagination: {
                 pageSize: JM.helpers.def(messageData.pageSize),
