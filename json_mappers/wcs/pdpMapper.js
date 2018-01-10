@@ -10,7 +10,12 @@ export default {
    mapPdpJSON: function(body,inv){	
 		let converter = JM.makeConverter({
 			catalogEntryView: ['catalogEntryView', JM.map({		
-				hasSingleSKU: 'hasSingleSKU',
+				hasSingleSKU: function(input){ 
+					if(inv == true){
+						return input.hasSingleSKU;
+					}
+					return; 
+				},
 				catalogEntryTypeCode: 'catalogEntryTypeCode',				
 				buyable: 'buyable',				
 				store: 'storeID',			
@@ -115,12 +120,14 @@ export default {
 		let result = converter(body);
 		let jsonObj = result;
 		
-		for(let i=0 ; i<jsonObj.catalogEntryView.length ; i++){
-			let invAvailability = inv.InventoryAvailability[i].inventoryStatus;	
-			let quantityAvailable = inv.InventoryAvailability[i].availableQuantity;	
-			
-			jsonObj.catalogEntryView[i].availability = invAvailability;
-			jsonObj.catalogEntryView[i].quantity = quantityAvailable;
+		if(inv != true){
+			for(let i=0 ; i<jsonObj.catalogEntryView.length ; i++){
+				let invAvailability = inv.InventoryAvailability[i].inventoryStatus;	
+				let quantityAvailable = inv.InventoryAvailability[i].availableQuantity;	
+				
+				jsonObj.catalogEntryView[i].availability = invAvailability;
+				jsonObj.catalogEntryView[i].quantity = quantityAvailable;
+			}
 		}	
         return jsonObj;
   },
