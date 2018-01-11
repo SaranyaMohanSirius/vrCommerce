@@ -1,4 +1,5 @@
 import JM from 'json-mapper';
+import constants from '../../constants/wcs/constants';
 
 export default {
 
@@ -9,7 +10,7 @@ export default {
     mapSearchResultJSON : function(body,messageData){
         let pageSize = Number(messageData.pageSize);
         let recordSetTotal = Number(body.recordSetTotal);
-        let pages = Math.floor(recordSetTotal / pageSize) +1;
+        let pages = Math.ceil(recordSetTotal / pageSize);
         let converter = JM.makeConverter({
             pagination: {
                 pageSize: JM.helpers.def(messageData.pageSize),
@@ -27,10 +28,10 @@ export default {
                      code: 'partNumber',
                      store: 'storeID',
                      thumbnail : ['thumbnail',function(url){ 
-                          
+                        if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
-
-                      }],
+                        }
+                     }],
                      attributes: ['attributes', JM.map({
                           displayable: 'displayable',
                           name: 'name',

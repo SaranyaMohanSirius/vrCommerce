@@ -23,10 +23,15 @@ Request : GET : http://localhost:5000/wcs/category/getProductsListForCategory?cu
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 For Category:
-Request : GET :  http://localhost:5000/wcs/category/getProductsListForCategory?currentPage=6&pagesize=5&identifier=10006&facet=mfName_ntk_cs%3A%22Luigi+Valenti%22
+Request : GET :  http://localhost:5000/wcs/search/getSearchResults?keyword=*&pageSize=5&currentPage=1&facet=mfName_ntk_cs%3A%22Albini%22&categoryId=10002
+
 
 For Search:
 Request : GET : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&pageSize=5&currentPage=1&facet=mfName_ntk_cs%3A%22Luigi+Valenti%22
+
+
+For Multiple Facets:
+Request : GET  : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&pageSize=5&currentPage=1&facet=mfName_ntk_cs%3A%22Albini%22&facet=price_USD%3A%28%7B*+100%7D+100%29&facet=ads_f10004_ntk_cs%3A%22M%22
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         Sort

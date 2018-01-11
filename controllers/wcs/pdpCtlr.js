@@ -24,7 +24,15 @@ export default {
    		let requestCall = constructRequestWithoutToken(pdpURL,'GET','');
 		requestPromise(requestCall).then(function(result){
 			return requestFunction(result);
-		});
+		}).catch(function (error) {
+			if(error.statusCode === 404 || error.statusCode === 500){
+				logger.error('error in service to getPromotionsAtCart in WCS: ', error);
+				res.send({ "success": false, "error": error.response.body });
+			}else{
+				logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+				res.send({ "success": false, "error": error.response.body.errors[0] }); 
+			}
+        });;
 		let requestFunction = function(data){
 				return new Promise(function(resolve,reject){
 					if(isJson(data)) data = JSON.parse(data);
@@ -32,27 +40,41 @@ export default {
 					let invAvlURL = constructUrl(constants.WCS_HOSTNAME_NOPORT, path, false);
 					let requestCall = constructRequestWithoutToken(invAvlURL,'GET','');
 					logger.info("request call = "+JSON.stringify(requestCall));
+					if(data.catalogEntryView[0].catalogEntryTypeCode == "ProductBean"){
+						if(resourceName == "pdp"){
+							result = pdpMapper.mapPdpJSON(data,true);
+						}
+						else if(resourceName == "qv"){
+							result = pdpMapper.mapQuickViewJSON(data,true);
+						}
+						res.send({
+							"success": true,
+							"result": result
+					});
+					}
+					else{
 						requestPromise(requestCall).then(function (body) {
-								if(isJson(body)) body = JSON.parse(body);
-								if(resourceName == "pdp"){
-									result = pdpMapper.mapPdpJSON(data,body);
+							if(isJson(body)) body = JSON.parse(body);
+							if(resourceName == "pdp"){
+								result = pdpMapper.mapPdpJSON(data,body);
+							}
+							else if(resourceName == "qv"){
+								result = pdpMapper.mapQuickViewJSON(data,body);
+							}
+							res.send({
+									"success": true,
+									"result": result
+							});
+							}).catch(function (error) {
+								if(error.statusCode === 404 || error.statusCode === 500){
+									logger.error('error in service to getPromotionsAtCart in WCS: ', error);
+									res.send({ "success": false, "error": error.response.body });
+								}else{
+									logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+									res.send({ "success": false, "error": error.response.body.errors[0] }); 
 								}
-								else if(resourceName == "qv"){
-									result = pdpMapper.mapQuickViewJSON(data,body);
-								}
-								res.send({
-										"success": true,
-										"result": result
-								});
-								}).catch(function (error) {
-									if(error.statusCode === 404 || error.statusCode === 500){
-										logger.error('error in service to getPromotionsAtCart in WCS: ', error);
-										res.send({ "success": false, "error": error.response.body });
-									}else{
-										logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
-										res.send({ "success": false, "error": error.response.body.errors[0] }); 
-									}
-						});
+					});
+					}
 				});
 		}
 	} ,

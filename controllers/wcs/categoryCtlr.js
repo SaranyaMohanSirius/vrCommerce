@@ -92,10 +92,19 @@ export default {
    				let orderBy = req.query.orderBy;
     			concatURL = concatURL + "&orderBy=" + orderBy; 
     		}		
-    		if(req.query.facet){
-   				let facet = req.query.facet;
-    			concatURL = concatURL + "&facet=" + facet; 
-    		}	
+    		 if(req.query.facet){
+                let facet = req.query.facet;
+                logger.info("Multiple facets" + Array.isArray(facet));          
+                if(Array.isArray(facet)){
+                  
+                        var facetIterator = facet[Symbol.iterator]();
+                        for (let facetvalue of facetIterator) {
+                           concatURL = concatURL + "&facet=" + facetvalue; 
+                        }
+                }
+                else
+                    concatURL = concatURL + "&facet=" + facet; 
+        	}	
 		   	let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
 		  	logger.info("getProductsListForCategoryUrl: " +getProductsListForCategoryUrl);
         	let method ='GET';
@@ -105,9 +114,9 @@ export default {
  				let messageData = {
 			      'pageSize': pageSize,
 			      'currentPage': currentPageNumber
-					};
+				};
 				if(isJson(body)) body = JSON.parse(body);
-	          let result = categoryMapper.mapProductsListForCategoryJSON(body,messageData);
+	          	let result = categoryMapper.mapProductsListForCategoryJSON(body,messageData);
 	                  res.send({
 	                    "success": true ,
 	                    "result": result                                           

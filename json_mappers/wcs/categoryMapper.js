@@ -38,13 +38,11 @@ export default {
 					id: 'uniqueID',
 					store : 'storeID',
 					thumbnail : ['thumbnail',function(url){ 
-                          
+                        if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
-
+                      	}
                     }],
-
-					
-			}) ],
+			})],
 			totalCount : 'recordSetCount',
 			
 		});
@@ -61,7 +59,7 @@ export default {
 	mapProductsListForCategoryJSON: function(body,messageData){
 			 let pageSize = Number(messageData.pageSize);
 			 let recordSetTotal = Number(body.recordSetTotal);
-			 let pages = Math.floor(recordSetTotal / pageSize) +1;
+			 let pages = Math.ceil(recordSetTotal / pageSize);
 			 let converter = JM.makeConverter({
               pagination: {
                 pageSize: JM.helpers.def(messageData.pageSize),
@@ -80,10 +78,10 @@ export default {
 					 uniqueID: 'uniqueID',
                      store: 'storeID',
                      thumbnail : ['thumbnail',function(url){ 
-                          
+                        if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
-
-                      }],
+                      	}
+                     }],
 
                       attributes: ['attributes', JM.map({
 						  displayable: 'displayable',

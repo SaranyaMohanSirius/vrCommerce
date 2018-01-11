@@ -48,7 +48,7 @@ export default {
                orderItem : ['_lineitems.0._element', JM.map({
                 currency:'_price.0.purchase-price.0.currency',
                 freeGift:JM.helpers.def('false'),
-                orderItemId:'_availability.0.links.0.uri',
+                orderItemId:'self.uri',
                 orderItemInventoryStatus:'_availability.0.state',
                 orderItemPrice:'_total.0.cost.0.display',
                 partNumber:'_item.0._code.0.code',
@@ -160,7 +160,7 @@ export default {
                   })],  
                   currency: '_price.0.purchase-price.0.currency',
                   freeGift: JM.helpers.def('false'),
-                  lineItemId: '_availability.0.links.0.uri',
+                  lineItemId: 'self.uri',
                   lineItemPrice: '_total.0.cost.0.display',
                   adjustedPrice: '_total.0.cost.0.display',
                   partNumber:'_item.0._code.0.code',
@@ -226,5 +226,100 @@ export default {
       let jsonObj = result;
       return jsonObj; 
      
+    },
+     /**
+       * Order Confirmation
+      */
+      mapOrderConfirmationJSON: function(body){
+        let converter = JM.makeConverter({
+  
+              adjustment:['_appliedpromotions.0._element',JM.map({
+                  code:JM.helpers.def(''),
+                  currency: JM.helpers.def('USD'),
+                  description: 'display-description',
+                  displayLevel:JM.helpers.def('Order'),
+                  usage:JM.helpers.def('Discount'),
+              })],
+              grandTotal: 'monetary-total.0.display',
+              grandTotalCurrency: 'monetary-total.0.currency',
+              locked: JM.helpers.def(''),
+              orderId: 'purchase-number',
+              lineItem:['_lineitems.0._element',JM.map({
+                  adjustment:['_appliedpromotions.0._element',JM.map({
+                      code:JM.helpers.def(''),
+                      currency: JM.helpers.def('USD'),
+                      description: 'display-description',
+                      usage:JM.helpers.def('Discount'),
+                  })],  
+                  currency: 'line-extension-amount.0.currency',
+                  freeGift: JM.helpers.def('false'),
+                  lineItemId: 'self.uri',
+                  lineItemPrice: 'line-extension-amount.0.display',
+                  adjustedPrice: 'line-extension-amount.0.display',
+                  partNumber:JM.helpers.def(''),
+                  productId:JM.helpers.def(''),
+                  quantity:'quantity',
+                  unitPrice:JM.helpers.def(''),
+                  unitQuantity:JM.helpers.def('1'),
+              })],
+              shipping: {
+                  firstName: '_shipments.0._element.0._destination.0.name.family-name',
+                  lastName: '_shipments.0._element.0._destination.0.name.given-name',
+                  middleName: JM.helpers.def(' '),
+                  email1: JM.helpers.def(' '),
+                  addressId: '_shipments.0._element.0._destination.0.self.uri',
+                  addressLine: '_shipments.0._element.0._destination.0.address.street-address',
+                  city: '_shipments.0._element.0._destination.0.address.locality',
+                  state: '_shipments.0._element.0._destination.0.address.region',
+                  country: '_shipments.0._element.0._destination.0.address.country-name',
+                  postalCode: '_shipments.0._element.0._destination.0.address.postal-code',
+                  carrier: '_shipments.0._element.0._shippingoption.0.carrier',
+                  expectedShipDate: JM.helpers.def(' '),
+                  shipModeCode: '_shipments.0._element.0._shippingoption.0.name',
+                  shipModeDescription: '_shipments.0._element.0._shippingoption.0.display-name',
+                  shipModeId: '_shipments.0._element.0._shippingoption.0.self.uri', 
+              },         
+             paymentInstruction:[{
+                    firstName: '_billingaddress.0.name.family-name',
+                    lastName: '_billingaddress.0.name.given-name',
+                    middleName: JM.helpers.def(''),
+                    email1: JM.helpers.def(''),
+                    addressId: JM.helpers.def(''),
+                    addressLine: '_billingaddress.0.address.stree-address',
+                    city: '_billingaddress.0.address.locality',
+                    state: '_billingaddress.0.address.region',
+                    country: '_billingaddress.0.address.country-name',
+                    postalCode: '_billingaddress.0.address.postal-code',
+                    payMethodId: '_paymentmeans.0._element.0.self.uri',  
+                    piId: JM.helpers.def(''),    
+                    piAmount: JM.helpers.def(''),
+                    piCurrency: JM.helpers.def(''),
+                    piDescription:'_paymentmeans.0._element.0.display-name', 
+                  } ],  
+              placedDate:'purchase-date.display-value',
+              recordSetComplete: JM.helpers.def(''),
+              recordSetCount: JM.helpers.def(''),
+              recordSetStartNumber: JM.helpers.def(''),
+              recordSetTotal: JM.helpers.def(''),
+              resourceId: JM.helpers.def(''),
+              totalAdjustment: '_discount.0.discount.0.display',
+              totalAdjustmentCurrency: '_discount.0.discount.0.currency',
+              totalProductPrice: JM.helpers.def(''), 
+              totalProductPriceCurrency: JM.helpers.def(''), 
+              totalSalesTax: '_shipments.0._element.0._tax.0.cost.0.display',
+              totalSalesTaxCurrency: '_shipments.0._element.0._tax.0.cost.0.currency',
+              totalShippingCharge:'_shipments.0._element.0._shippingoption.0.cost.0.display',
+              totalShippingChargeCurrency:'_shipments.0._element.0._shippingoption.0.cost.0.currency',
+              totalShippingTax:JM.helpers.def(''),
+              totalShippingTaxCurrency:JM.helpers.def(''),      
+
+        });
+  
+      let result = converter(body);
+      let jsonObj = result;
+      return jsonObj; 
+     
     }
+
+    
 };
