@@ -29,6 +29,7 @@
     "q": "^1.4.1",
     "request": "^2.74.0",
     "request-promise": "^4.2.1 ",
+    "underscore": "^1.8.3",
     "universal-analytics": "^0.4.15 ",
     "watson-developer-cloud": "^2.37.0",
     "webpack-node-externals": "^1.6.0",
