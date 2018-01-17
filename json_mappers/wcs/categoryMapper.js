@@ -39,7 +39,7 @@ export default {
 					store : 'storeID',
 					thumbnail : ['thumbnail',function(url){ 
                         if(url){
-                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+                          return (constants.HTTP_URI_CONSTANT+constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
                       	}
                     }],
 			})],
