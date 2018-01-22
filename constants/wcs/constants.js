@@ -1,7 +1,7 @@
 export default {
  
-   "WCS_HOSTNAME" : "3a16a150.ngrok.io:80",
-   "WCS_HOSTNAME_NOPORT" : "3a16a150.ngrok.io",
+   "WCS_HOSTNAME" : "bd8b346f.ngrok.io",
+   "WCS_HOSTNAME_NOPORT" : "bd8b346f.ngrok.io",
    "WCS_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
    "WCS_IMAGE_FMT": ".jpg",
    "WCS_PRODUCT_DETAILS": "/search/resources/store/",
