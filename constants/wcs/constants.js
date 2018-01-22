@@ -1,7 +1,7 @@
 export default {
  
-   "WCS_HOSTNAME" : "34.194.115.169:3737",
-   "WCS_HOSTNAME_NOPORT" : "34.194.115.169",
+   "WCS_HOSTNAME" : "3a16a150.ngrok.io:80",
+   "WCS_HOSTNAME_NOPORT" : "3a16a150.ngrok.io",
    "WCS_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
    "WCS_IMAGE_FMT": ".jpg",
    "WCS_PRODUCT_DETAILS": "/search/resources/store/",
@@ -12,8 +12,8 @@ export default {
    "WCS_REST_URL": "/wcs/resources/store/",
    "WCS_GUEST_IDENTITY": "/guestidentity",
    "WCS_LOGIN_IDENTITY": "/loginidentity",
-   "WCS_STORE_ID": "10151",
-   "WCS_CATALOG_ID": "10001",
+   "WCS_STORE_ID": "10851",
+   "WCS_CATALOG_ID": "10052",
    "WCS_CART": "/cart/",
    "WCS_CART_EXT": "/cart",
    "WCS_DEFAULT": "/@default",
