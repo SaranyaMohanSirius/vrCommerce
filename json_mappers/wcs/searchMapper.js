@@ -21,7 +21,7 @@ export default {
              },
             resourceIdentifier: 'resourceId',
             searchResults: ['catalogEntryView', JM.map({                                    
-                     availability: 'uniqueID',
+                     uniqueID: 'uniqueID',
                      listPrice: 'price.0.value',
                      purchasePrice: 'price.1.value',
                      displayName: 'name',
