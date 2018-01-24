@@ -16,7 +16,7 @@ export default {
 					}
 					return; 
 				},
-				uniqueId: 'uniqueId',
+				uniqueId: 'uniqueID',
 				catalogEntryTypeCode: 'catalogEntryTypeCode',				
 				buyable: 'buyable',				
 				store: 'storeID',			
@@ -77,7 +77,7 @@ export default {
                      }],		
 				})],
 				skus: ['sKUs',JM.map({
-					skuId: 'uniqueId',
+					skuId: 'uniqueID',
 					hasSingleSKU: 'hasSingleSKU',
 					catalogEntryTypeCode: 'catalogEntryTypeCode',				
 					buyable: 'buyable',				
@@ -141,7 +141,7 @@ export default {
 		let converter = JM.makeConverter({
 			catalogEntryView: ['catalogEntryView', JM.map({		
 				hasSingleSKU: 'hasSingleSKU',
-				uniqueId: 'uniqueId',
+				uniqueId: 'uniqueID',
 				catalogEntryTypeCode: 'catalogEntryTypeCode',				
 				buyable: 'buyable',				
 				store: 'storeID',			
