@@ -165,7 +165,7 @@ export default {
 					  })], 
 				})],
 				skus: ['sKUs',JM.map({
-					skuId:'uniqueId',
+					skuId:'uniqueID',
 					hasSingleSKU: 'hasSingleSKU',
 					catalogEntryTypeCode: 'catalogEntryTypeCode',				
 					buyable: 'buyable',				
