@@ -1203,7 +1203,7 @@ app.use((0, _cookieParser2.default)());
 
 //To Allow Cross Domain
 var allowCrossDomain = function allowCrossDomain(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:4200, https://project-c-web-app.herokuapp.com');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Cookie');
     res.header('Access-Control-Allow-Credentials', true);
@@ -7414,10 +7414,10 @@ exports.default = {
         logger.info("messageData = " + req.body.logonId + "|" + req.body.logonPassword);
         var logonCall = (0, _util.constructRequestWithoutToken)(loginUrl, method, messageData, '');
         (0, _requestPromise2.default)(logonCall).then(function (result) {
-            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
-            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
-            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
-            res.cookie(_constants2.default.WCS_USER_ID, result.userId);
+            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken, { domain: 'http://localhost:4200' });
+            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken, { domain: 'http://localhost:4200' });
+            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID, { domain: 'http://localhost:4200' });
+            res.cookie(_constants2.default.WCS_USER_ID, result.userId, { domain: 'http://localhost:4200' });
             res.send({
                 "success": true
             });

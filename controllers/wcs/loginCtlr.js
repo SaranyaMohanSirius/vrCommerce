@@ -27,10 +27,10 @@ export default {
         logger.info("messageData = "+req.body.logonId+"|"+req.body.logonPassword);
         let logonCall = constructRequestWithoutToken(loginUrl,method,messageData,'');
         requestPromise(logonCall).then(function(result){
-            res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken);
-            res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken)
-            res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID);
-            res.cookie(constants.WCS_USER_ID,result.userId);
+            res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken, {domain: '.herokuapp.com'});
+            res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken, {domain: '.herokuapp.com'})
+            res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID, {domain: '.herokuapp.com'});
+            res.cookie(constants.WCS_USER_ID,result.userId, {domain: '.herokuapp.com'});
             res.send({
                     "success": true                         
                 });  
