@@ -13,6 +13,7 @@ import wcsUserProfileRoute from './wcs/userProfileRoutes';
 import wcsRegistrationRoute from './wcs/registrationRoutes';
 import wcsMyAccountRoutes from './wcs/myAccountRoutes';
 import wcsPaymentRoutes from './wcs/paymentRoutes';
+import wcsSEORoutes from './wcs/seoRoutes';
 
 let app = express();
 
@@ -30,6 +31,6 @@ app.use('/wcs/userProfile',wcsUserProfileRoute);
 app.use('/wcs/register',wcsRegistrationRoute);
 app.use('/wcs/myAccount',wcsMyAccountRoutes);
 app.use('/wcs/payment',wcsPaymentRoutes);
-
+app.use('/wcs/seo',wcsSEORoutes);
 
 export default app;

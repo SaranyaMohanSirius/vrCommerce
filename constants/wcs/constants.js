@@ -61,6 +61,7 @@ export default {
    "WCS_PAYMENT_INSTRUCTION_MASKED": "/payment_instruction/sensitive_data_mask_by_plain_string",
    "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
    "HTTP_URI_CONSTANT": "http:",
+   "WCS_SEO": "/seo/seoKeyword",
 
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
