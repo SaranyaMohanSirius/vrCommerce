@@ -1,0 +1,52 @@
+{
+  "name": "siriusecom",
+  "version": "0.0.1",
+  "description": "sirius mCommerce app",
+  "engines": {
+    "node": "6.11.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "make test",
+    "start": "node bin/index-bundle.js",
+    "postinstall": "webpack -p --config ./webpack.config.js"
+  },
+  "author": "MonicaR",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^5.5.0",
+    "ajv-keywords": "^2.1.1",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "extendify": "^1.0.0",
+    "gampee": "^1.0.1",
+    "json-mapper": "0.0.12",
+    "lodash.merge": "^4.6.0",
+    "mongodb": "^2.2.8",
+    "node-cron": "^1.2.1",
+    "promise": "^8.0.1",
+    "q": "^1.4.1",
+    "request": "^2.74.0",
+    "request-promise": "^4.2.1 ",
+    "underscore": "^1.8.3",
+    "universal-analytics": "^0.4.15 ",
+    "watson-developer-cloud": "^2.37.0",
+    "webpack-node-externals": "^1.6.0",
+    "winston": "^2.4.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^3.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MonicaR6/ep-mCommerce-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MonicaR6/ep-mCommerce-app/issues"
+  },
+  "homepage": "https://github.com/MonicaR6/ep-mCommerce-app#readme"
+}

@@ -1,0 +1,395 @@
+
+
+/** Add the developer requests for reference and corresponding Inputs in this file ** /
+
+
+/** WCS  Requests **/
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Category
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TopCategory :
+Request : GET : http://localhost:5000/wcs/category/getTopCategories
+
+SubCategory :
+Request : GET :  http://localhost:5000/wcs/category/getSubCategories?identifier=10003
+
+Category Landing Page - Get Product List for Category
+Request : GET : http://localhost:5000/wcs/category/getProductsListForCategory?currentPage=6&pagesize=5&identifier=10006
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Facets
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+For Category:
+Request : GET :  http://localhost:5000/wcs/search/getSearchResults?keyword=*&pageSize=5&currentPage=1&facet=mfName_ntk_cs%3A%22Albini%22&categoryId=10002
+
+
+For Search:
+Request : GET : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&pageSize=5&currentPage=1&facet=mfName_ntk_cs%3A%22Luigi+Valenti%22
+
+
+For Multiple Facets:
+Request : GET  : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&pageSize=5&currentPage=1&facet=mfName_ntk_cs%3A%22Albini%22&facet=price_USD%3A%28%7B*+100%7D+100%29&facet=ads_f10004_ntk_cs%3A%22M%22
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Sort
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Request : GET : http://localhost:5000/wcs/category/getProductsListForCategory?currentPage=6&pagesize=5&identifier=10006&orderBy=4
+
+orderBy
+1 ->  mfName_ntk_cs ascending
+2 -> name_ntk ascending
+3 -> price ascending
+4 -> price descending
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        PDP
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Get product details :
+Request : GET : http://localhost:5000/wcs/PDP/getProductDetails?productId=10843&resourceName=pdp
+
+* resourceName=pdp for PDP 
+* resourceName=qv for QuickView
+
+* catentry_id = 10843 contains 8 merchandisinf association products
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        CART
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Add to Cart :
+Request : POST : http://localhost:5000/wcs/cart/addToCart
+Input Body : 
+{
+   "orderItem": [
+      {
+    "productId": "10641",
+    "quantity": "2.0"
+  }
+   ]
+}
+	  
+Get Shopping Cart:
+Request : GET :http://localhost:5000/wcs/cart/shoppingCart
+
+
+Update Shopping Cart Items:
+Request : PUT :localhost:5000/wcs/cart/updateShoppingCartItem
+Input Body : 
+ {
+   "lineItem": [
+      {
+         "lineItemId": "80072",
+           "quantity": "5"
+       }
+   ] 
+}
+ 
+
+Delete Shopping Cart Item:
+Request: DELETE :localhost:5000/wcs/cart/deleteShoppingCartItem
+Input Body:
+{
+   "lineItem": [
+      {
+         "lineItemId": "80071",
+          "quantity": "0"
+  }
+   ] 
+}
+
+Delete All Shopping Cart Item:
+Request: DELETE : localhost:5000/wcs/cart/deleteAllShoppingCartItem
+
+
+Submit order and Checkout Items in Cart:
+Request: POST : http://localhost:5000/wcs/cart/submitOrder
+Request Body: 
+{
+  "orderId": "21066"
+}
+
+Order Review
+Request: POST: http://localhost:5000/wcs/cart/orderReview
+Request Body:
+{
+  "orderId": "21066"
+}
+
+ShipModes
+
+Request : GET : http://localhost:5000/wcs/shipModes/getShippingMethods
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        WISHLIST
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Add Item To WishList: 
+
+Request: POST: http://localhost:5000/wcs/wishlist/addToWishList
+
+Request - Body: 
+{
+  "productId": "10140",
+  "quantityRequested": "1"
+}
+
+Response: 
+
+{
+    "success": true
+}
+
+Delete an item from WishList: 
+
+Request: DELETE: http://localhost:5000/wcs/wishlist/deleteFromWishList
+
+If wishListItemId is not specified in the request, the entire wishlist will be deleted. 
+Specify WishListItemId for deleting specific item from the wish list.
+
+Request Body: 
+
+{
+  "wishListId": "12542",
+        "itemList": [
+            {
+                "wishListItemId": "13059"
+            }
+        ]
+}
+
+Response: 
+
+{
+    "success": true
+}
+
+Get WishList: 
+
+Request: GET : http://localhost:5000/wcs/wishlist/getWishList
+
+Response: 
+
+{
+    "success": true,
+    "result": {
+        "WishListId": "12529",
+        "itemList": [
+            {
+                "wishListItemId": "13041",
+                "partNumber": "AuroraWMDRS-101",
+                "productId": "10140"
+            }
+        ],
+        "recordSetCount": "1",
+        "recordSetStartNumber": "0",
+        "recordSetTotal": "1"
+    }
+}
+
+Move an Item from WishList to Cart 
+
+Request: POST : http://localhost:5000/wcs/wishlist/moveWishListItemToCart
+
+Request - Body: 
+
+{
+        "wishListItemId": "13055",
+        "wishListId": "12540",
+        "quantity": "2",
+        "productId": "10140"
+}
+
+Response: 
+
+{
+    "success": true,
+    "result": {
+        "orderItem": [
+            {
+                "orderItemId": "80090"
+            }
+        ],
+        "orderId": "21025"
+    }
+}
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        ProductByIds
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Product View By IDs:
+Request : GET : http://localhost:5000/wcs/product/getProductDetailsByIds?id=12847&id=12849&id=12851
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Search
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Product search by keyword
+Request : GET : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&pageSize=5&currentPage=1
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Promotions
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Get applied Promotions
+Request : GET : http://localhost:5000/wcs/promotions/getPromotionsAtCart
+
+Apply promotion
+Request : POST : http://localhost:5000/wcs/promotions/apply
+Input : {
+            "promoCode": "PROMO50"
+        };
+
+Delete promotion
+Request : DELETE : http://localhost:5000/wcs/promotions/delete
+Input : {
+            "promoCode": "PROMO50"
+        };
+Promotions: 
+1) Qualifying purchase  - minimum purchase(10) - offer(30)
+2) PROMO50 - buy MCL008_081502 - offer(10% offer on MCL008_081605)
+3) SHIP - minimum purchase(50) - offer(30)
+4) wc4 - minimum purchase(30) - offer(get WBG006_060801)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Address
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PUT : https://ep-mcommerce-app.herokuapp.com/wcs/address/setShippingAddresses?addressId=12187
+//Body will be inturn taken care in the controller.Not needed to be passed during request
+Body:
+{
+	"addressId": 12187,
+	"orderId": ".",
+	"orderItem": [
+		{
+			"addressId": 12187
+		}
+	],
+	"x_calculationUsage": "-1,-2,-3,-4,-5"
+};
+  
+  
+GET : https://ep-mcommerce-app.herokuapp.com/wcs/address/getShippingAddresses
+
+
+POST : https://ep-mcommerce-app.herokuapp.com/wcs/address/addShippingAddresses
+Body : 
+{
+		   "firstName" : "Arun",
+		   "lastName" : "lastName",
+		   "addressType" : "SB",
+		   "zipCode" : "78217",
+		   "addressLine": "dtytychjgh",
+		   "city" : "Chennai",
+		   "state" : "Texas",
+		   "country" : "US",
+		   "nickName" : "SB_6768"
+}
+
+PUT : https://ep-mcommerce-app.herokuapp.com/wcs/address/updateShippingAddresses?nickName=SB_6768
+
+DELETE : https://ep-mcommerce-app.herokuapp.com/wcs/address/deleteShippingAddresses?nickName=SB_6768
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Login
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+POST : localhost:5000/wcs/login/loginIdentityHandler
+body {
+    "logonId" : "bhuvana1@gmail.com", 
+    "logonPassword" : "123qwe"
+}
+
+POST : localhost:5000/wcs/login/guestIdentityHandler
+
+Logout:
+
+DELETE : http://localhost:5000/wcs/login/logoutUser
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Registration
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+POST : http://localhost:5000/wcs/register/user
+body
+{
+  "logonId":"mcommerce",
+  "logonPassword":"qwer12",
+  "logonPasswordVerify":"qwer12",
+  "lastName":"mohan",
+  "country":"india",
+  "state":"tn",
+  "city":"erode"
+}  
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        My Account
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Personal Information
+GET : http://localhost:5000/wcs/userProfile/getPersonalInformation
+
+Order History
+GET : http://localhost:5000/wcs/userProfile/getOrderHistory
+
+Address Book
+GET : http://localhost:5000/wcs/userProfile/getAddressBook
+
+Reset Password
+PUT : http://localhost:5000/wcs/myAccount/resetPassword
+Body { 
+    "logonId" : "bhuvana1@gmail.com", 
+    "logonPassword" : "123qwe", 
+    "logonPasswordVerify" : "123qwe"
+}
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Payment Instrucitons
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Payment Instrucitons
+GET : localhost:5000/wcs/payment/getPaymentInstruction
+
+Create Payment Instrucitons
+POST : localhost:5000/wcs/payment/createPaymentInstruction
+Body : {
+	"account": "4012888888881881",
+	"billing_address_id": "16398",
+	"cc_brand": "VISA",
+	"cc_cvc": "121",
+	"expire_month": "11",
+	"expire_year": "2019",
+	"payMethodId": "VISA",
+	"piAmount": "90.00000"
+}
+
+Update Payment Instrucitons
+PUT : localhost:5000/wcs/payment/putPaymentInstruction
+Body : {
+    "account": "4012888888881881",
+    "piId":"15056",
+    "billing_address_id": "16398",
+    "cc_brand": "VISA",
+    "cc_cvc": "111",
+    "expire_month": "12",
+    "expire_year": "2020",
+    "piAmount": "90.00000",
+    "payMethodId": "VISA",
+    "orderId": "21077"
+}
+
+Delete Payment Instructions
+DELETE : localhost:5000/wcs/payment/deletePaymentInstruction
+Body : {
+	"piId": "15045"
+}
