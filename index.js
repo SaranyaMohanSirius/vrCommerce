@@ -21,6 +21,7 @@ app.use(function(req, res, next) {
  if(allowedOrigins.indexOf(origin) > -1){
       res.setHeader('Access-Control-Allow-Origin', origin);
  }
+}
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
