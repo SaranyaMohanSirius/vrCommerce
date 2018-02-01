@@ -1,7 +1,7 @@
 export default {
  
-   "WCS_HOSTNAME" : "bd8b346f.ngrok.io",
-   "WCS_HOSTNAME_NOPORT" : "bd8b346f.ngrok.io",
+   "WCS_HOSTNAME" : "3766dd82.ngrok.io",
+   "WCS_HOSTNAME_NOPORT" : "3766dd82.ngrok.io",
    "WCS_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
    "WCS_IMAGE_FMT": ".jpg",
    "WCS_PRODUCT_DETAILS": "/search/resources/store/",
@@ -63,6 +63,7 @@ export default {
    "HTTP_URI_CONSTANT": "http:",
    "WCS_SEO": "/seo/seoKeyword",
    "WCS_LAYOUT": "/page_design?q=byObjectIdentifier",
+   "WCS_ESPOT": "/espot/",
    "WCS_COOKIE_DOMAIN": ".herokuapp.com",
 
    
