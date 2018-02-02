@@ -40,6 +40,33 @@ export default {
 
   },
 
+  /* 
+    * Method for Espot in WCS
+    * Request Method : GET
+    * Request Body : emsName
+    */
+  
+   getEspotDetails: function(req,res){
+        
+        let emsName = req.body.emsName;
+        let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_ESPOT + emsName;
+        logger.info("espot URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+        let espotUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+        let method ='GET';
+        let requestCall = constructRequestWithoutToken(espotUrl,method,'');
+          
+        requestPromise(requestCall).then(function (data) {
+            var layoutData = JSON.parse(data);
+            res.send(layoutData);   
+          }).catch(function (error) {
+              if(error){
+                logger.error('errors in service for espotUrl in WCS: ', error);
+                res.send({ "success": false, "error": error }); 
+              }
+          });
+
+
+  },
   
 
 };

@@ -9,4 +9,11 @@ router.get('/layout', function(req, res){
     layout.getLayoutDetails(req,res);
 });
 
+/**
+ * router for retrieving the Espots
+ */
+router.post('/espot', function(req, res){
+    layout.getEspotDetails(req,res);
+});
+
 export default router;

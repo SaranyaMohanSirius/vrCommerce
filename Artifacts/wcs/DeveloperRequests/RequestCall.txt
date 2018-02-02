@@ -393,3 +393,16 @@ DELETE : localhost:5000/wcs/payment/deletePaymentInstruction
 Body : {
 	"piId": "15045"
 }
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                    Page Details
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Layout Specifications:
+GET: http://localhost:5000/wcs/page/layout?objectId=13123&pageGroup=Product&device=Web
+
+Espot details:
+POST: http://localhost:5000/wcs/page/espot
+Body :{
+  "emsName":"HeaderBanner_Content_Left"
+}
