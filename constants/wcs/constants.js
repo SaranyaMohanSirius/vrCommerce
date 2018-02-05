@@ -1,7 +1,7 @@
 export default {
  
-   "WCS_HOSTNAME" : "bd8b346f.ngrok.io",
-   "WCS_HOSTNAME_NOPORT" : "bd8b346f.ngrok.io",
+   "WCS_HOSTNAME" : "54.200.124.128",
+   "WCS_HOSTNAME_NOPORT" : "54.200.124.128",
    "WCS_AWS_IMAGE_PATH" : "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
    "WCS_IMAGE_FMT": ".jpg",
    "WCS_PRODUCT_DETAILS": "/search/resources/store/",
@@ -12,7 +12,7 @@ export default {
    "WCS_REST_URL": "/wcs/resources/store/",
    "WCS_GUEST_IDENTITY": "/guestidentity",
    "WCS_LOGIN_IDENTITY": "/loginidentity",
-   "WCS_STORE_ID": "10851",
+   "WCS_STORE_ID": "10151",
    "WCS_CATALOG_ID": "10052",
    "WCS_CART": "/cart/",
    "WCS_CART_EXT": "/cart",
@@ -62,6 +62,9 @@ export default {
    "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
    "HTTP_URI_CONSTANT": "http:",
    "WCS_SEO": "/seo/seoKeyword",
+   "WCS_LAYOUT": "/page_design?q=byObjectIdentifier",
+   "WCS_ESPOT": "/espot/",
+   "WCS_COOKIE_DOMAIN": ".herokuapp.com",
 
    
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",

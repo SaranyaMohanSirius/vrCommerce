@@ -16,7 +16,11 @@ app.use(cookieParser());
 
 //To Allow Cross Domain
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'https://project-c-web-app.herokuapp.com');
+	var allowedOrigins = ['http://localhost:4200', 'https://localhost:4200', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200'];
+ 	var origin = req.headers.origin;
+ 	if(allowedOrigins.indexOf(origin) > -1){
+      res.setHeader('Access-Control-Allow-Origin', origin);
+ 	}
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Cookie');
     res.header('Access-Control-Allow-Credentials', true);

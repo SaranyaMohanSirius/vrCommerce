@@ -167,12 +167,6 @@ exports.default = {
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("json-mapper");
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -183,8 +177,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-  "WCS_HOSTNAME": "bd8b346f.ngrok.io",
-  "WCS_HOSTNAME_NOPORT": "bd8b346f.ngrok.io",
+  "WCS_HOSTNAME": "54.200.124.128",
+  "WCS_HOSTNAME_NOPORT": "54.200.124.128",
   "WCS_AWS_IMAGE_PATH": "http://s3.ap-south-1.amazonaws.com/sirius-ep-images/",
   "WCS_IMAGE_FMT": ".jpg",
   "WCS_PRODUCT_DETAILS": "/search/resources/store/",
@@ -195,7 +189,7 @@ exports.default = {
   "WCS_REST_URL": "/wcs/resources/store/",
   "WCS_GUEST_IDENTITY": "/guestidentity",
   "WCS_LOGIN_IDENTITY": "/loginidentity",
-  "WCS_STORE_ID": "10851",
+  "WCS_STORE_ID": "10151",
   "WCS_CATALOG_ID": "10052",
   "WCS_CART": "/cart/",
   "WCS_CART_EXT": "/cart",
@@ -245,6 +239,9 @@ exports.default = {
   "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
   "HTTP_URI_CONSTANT": "http:",
   "WCS_SEO": "/seo/seoKeyword",
+  "WCS_LAYOUT": "/page_design?q=byObjectIdentifier",
+  "WCS_ESPOT": "/espot/",
+  "WCS_COOKIE_DOMAIN": ".herokuapp.com",
 
   "WCS_ADDRESS_ADDED": "Address Added Successfully",
   "WCS_ADDRESS_DELETED": "Address Deleted Successfully",
@@ -260,92 +257,19 @@ exports.default = {
 };
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("json-mapper");
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = {
-	constructUrl: function constructUrl(hostname, path, isHttp) {
-		if (!isHttp) {
-			if (hostname.startsWith("http://")) {
-				return hostname + path;
-			} else {
-				return "http://" + hostname + path;
-			}
-		} else {
-			if (hostname.startsWith("https://")) {
-				return hostname + path;
-			} else {
-				return "https://" + hostname + path;
-			}
-		}
-	},
-
-	sendErrorMessage: function sendErrorMessage(res, errorMessage) {
-		console.log("ERROR LOGGED: ", errorMessage);
-		var error = {
-			error: true,
-			errorMessage: errorMessage
-		};
-
-		res.send(error);
-	},
-
-	getLogger: function getLogger() {
-		var winston = __webpack_require__(11);
-		var logger = new winston.Logger({
-			transports: [new winston.transports.Console(), new winston.transports.File({ filename: 'trace.log' })]
-		});
-		return logger;
-	},
-
-	constructRequest: function constructRequest(uri, method, data, token) {
-		return {
-			uri: uri,
-			method: method,
-			json: data,
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'bearer ' + token
-			}
-		};
-	},
-	constructRequestForLogin: function constructRequestForLogin(uri, method, data, token) {
-		if (token == undefined) token = '';
-		return {
-			uri: uri,
-			method: method,
-			json: data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Authorization': 'bearer ' + token
-			}
-		};
-	},
-
-	constructRequestWithoutToken: function constructRequestWithoutToken(uri, method, data) {
-		return {
-			uri: uri,
-			method: method,
-			json: data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			}
-		};
-	}
-
-};
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -450,6 +374,85 @@ module.exports = {
 };
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+	constructUrl: function constructUrl(hostname, path, isHttp) {
+		if (!isHttp) {
+			if (hostname.startsWith("http://")) {
+				return hostname + path;
+			} else {
+				return "http://" + hostname + path;
+			}
+		} else {
+			if (hostname.startsWith("https://")) {
+				return hostname + path;
+			} else {
+				return "https://" + hostname + path;
+			}
+		}
+	},
+
+	sendErrorMessage: function sendErrorMessage(res, errorMessage) {
+		console.log("ERROR LOGGED: ", errorMessage);
+		var error = {
+			error: true,
+			errorMessage: errorMessage
+		};
+
+		res.send(error);
+	},
+
+	getLogger: function getLogger() {
+		var winston = __webpack_require__(11);
+		var logger = new winston.Logger({
+			transports: [new winston.transports.Console(), new winston.transports.File({ filename: 'trace.log' })]
+		});
+		return logger;
+	},
+
+	constructRequest: function constructRequest(uri, method, data, token) {
+		return {
+			uri: uri,
+			method: method,
+			json: data,
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'bearer ' + token
+			}
+		};
+	},
+	constructRequestForLogin: function constructRequestForLogin(uri, method, data, token) {
+		if (token == undefined) token = '';
+		return {
+			uri: uri,
+			method: method,
+			json: data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': 'bearer ' + token
+			}
+		};
+	},
+
+	constructRequestWithoutToken: function constructRequestWithoutToken(uri, method, data) {
+		return {
+			uri: uri,
+			method: method,
+			json: data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		};
+	}
+
+};
+
+/***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
@@ -470,7 +473,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -576,11 +579,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -900,11 +903,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -1176,7 +1179,7 @@ var _bodyParser = __webpack_require__(9);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _epIndex = __webpack_require__(16);
 
@@ -1186,7 +1189,7 @@ var _wcsIndex = __webpack_require__(48);
 
 var _wcsIndex2 = _interopRequireDefault(_wcsIndex);
 
-var _cookieParser = __webpack_require__(89);
+var _cookieParser = __webpack_require__(91);
 
 var _cookieParser2 = _interopRequireDefault(_cookieParser);
 
@@ -1203,19 +1206,23 @@ app.use((0, _cookieParser2.default)());
 
 //To Allow Cross Domain
 var allowCrossDomain = function allowCrossDomain(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Cookie');
-    res.header('Access-Control-Allow-Credentials', true);
+  var allowedOrigins = ['http://localhost:4200', 'https://localhost:4200', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200'];
+  var origin = req.headers.origin;
+  if (allowedOrigins.indexOf(origin) > -1) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Cookie');
+  res.header('Access-Control-Allow-Credentials', true);
 
-    next();
+  next();
 };
 
 app.use(allowCrossDomain);
 
 // Process application/x-www-form-urlencoded
 app.use(_bodyParser2.default.urlencoded({
-    extended: false
+  extended: false
 }));
 // Process application/json
 app.use(_bodyParser2.default.json());
@@ -1228,7 +1235,7 @@ app.all('/wcs/*', _wcsIndex2.default);
 
 // Spin up the server
 app.listen(app.get('port'), function () {
-    logger.info('running on port', app.get('port'));
+  logger.info('running on port', app.get('port'));
 });
 
 /***/ }),
@@ -1419,7 +1426,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _searchMapper = __webpack_require__(21);
 
@@ -1506,7 +1513,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -1627,7 +1634,7 @@ var _categoryMapper = __webpack_require__(24);
 
 var _categoryMapper2 = _interopRequireDefault(_categoryMapper);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _loginCtlr = __webpack_require__(8);
 
@@ -1763,7 +1770,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -1909,7 +1916,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _loginCtlr = __webpack_require__(8);
 
@@ -1921,7 +1928,7 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -2005,7 +2012,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -2241,7 +2248,7 @@ var _cartMapper = __webpack_require__(30);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _constants = __webpack_require__(2);
 
@@ -2512,13 +2519,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -2892,7 +2899,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -2984,7 +2991,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -3122,7 +3129,7 @@ var _addressMapper = __webpack_require__(36);
 
 var _addressMapper2 = _interopRequireDefault(_addressMapper);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3391,7 +3398,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -3605,7 +3612,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _wishListMapper = __webpack_require__(39);
 
@@ -3813,13 +3820,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -3965,7 +3972,7 @@ var _promotionsMapper = __webpack_require__(42);
 
 var _promotionsMapper2 = _interopRequireDefault(_promotionsMapper);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4109,7 +4116,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -4215,7 +4222,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _loginCtlr = __webpack_require__(8);
 
@@ -4337,7 +4344,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _userProfileMapper = __webpack_require__(47);
 
@@ -4450,13 +4457,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _util = __webpack_require__(5);
+var _util = __webpack_require__(6);
 
 var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -4646,6 +4653,10 @@ var _seoRoutes = __webpack_require__(87);
 
 var _seoRoutes2 = _interopRequireDefault(_seoRoutes);
 
+var _layoutRoutes = __webpack_require__(89);
+
+var _layoutRoutes2 = _interopRequireDefault(_layoutRoutes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
@@ -4665,6 +4676,7 @@ app.use('/wcs/register', _registrationRoutes2.default);
 app.use('/wcs/myAccount', _myAccountRoutes2.default);
 app.use('/wcs/payment', _paymentRoutes2.default);
 app.use('/wcs/seo', _seoRoutes2.default);
+app.use('/wcs/page', _layoutRoutes2.default);
 
 exports.default = app;
 
@@ -4719,11 +4731,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _pdpMapper = __webpack_require__(14);
 
@@ -4778,7 +4790,7 @@ exports.default = {
 				if (data.catalogEntryView[0].catalogEntryTypeCode == "ProductBean") {
 					if (resourceName == "pdp") {
 						result = _pdpMapper2.default.mapPdpJSON(data, true);
-					} else if (resourceName == "qv") {
+					} else if (resourceName == "qv" || resourceName == "cart") {
 						result = _pdpMapper2.default.mapQuickViewJSON(data, true);
 					}
 					res.send({
@@ -4790,7 +4802,7 @@ exports.default = {
 						if ((0, _util.isJson)(body)) body = JSON.parse(body);
 						if (resourceName == "pdp") {
 							result = _pdpMapper2.default.mapPdpJSON(data, body);
-						} else if (resourceName == "qv") {
+						} else if (resourceName == "qv" || resourceName == "cart") {
 							result = _pdpMapper2.default.mapQuickViewJSON(data, body);
 						}
 						res.send({
@@ -4901,11 +4913,11 @@ Object.defineProperty(exports, "__esModule", {
 		value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _categoryMapper = __webpack_require__(54);
 
@@ -5070,11 +5082,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -5252,11 +5264,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _shipModeMapper = __webpack_require__(57);
 
@@ -5353,7 +5365,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -5430,9 +5442,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -5538,11 +5550,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -5696,11 +5708,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _addressMapper = __webpack_require__(63);
 
@@ -5926,7 +5938,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -6162,11 +6174,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _cartMapper = __webpack_require__(10);
 
@@ -6603,7 +6615,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -6619,7 +6631,7 @@ var _bluebird = __webpack_require__(7);
 
 var _bluebird2 = _interopRequireDefault(_bluebird);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6774,7 +6786,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -6887,11 +6899,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _requestPromise = __webpack_require__(1);
 
@@ -7121,7 +7133,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -7228,11 +7240,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _pdpMapper = __webpack_require__(14);
 
@@ -7378,11 +7390,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _requestPromise = __webpack_require__(1);
 
@@ -7414,10 +7426,10 @@ exports.default = {
         logger.info("messageData = " + req.body.logonId + "|" + req.body.logonPassword);
         var logonCall = (0, _util.constructRequestWithoutToken)(loginUrl, method, messageData, '');
         (0, _requestPromise2.default)(logonCall).then(function (result) {
-            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken, { domain: 'http://localhost:4200' });
-            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken, { domain: 'http://localhost:4200' });
-            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID, { domain: 'http://localhost:4200' });
-            res.cookie(_constants2.default.WCS_USER_ID, result.userId, { domain: 'http://localhost:4200' });
+            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
+            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
+            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
+            res.cookie(_constants2.default.WCS_USER_ID, result.userId, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
             res.send({
                 "success": true
             });
@@ -7446,7 +7458,6 @@ exports.default = {
             (0, _requestPromise2.default)(guestCall).then(function (result) {
                 result = JSON.parse(result);
                 res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
-                res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
                 res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
                 res.cookie(_constants2.default.WCS_USER_ID, result.userId);
                 res.send({
@@ -7559,11 +7570,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _userProfileMapper = __webpack_require__(79);
 
@@ -7697,7 +7708,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -7883,11 +7894,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _cartMapper = __webpack_require__(10);
 
@@ -7983,11 +7994,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _requestPromise = __webpack_require__(1);
 
@@ -8088,11 +8099,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _requestPromise = __webpack_require__(1);
 
@@ -8205,7 +8216,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(3);
+var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -8286,11 +8297,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _util = __webpack_require__(6);
+var _util = __webpack_require__(5);
 
 var _requestPromise = __webpack_require__(1);
 
@@ -8342,6 +8353,131 @@ exports.default = {
 
 /***/ }),
 /* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(0);
+
+var _express2 = _interopRequireDefault(_express);
+
+var _layoutCtlr = __webpack_require__(90);
+
+var _layoutCtlr2 = _interopRequireDefault(_layoutCtlr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var router = _express2.default.Router();
+/**
+ * router for retrieving the layout specifications
+ */
+router.get('/layout', function (req, res) {
+  _layoutCtlr2.default.getLayoutDetails(req, res);
+});
+
+/**
+ * router for retrieving the Espots
+ */
+router.post('/espot', function (req, res) {
+  _layoutCtlr2.default.getEspotDetails(req, res);
+});
+
+exports.default = router;
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(3);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _util = __webpack_require__(5);
+
+var _requestPromise = __webpack_require__(1);
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _bluebird = __webpack_require__(7);
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = (0, _util.getLogger)();
+
+exports.default = {
+
+  /* 
+   * Method for layout in WCS
+   * Request Method : GET
+   * Request Body : objectId, device and pageGroup
+   */
+
+  getLayoutDetails: function getLayoutDetails(req, res) {
+
+    var objectId = req.query.objectId;
+    var deviceClass = req.query.device;
+    var pageGroup = req.query.pageGroup;
+    var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_LAYOUT + "&objectIdentifier=" + objectId + "&deviceClass=" + deviceClass + "&pageGroup=" + pageGroup;
+    logger.info("Layout URL" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true));
+    var layoutUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true);
+    var method = 'GET';
+    var requestCall = (0, _util.constructRequestWithoutToken)(layoutUrl, method, '');
+
+    (0, _requestPromise2.default)(requestCall).then(function (data) {
+      var layoutData = JSON.parse(data);
+      res.send(layoutData);
+    }).catch(function (error) {
+      if (error) {
+        logger.error('errors in service for layoutUrl in WCS: ', error);
+        res.send({ "success": false, "error": error });
+      }
+    });
+  },
+
+  /* 
+    * Method for Espot in WCS
+    * Request Method : GET
+    * Request Body : emsName
+    */
+
+  getEspotDetails: function getEspotDetails(req, res) {
+
+    var emsName = req.body.emsName;
+    var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ESPOT + emsName;
+    logger.info("espot URL" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true));
+    var espotUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true);
+    var method = 'GET';
+    var requestCall = (0, _util.constructRequestWithoutToken)(espotUrl, method, '');
+
+    (0, _requestPromise2.default)(requestCall).then(function (data) {
+      var layoutData = JSON.parse(data);
+      res.send(layoutData);
+    }).catch(function (error) {
+      if (error) {
+        logger.error('errors in service for espotUrl in WCS: ', error);
+        res.send({ "success": false, "error": error });
+      }
+    });
+  }
+
+};
+
+/***/ }),
+/* 91 */
 /***/ (function(module, exports) {
 
 module.exports = require("cookie-parser");

@@ -44,7 +44,7 @@ export default {
 						if(resourceName == "pdp"){
 							result = pdpMapper.mapPdpJSON(data,true);
 						}
-						else if(resourceName == "qv"){
+						else if(resourceName == "qv" || resourceName == "cart"){
 							result = pdpMapper.mapQuickViewJSON(data,true);
 						}
 						res.send({
@@ -58,7 +58,7 @@ export default {
 							if(resourceName == "pdp"){
 								result = pdpMapper.mapPdpJSON(data,body);
 							}
-							else if(resourceName == "qv"){
+							else if(resourceName == "qv" || resourceName == "cart"){
 								result = pdpMapper.mapQuickViewJSON(data,body);
 							}
 							res.send({

@@ -27,10 +27,10 @@ export default {
         logger.info("messageData = "+req.body.logonId+"|"+req.body.logonPassword);
         let logonCall = constructRequestWithoutToken(loginUrl,method,messageData,'');
         requestPromise(logonCall).then(function(result){
-            res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken, {domain: '.herokuapp.com'});
-            res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken, {domain: '.herokuapp.com'})
-            res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID, {domain: '.herokuapp.com'});
-            res.cookie(constants.WCS_USER_ID,result.userId, {domain: '.herokuapp.com'});
+            res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken, {domain: constants.WCS_COOKIE_DOMAIN});
+            res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken, {domain: constants.WCS_COOKIE_DOMAIN});
+            res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID, {domain: constants.WCS_COOKIE_DOMAIN});
+            res.cookie(constants.WCS_USER_ID,result.userId, {domain: constants.WCS_COOKIE_DOMAIN});
             res.send({
                     "success": true                         
                 });  
@@ -59,7 +59,6 @@ export default {
            requestPromise(guestCall).then(function(result){
                result = JSON.parse(result);
                res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken);
-               res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken);
                res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID);
                res.cookie(constants.WCS_USER_ID,result.userId);
                res.send({
