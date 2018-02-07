@@ -23,7 +23,7 @@
     "gampee": "^1.0.1",
     "json-mapper": "0.0.12",
     "lodash.merge": "^4.6.0",
-    "mongodb": "^2.2.8",
+    "mongodb": "^2.2.34",
     "node-cron": "^1.2.1",
     "promise": "^8.0.1",
     "q": "^1.4.1",

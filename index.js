@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 //To Allow Cross Domain
 var allowCrossDomain = function(req, res, next) {
-	var allowedOrigins = ['http://localhost:4200', 'https://localhost:4200', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200'];
+	var allowedOrigins = ['http://localhost:4200', 'http://project-c-web-app.herokuapp.com', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200'];
  	var origin = req.headers.origin;
  	if(allowedOrigins.indexOf(origin) > -1){
       res.setHeader('Access-Control-Allow-Origin', origin);
