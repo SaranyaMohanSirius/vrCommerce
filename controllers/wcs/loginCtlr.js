@@ -58,9 +58,9 @@ export default {
            let guestCall = constructRequestWithoutToken(guestIdentityUrl,method,'');
            requestPromise(guestCall).then(function(result){
                result = JSON.parse(result);
-               res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken);
-               res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID);
-               res.cookie(constants.WCS_USER_ID,result.userId);
+               res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken, {domain: constants.WCS_COOKIE_DOMAIN});
+               res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID, {domain: constants.WCS_COOKIE_DOMAIN});
+               res.cookie(constants.WCS_USER_ID,result.userId, {domain: constants.WCS_COOKIE_DOMAIN});
                res.send({
                     "success": true                         
                 });  

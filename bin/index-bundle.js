@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,7 +86,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _storeConstants = __webpack_require__(18);
+var _storeConstants = __webpack_require__(19);
 
 var _storeConstants2 = _interopRequireDefault(_storeConstants);
 
@@ -252,7 +252,9 @@ exports.default = {
   /*To be got from the UI*/
   "WCS_AUTH_TOKEN": "12022%2C16Y0w9HO0rAvYKi42p4R3in9WzOQPJ2r8TMIejt6MF%2B4Skkt9f%2F%2FKf71IjRZHCf2cYp2UYzx2i3BGMwV9r5PzWAX5FGAZDsQhAErIsRZEEqWwLMXy6h6ethm5ngU0ijtNQaniaD%2FTOlllsVOreE4PYegQVzOkaXtACIhtQWUZr2RbaMC80nqEG6ORDp6CfKqua3wmqRUbHyqdRhmceBeMDfCs3OziIpsrO7tKefTyJQ%3D",
   "WCS_TRUSTED_TOKEN": "12022%2CR97hA7x3qfhBXYmRxOYjCaldMf8A9E2b%2BeLYoYpCneY%3D",
-  "WCS_DOUBLE_SLASH": "//"
+  "WCS_DOUBLE_SLASH": "//",
+
+  "DB_URL": "mongodb://HeadStart:Headless1@ds125628.mlab.com:25628/headstartdb"
 
 };
 
@@ -273,7 +275,7 @@ var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _mongodb = __webpack_require__(51);
+var _mongodb = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -894,6 +896,12 @@ module.exports = require("request");
 
 /***/ }),
 /* 14 */
+/***/ (function(module, exports) {
+
+module.exports = require("mongodb");
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1165,7 +1173,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1181,15 +1189,15 @@ var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
 var _util = __webpack_require__(6);
 
-var _epIndex = __webpack_require__(16);
+var _epIndex = __webpack_require__(17);
 
 var _epIndex2 = _interopRequireDefault(_epIndex);
 
-var _wcsIndex = __webpack_require__(48);
+var _wcsIndex = __webpack_require__(49);
 
 var _wcsIndex2 = _interopRequireDefault(_wcsIndex);
 
-var _cookieParser = __webpack_require__(91);
+var _cookieParser = __webpack_require__(94);
 
 var _cookieParser2 = _interopRequireDefault(_cookieParser);
 
@@ -1206,7 +1214,7 @@ app.use((0, _cookieParser2.default)());
 
 //To Allow Cross Domain
 var allowCrossDomain = function allowCrossDomain(req, res, next) {
-  var allowedOrigins = ['http://localhost:4200', 'https://localhost:4200', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200'];
+  var allowedOrigins = ['http://localhost:4200', 'http://project-c-web-app.herokuapp.com', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200'];
   var origin = req.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -1239,7 +1247,7 @@ app.listen(app.get('port'), function () {
 });
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1253,47 +1261,47 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _loginRoutes = __webpack_require__(17);
+var _loginRoutes = __webpack_require__(18);
 
 var _loginRoutes2 = _interopRequireDefault(_loginRoutes);
 
-var _searchRoutes = __webpack_require__(19);
+var _searchRoutes = __webpack_require__(20);
 
 var _searchRoutes2 = _interopRequireDefault(_searchRoutes);
 
-var _categoryRoutes = __webpack_require__(22);
+var _categoryRoutes = __webpack_require__(23);
 
 var _categoryRoutes2 = _interopRequireDefault(_categoryRoutes);
 
-var _pdpRoutes = __webpack_require__(25);
+var _pdpRoutes = __webpack_require__(26);
 
 var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
 
-var _cartRoutes = __webpack_require__(28);
+var _cartRoutes = __webpack_require__(29);
 
 var _cartRoutes2 = _interopRequireDefault(_cartRoutes);
 
-var _shipModeRoutes = __webpack_require__(31);
+var _shipModeRoutes = __webpack_require__(32);
 
 var _shipModeRoutes2 = _interopRequireDefault(_shipModeRoutes);
 
-var _addressRoutes = __webpack_require__(34);
+var _addressRoutes = __webpack_require__(35);
 
 var _addressRoutes2 = _interopRequireDefault(_addressRoutes);
 
-var _wishListRoutes = __webpack_require__(37);
+var _wishListRoutes = __webpack_require__(38);
 
 var _wishListRoutes2 = _interopRequireDefault(_wishListRoutes);
 
-var _promotionsRoutes = __webpack_require__(40);
+var _promotionsRoutes = __webpack_require__(41);
 
 var _promotionsRoutes2 = _interopRequireDefault(_promotionsRoutes);
 
-var _registerRoutes = __webpack_require__(43);
+var _registerRoutes = __webpack_require__(44);
 
 var _registerRoutes2 = _interopRequireDefault(_registerRoutes);
 
-var _userProfileRoutes = __webpack_require__(45);
+var _userProfileRoutes = __webpack_require__(46);
 
 var _userProfileRoutes2 = _interopRequireDefault(_userProfileRoutes);
 
@@ -1316,7 +1324,7 @@ app.use('/ep/userProfile/', _userProfileRoutes2.default);
 exports.default = app;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1362,7 +1370,7 @@ router.delete('/logout', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1379,7 +1387,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1393,7 +1401,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _searchCtlr = __webpack_require__(20);
+var _searchCtlr = __webpack_require__(21);
 
 var _searchCtlr2 = _interopRequireDefault(_searchCtlr);
 
@@ -1416,7 +1424,7 @@ router.get('/getSearchResults', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1428,7 +1436,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _searchMapper = __webpack_require__(21);
+var _searchMapper = __webpack_require__(22);
 
 var _searchMapper2 = _interopRequireDefault(_searchMapper);
 
@@ -1503,7 +1511,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1575,7 +1583,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1589,7 +1597,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _categoryCtlr = __webpack_require__(23);
+var _categoryCtlr = __webpack_require__(24);
 
 var _categoryCtlr2 = _interopRequireDefault(_categoryCtlr);
 
@@ -1616,7 +1624,7 @@ router.get('/getProductsListForCategory', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1630,7 +1638,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _categoryMapper = __webpack_require__(24);
+var _categoryMapper = __webpack_require__(25);
 
 var _categoryMapper2 = _interopRequireDefault(_categoryMapper);
 
@@ -1760,7 +1768,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1873,7 +1881,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1887,7 +1895,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpCtlr = __webpack_require__(26);
+var _pdpCtlr = __webpack_require__(27);
 
 var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
 
@@ -1906,7 +1914,7 @@ router.get('/getProductDetails', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1920,7 +1928,7 @@ var _util = __webpack_require__(6);
 
 var _loginCtlr = __webpack_require__(8);
 
-var _pdpMapper = __webpack_require__(27);
+var _pdpMapper = __webpack_require__(28);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -2002,7 +2010,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2156,7 +2164,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2170,7 +2178,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _cartCtlr = __webpack_require__(29);
+var _cartCtlr = __webpack_require__(30);
 
 var _cartCtlr2 = _interopRequireDefault(_cartCtlr);
 
@@ -2230,7 +2238,7 @@ router.post('/submitOrder', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2244,7 +2252,7 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _cartMapper = __webpack_require__(30);
+var _cartMapper = __webpack_require__(31);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
 
@@ -2509,7 +2517,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2846,7 +2854,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2860,7 +2868,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _shipModeCtlr = __webpack_require__(32);
+var _shipModeCtlr = __webpack_require__(33);
 
 var _shipModeCtlr2 = _interopRequireDefault(_shipModeCtlr);
 
@@ -2889,7 +2897,7 @@ router.get('/updateShippingMethod', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2903,7 +2911,7 @@ var _util = __webpack_require__(6);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _shipModeMapper = __webpack_require__(33);
+var _shipModeMapper = __webpack_require__(34);
 
 var _shipModeMapper2 = _interopRequireDefault(_shipModeMapper);
 
@@ -2981,7 +2989,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3032,7 +3040,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3046,7 +3054,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _addressCtlr = __webpack_require__(35);
+var _addressCtlr = __webpack_require__(36);
 
 var _addressCtlr2 = _interopRequireDefault(_addressCtlr);
 
@@ -3111,7 +3119,7 @@ router.post('/selectBillingAddress', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3125,7 +3133,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _addressMapper = __webpack_require__(36);
+var _addressMapper = __webpack_require__(37);
 
 var _addressMapper2 = _interopRequireDefault(_addressMapper);
 
@@ -3388,7 +3396,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3543,7 +3551,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3557,7 +3565,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _wishListCtlr = __webpack_require__(38);
+var _wishListCtlr = __webpack_require__(39);
 
 var _wishListCtlr2 = _interopRequireDefault(_wishListCtlr);
 
@@ -3598,7 +3606,7 @@ router.post('/moveWishListItemToCart', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3614,7 +3622,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _wishListMapper = __webpack_require__(39);
+var _wishListMapper = __webpack_require__(40);
 
 var _wishListMapper2 = _interopRequireDefault(_wishListMapper);
 
@@ -3810,7 +3818,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3883,7 +3891,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3897,7 +3905,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _promotionsCtlr = __webpack_require__(41);
+var _promotionsCtlr = __webpack_require__(42);
 
 var _promotionsCtlr2 = _interopRequireDefault(_promotionsCtlr);
 
@@ -3950,7 +3958,7 @@ router.delete('/delete', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3968,7 +3976,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _promotionsMapper = __webpack_require__(42);
+var _promotionsMapper = __webpack_require__(43);
 
 var _promotionsMapper2 = _interopRequireDefault(_promotionsMapper);
 
@@ -4106,7 +4114,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4169,7 +4177,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4187,7 +4195,7 @@ var _bodyParser = __webpack_require__(9);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _registerCtlr = __webpack_require__(44);
+var _registerCtlr = __webpack_require__(45);
 
 var _registerCtlr2 = _interopRequireDefault(_registerCtlr);
 
@@ -4208,7 +4216,7 @@ router.post('/register', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4275,7 +4283,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4289,7 +4297,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _userProfileCtlr = __webpack_require__(46);
+var _userProfileCtlr = __webpack_require__(47);
 
 var _userProfileCtlr2 = _interopRequireDefault(_userProfileCtlr);
 
@@ -4328,7 +4336,7 @@ router.get('/getPersonalInformation', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4346,7 +4354,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _userProfileMapper = __webpack_require__(47);
+var _userProfileMapper = __webpack_require__(48);
 
 var _userProfileMapper2 = _interopRequireDefault(_userProfileMapper);
 
@@ -4447,7 +4455,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4579,7 +4587,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4593,7 +4601,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpRoutes = __webpack_require__(49);
+var _pdpRoutes = __webpack_require__(50);
 
 var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
 
@@ -4653,7 +4661,7 @@ var _seoRoutes = __webpack_require__(87);
 
 var _seoRoutes2 = _interopRequireDefault(_seoRoutes);
 
-var _layoutRoutes = __webpack_require__(89);
+var _layoutRoutes = __webpack_require__(92);
 
 var _layoutRoutes2 = _interopRequireDefault(_layoutRoutes);
 
@@ -4681,7 +4689,7 @@ app.use('/wcs/page', _layoutRoutes2.default);
 exports.default = app;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4695,7 +4703,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpCtlr = __webpack_require__(50);
+var _pdpCtlr = __webpack_require__(51);
 
 var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
 
@@ -4721,7 +4729,7 @@ router.get('/getRecentlyViewedProducts', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4737,7 +4745,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _pdpMapper = __webpack_require__(14);
+var _pdpMapper = __webpack_require__(15);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -4844,12 +4852,6 @@ exports.default = {
 		});
 	}
 };
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-module.exports = require("mongodb");
 
 /***/ }),
 /* 52 */
@@ -7246,7 +7248,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _pdpMapper = __webpack_require__(14);
+var _pdpMapper = __webpack_require__(15);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -7457,9 +7459,9 @@ exports.default = {
             var guestCall = (0, _util.constructRequestWithoutToken)(guestIdentityUrl, method, '');
             (0, _requestPromise2.default)(guestCall).then(function (result) {
                 result = JSON.parse(result);
-                res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
-                res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
-                res.cookie(_constants2.default.WCS_USER_ID, result.userId);
+                res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
+                res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
+                res.cookie(_constants2.default.WCS_USER_ID, result.userId, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
                 res.send({
                     "success": true
                 });
@@ -8284,6 +8286,13 @@ router.get('/seoKeyword', function (req, res) {
   _seoCtlr2.default.getSEOKeyword(req, res);
 });
 
+/**
+ * router for retrieving the SEO details
+ */
+router.get('/seoDetails', function (req, res) {
+  _seoCtlr2.default.getSEODetails(req, res);
+});
+
 exports.default = router;
 
 /***/ }),
@@ -8303,6 +8312,10 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
+var _databaseUtil = __webpack_require__(89);
+
+var _databaseUtil2 = _interopRequireDefault(_databaseUtil);
+
 var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
@@ -8318,33 +8331,67 @@ var logger = (0, _util.getLogger)();
 exports.default = {
 
   /* 
-   * Method for SEO in WCS
+   * Method for SEO keyword in WCS
    * Request Method : GET
    * Request Body : type and uniqueId
    */
 
   getSEOKeyword: function getSEOKeyword(req, res) {
 
-    var type = req.query.type;
-    var uniqueId = req.query.productId;
-    var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_SEO + "?type=" + type + "&uniqueId=" + uniqueId;
-    logger.info("SEOKeyword URL" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true));
-    var SEOKeywordUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true);
-    var method = 'GET';
-    var requestCall = (0, _util.constructRequestWithoutToken)(SEOKeywordUrl, method, '');
+    // let type = req.query.type;
+    // let uniqueId = req.query.productId;
+    // let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_SEO + "?type=" + type + "&uniqueId=" + uniqueId;
+    // logger.info("SEOKeyword URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+    // let SEOKeywordUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+    // let method ='GET';
+    // let requestCall = constructRequestWithoutToken(SEOKeywordUrl,method,'');
 
-    (0, _requestPromise2.default)(requestCall).then(function (data) {
-      var seoData = JSON.parse(data);
-      logger.info("SEO Keyword : " + seoData.keyword);
-      res.send({
-        "type": seoData.type,
-        "uniqueId": seoData.uniqueId,
-        "keyword": seoData.keyword
-      });
-    }).catch(function (error) {
-      if (error) {
-        logger.error('errors in service for SEOKeywordUrl in WCS: ', error);
-        res.send({ "success": false, "error": error });
+    // requestPromise(requestCall).then(function (data) {
+    //     var seoData = JSON.parse(data);
+    //     logger.info("SEO Keyword : "+ seoData.keyword);
+    //     res.send({
+    //             "type": seoData.type,
+    //             "uniqueId": seoData.uniqueId,
+    //             "keyword": seoData.keyword,                         
+    //     });   
+
+    //   }).catch(function (error) {
+    //       if(error){
+    //         logger.error('errors in service for SEOKeywordUrl in WCS: ', error);
+    //         res.send({ "success": false, "error": error }); 
+    //       }
+    //   });
+
+    _databaseUtil2.default.getKeyword(req.query.uniqueId, req.query.tokenType).then(function (response) {
+      logger.info("Response" + JSON.stringify(response));
+      if (Object.keys(response[0]).length > 0) {
+        var keyword = response[0].URLKEYWORD;
+        var tokenType = response[0].TOKENNAME;
+        var tokenValue = response[0].TOKENVALUE;
+        res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue });
+      } else {
+        res.send({ "success": false, "error": "No matching keyword found!" });
+      }
+    });
+  },
+
+  /* 
+   * Method for SEO in WCS
+   * Request Method : GET
+   * Request Body : type and uniqueId
+   */
+
+  getSEODetails: function getSEODetails(req, res) {
+
+    _databaseUtil2.default.getRecords(req.query.keyword).then(function (response) {
+      logger.info("Response" + JSON.stringify(response));
+      if (Object.keys(response[0]).length > 0) {
+        var keyword = response[0].URLKEYWORD;
+        var tokenType = response[0].TOKENNAME;
+        var tokenValue = response[0].TOKENVALUE;
+        res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue });
+      } else {
+        res.send({ "success": false, "error": "No matching keyword found!" });
       }
     });
   }
@@ -8359,6 +8406,117 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _constants = __webpack_require__(3);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _q = __webpack_require__(90);
+
+var _q2 = _interopRequireDefault(_q);
+
+var _util = __webpack_require__(91);
+
+var _util2 = _interopRequireDefault(_util);
+
+var _mongodb = __webpack_require__(14);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var database;
+// let logger= getLogger();
+
+// Use connect method to connect to the Server
+// Init method
+
+
+//lets import the mongodb native drivers.
+//We need to work with "MongoClient" interface in order to connect to a mongodb server.
+_mongodb.MongoClient.connect(_constants2.default.DB_URL, function (err, db) {
+    if (err) {
+        console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+        console.log('Connection established to: ' + _constants2.default.DB_URL);
+        database = db;
+    }
+});
+
+exports.default = {
+    /* 
+     * Method for getting the keywords from DB
+     * Params: uniqueId, tokenType
+     */
+    getKeyword: function getKeyword(uniqueId, tokenType) {
+
+        var deferred = _q2.default.defer();
+        var collection = database.collection('seo');
+        collection.find({ "TOKENNAME": tokenType, "TOKENVALUE": parseInt(uniqueId) }).toArray(function (err, result) {
+            var response = {};
+            console.log(JSON.stringify(result));
+            if (err) {
+                console.log(err);
+                response.errorObject = err;
+                deferred.reject(response);
+            } else if (result.length) {
+                deferred.resolve(result);
+            } else {
+                console.log('No document(s) found with defined "find" criteria!');
+                deferred.resolve(result);
+            }
+        });
+
+        return deferred.promise;
+    },
+
+    /* 
+    * Method for getting the records from DB
+    * Params: uniqueId, tokenType
+    */
+    getRecords: function getRecords(keyword) {
+
+        var deferred = _q2.default.defer();
+        var collection = database.collection('seo');
+        collection.find({ "URLKEYWORD": keyword }).toArray(function (err, result) {
+            var response = {};
+            console.log(JSON.stringify(result));
+            if (err) {
+                console.log(err);
+                response.errorObject = err;
+                deferred.reject(response);
+            } else if (result.length) {
+                deferred.resolve(result);
+            } else {
+                console.log('No document(s) found with defined "find" criteria!');
+                deferred.resolve(result);
+            }
+        });
+
+        return deferred.promise;
+    }
+};
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports) {
+
+module.exports = require("q");
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports) {
+
+module.exports = require("util");
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
@@ -8366,7 +8524,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _layoutCtlr = __webpack_require__(90);
+var _layoutCtlr = __webpack_require__(93);
 
 var _layoutCtlr2 = _interopRequireDefault(_layoutCtlr);
 
@@ -8390,7 +8548,7 @@ router.post('/espot', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 90 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8477,7 +8635,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 91 */
+/* 94 */
 /***/ (function(module, exports) {
 
 module.exports = require("cookie-parser");
