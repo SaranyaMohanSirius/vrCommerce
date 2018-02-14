@@ -9,4 +9,11 @@ router.get('/seoKeyword', function(req, res){
     seo.getSEOKeyword(req,res);
 });
 
+/**
+ * router for retrieving the SEO details
+ */
+router.get('/seoDetails', function(req, res){
+    seo.getSEODetails(req,res);
+});
+
 export default router;

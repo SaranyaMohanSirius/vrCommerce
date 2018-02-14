@@ -406,3 +406,14 @@ POST: http://localhost:5000/wcs/page/espot
 Body :{
   "emsName":"HeaderBanner_Content_Left"
 }
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                    SEO Details
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+SEO Keyword:
+GET: http://localhost:5000/wcs/seo/seoKeyword?tokenType=ProductToken&uniqueId=11939
+
+SEO Details:
+GET: http://localhost:5000/wcs/seo/seoDetails?keyword=borsati-fife-dress-loafer
