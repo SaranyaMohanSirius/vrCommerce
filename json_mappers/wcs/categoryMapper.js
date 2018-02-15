@@ -26,6 +26,35 @@ export default {
 		
 	},
 
+	/* 
+	 * JSON Mapper for generating responses for category
+	 */
+
+	mapCategoryJSON: function(input){
+		let converter = JM.makeConverter({
+			Category: ['catalogGroupView',JM.map({
+				fullImage: 'fullImage',
+				fullImageAltDescription: 'fullImageAltDescription',
+				parentCatalogGroupID: 'parentCatalogGroupID',
+				identifier: 'identifier',
+				metaDescription: 'metaDescription',
+				metaKeyword: 'metaKeyword',
+				name: 'name',
+				productsURL: 'productsURL',
+				resourceId: 'resourceId',
+				shortDescription: 'shortDescription',
+				thumbnail: 'thumbnail',
+				title: 'title',
+				uniqueID: 'uniqueID'
+			}) ],
+			
+		});
+		let result = converter(input);
+        return result;
+		
+		
+	},
+
 	 /* 
 	  * JSON Mapper for generating responses for Sub Category
 	  */

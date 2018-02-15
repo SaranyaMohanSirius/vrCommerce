@@ -7,6 +7,7 @@ export default {
    "WCS_PRODUCT_DETAILS": "/search/resources/store/",
    "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
    "WCS_CATEGORY_TOP": "/categoryview/@top",
+   "WCS_CATEGORY": "/categoryview/byId/",
    "WCS_SUB_CATEGORY": "/categoryview/byParentCategory/",
    "WCS_CATEGORY_DETAILS_APPEND": "/productview/byCategory/",
    "WCS_REST_URL": "/wcs/resources/store/",
