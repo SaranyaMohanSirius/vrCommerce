@@ -62,5 +62,33 @@ export default {
                     res.send({ "success": false, "error": error.response.body.errors[0] }); 
                 }
         });
-    }
+    },
+
+
+    keywordSuggestionsByTerm: function(req,res){
+  	   
+    
+        let term = req.query.term;
+        let concatURL = constants.WCS_PRODUCT_DETAILS+ constants.WCS_STORE_ID + constants.WCS_KEYWORD_SUGGESTION+term;
+        let keywordSuggestionsByTermUrl = constructUrl(constants.WCS_HOSTNAME,concatURL,false);
+        logger.info("my keywordSuggestionsByTermUrl URL : just checking "+keywordSuggestionsByTermUrl);
+        let method ='GET';
+        let messageData = {};
+        let requestCall = constructRequestWithoutToken(keywordSuggestionsByTermUrl,method,messageData);
+        requestPromise(requestCall).then(function (messageData) {
+            res.send({
+                "success": true ,
+                "result": messageData                                         
+            });  
+              }).catch(function (error) {
+              if(error.statusCode === 404){
+                  logger.error('404 error in service to keywordSuggestionsByTerm in WCS: ', error);
+                  res.send({ "success": false, "error": error});
+              }else{
+                  logger.error('errors in service to keywordSuggestionsByTerm in WCS: ', error);
+                  res.send({ "success": false, "error": error}); 
+              }
+          });
+              
+          }
 }

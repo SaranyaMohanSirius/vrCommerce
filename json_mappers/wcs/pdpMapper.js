@@ -249,5 +249,84 @@ export default {
 	  });
 	  let result = converter(body);
 	  return result;
-  }        
+  },        
+
+  mapProductDetailBySingleIdJSON: function(body){
+
+
+
+	let converter = JM.makeConverter({
+    	catalogEntryView: ['catalogEntryView', JM.map({		
+			hasSingleSKU: 'hasSingleSKU',
+			uniqueId: 'uniqueID',
+			catalogEntryTypeCode: 'catalogEntryTypeCode',				
+			buyable: 'buyable',				
+			store: 'storeID',			
+			listPrice : 'price.0.value',			
+			purchasePrice: 'price.1.value',			
+			code: 'partNumber',			
+			resourceId : 'resourceId',			
+			displayName: 'name',	
+			attributes: ['attributes', JM.map({
+				  displayable: 'displayable',
+				  name: 'name',
+				  identifier: 'identifier',
+				  values: ['values', JM.map({
+					identifier: 'identifier',
+					uniqueID: 'uniqueID',
+					image : ['image1path',function(url){ 
+					  if(url){
+							  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+						  }
+					  }],
+				  })], 
+			})],
+			skus: ['sKUs',JM.map({
+				skuId:'uniqueID',
+				hasSingleSKU: 'hasSingleSKU',
+				catalogEntryTypeCode: 'catalogEntryTypeCode',				
+				buyable: 'buyable',				
+				store: 'storeID',			
+				listPrice : 'price.0.value',			
+				purchasePrice: 'price.1.value',			
+				code: 'partNumber',			
+				resourceId : 'resourceId',			
+				displayName: 'name',
+				attributes: ['attributes', JM.map({
+				  displayable: 'displayable',
+				  name: 'name',
+				  identifier: 'identifier',
+				  values: ['values', JM.map({
+					identifier: 'identifier',
+					uniqueID: 'uniqueID',
+					image : ['image1path',function(url){ 
+					  if(url){
+							  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+						  }
+					  }],
+				  })], 	
+				})],
+				thumbnail : ['thumbnail',function(url){ 
+					if(url){
+						  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+					  }
+				 }],
+			})],
+			thumbnail : ['thumbnail',function(url){ 
+				if(url){
+					  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+				}
+			}],
+			fullImage : ['fullImage',function(url){ 
+				if(url){
+					 return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+				  }
+			}],
+		})],
+		
+
+	});
+	let result = converter(body);
+	return result;
+}        
 };
