@@ -61,6 +61,7 @@ export default {
                res.cookie(constants.WCS_ACCESS_TOKEN,result.WCToken, {domain: constants.WCS_COOKIE_DOMAIN});
                res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID, {domain: constants.WCS_COOKIE_DOMAIN});
                res.cookie(constants.WCS_USER_ID,result.userId, {domain: constants.WCS_COOKIE_DOMAIN});
+               res.cookie(constants.WCS_TRUSTED_ACCESS_TOKEN,result.WCTrustedToken, {domain: constants.WCS_COOKIE_DOMAIN});
                res.send({
                     "success": true                         
                 });  

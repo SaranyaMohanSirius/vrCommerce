@@ -78,6 +78,8 @@ export default {
    /*To be got from the UI*/
    "WCS_AUTH_TOKEN" : "12022%2C16Y0w9HO0rAvYKi42p4R3in9WzOQPJ2r8TMIejt6MF%2B4Skkt9f%2F%2FKf71IjRZHCf2cYp2UYzx2i3BGMwV9r5PzWAX5FGAZDsQhAErIsRZEEqWwLMXy6h6ethm5ngU0ijtNQaniaD%2FTOlllsVOreE4PYegQVzOkaXtACIhtQWUZr2RbaMC80nqEG6ORDp6CfKqua3wmqRUbHyqdRhmceBeMDfCs3OziIpsrO7tKefTyJQ%3D",
    "WCS_TRUSTED_TOKEN" : "12022%2CR97hA7x3qfhBXYmRxOYjCaldMf8A9E2b%2BeLYoYpCneY%3D",
-   "WCS_DOUBLE_SLASH" : "//"
+   "WCS_DOUBLE_SLASH" : "//",
+
+   "DB_URL" : "mongodb://HeadStart:Headless1@ds125628.mlab.com:25628/headstartdb"
  
  };
