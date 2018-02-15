@@ -17,6 +17,7 @@ export default {
 					return; 
 				},
 				uniqueId: 'uniqueID',
+				parentCatalogGroupID: 'parentCatalogGroupID',
 				catalogEntryTypeCode: 'catalogEntryTypeCode',				
 				buyable: 'buyable',				
 				store: 'storeID',			
