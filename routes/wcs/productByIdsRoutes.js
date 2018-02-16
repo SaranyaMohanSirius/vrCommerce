@@ -8,7 +8,12 @@ let router = express.Router();
  */
 
 router.get('/getProductDetailsByIds', function(req, res){
-    productByIds.getProductDetailsByIds(res,req);
+    productByIds.getProductDetailsByIds(req,res);
 });
+
+
+router.get('/getProductDetailBySingleId', function(req, res){
+    productByIds.getProductDetailBySingleId(req,res);
+})
 
 export default router;

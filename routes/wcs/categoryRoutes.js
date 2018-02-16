@@ -13,6 +13,15 @@ router.get('/getTopCategories', function(req, res){
 });
 
 /*
+ * router for getCategory
+ */
+
+router.get('/getCategory', function(req, res){
+	
+    category.getCategory(res,req);
+});
+
+/*
  * router for getSubCategories
  */
 

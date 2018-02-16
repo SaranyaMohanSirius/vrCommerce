@@ -72,8 +72,13 @@ export default {
                     "result": result                                            
                 });   
           }).catch(function (error) {
-              logger.error('errors in service to getShoppingCart in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0] }); 
+              if(error.statusCode === 404 || error.statusCode === 400){
+                  logger.error('errors in service to shoppingCart in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body });
+              }else{
+                  logger.error('errors in service to shoppingCart in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body.errors[0] }); 
+              } 
           });
   },
 
@@ -101,8 +106,13 @@ export default {
                     "result": result                                            
                 });   
           }).catch(function (error) {
-              logger.error('errors in service to updateShoppingCartItem in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0] });
+              if(error.statusCode === 404 || error.statusCode === 400){
+                  logger.error('errors in service to updateShoppingCartItem in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body });
+              }else{
+                  logger.error('errors in service to updateShoppingCartItem in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body.errors[0] }); 
+              } 
           });
     
   },
@@ -131,8 +141,13 @@ export default {
                     "result": result                                            
                 });   
           }).catch(function (error) {
-              logger.error('errors in service to deleteShoppingCart in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0] });
+              if(error.statusCode === 404 || error.statusCode === 400){
+                  logger.error('errors in service to deleteShoppingCartItem in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body });
+              }else{
+                  logger.error('errors in service to deleteShoppingCartItem in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body.errors[0] }); 
+              } 
           });
   },
 
@@ -159,8 +174,13 @@ export default {
                     "result": result                                           
                 });   
           }).catch(function (error) {
-              logger.error('errors in service to deleteAllShoppingCartItem in WCS: ', JSON.stringify(error));
-              res.send({ "success": false, "error": error.response.body.errors[0] });
+              if(error.statusCode === 404 || error.statusCode === 400){
+                  logger.error('errors in service to deleteAllShoppingCartItem in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body });
+              }else{
+                  logger.error('errors in service to deleteAllShoppingCartItem in WCS: ', JSON.stringify(error));
+                  res.send({ "success": false, "error": error.response.body.errors[0] }); 
+              } 
           });
   },
 

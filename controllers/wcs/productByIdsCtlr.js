@@ -17,7 +17,7 @@ export default {
    *  Request Method : GET
    */
 
-	getProductDetailsByIds: function(res,req){
+	getProductDetailsByIds: function(req,res){
   	    let ids = req.query.id;
         let urlIds= "";
         for (let x of ids) { 
@@ -25,6 +25,7 @@ export default {
         }
         let concatURL = constants.WCS_PRODUCT_DETAILS+ constants.WCS_STORE_ID + constants.WCS_PRODUCT_BYIDS + urlIds ;
         logger.info("getProductDetailsByIds URL : "+constructUrl(constants.WCS_HOSTNAME,concatURL,false));
+        logger.info("my URL : just checking ");
         let productByIdsUrl = constructUrl(constants.WCS_HOSTNAME,concatURL,false);
         let method ='GET';
         let messageData = {};
@@ -57,5 +58,35 @@ export default {
         });
 
    
-  }
+  },
+
+
+  getProductDetailBySingleId: function(req,res){
+  	   
+    
+    let id = req.query.id;
+    let concatURL = constants.WCS_PRODUCT_DETAILS+ constants.WCS_STORE_ID + constants.WCS_PRODUCT_BY_SINGLE_ID+id;
+    logger.info("my new URL : just checking ");
+    let productBySingleIdUrl = constructUrl(constants.WCS_HOSTNAME,concatURL,false);
+    let method ='GET';
+    let messageData = {};
+    let requestCall = constructRequestWithoutToken(productBySingleIdUrl,method,messageData);
+    requestPromise(requestCall).then(function (data) {
+      let result = pdpMapper.mapProductDetailBySingleIdJSON(data);
+              res.send({
+                "success": true ,
+                "result": result,
+              })     
+          }).catch(function (error) {
+          if(error.statusCode === 404){
+              logger.error('errors in service to getProductDetailBySingleId in WCS: ', error);
+              res.send({ "success": false, "error": error.response.body });
+          }else{
+              logger.error('errors in service to getProductDetailBySingleId in WCS: ', error);
+              res.send({ "success": false, "error": error.response.body.errors[0] }); 
+          }
+      });
+          
+      }
+
 }

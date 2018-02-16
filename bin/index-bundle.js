@@ -184,11 +184,13 @@ exports.default = {
   "WCS_PRODUCT_DETAILS": "/search/resources/store/",
   "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
   "WCS_CATEGORY_TOP": "/categoryview/@top",
+  "WCS_CATEGORY": "/categoryview/byId/",
   "WCS_SUB_CATEGORY": "/categoryview/byParentCategory/",
   "WCS_CATEGORY_DETAILS_APPEND": "/productview/byCategory/",
   "WCS_REST_URL": "/wcs/resources/store/",
   "WCS_GUEST_IDENTITY": "/guestidentity",
   "WCS_LOGIN_IDENTITY": "/loginidentity",
+  "WCS_KEYWORD_SUGGESTION": "/sitecontent/keywordSuggestionsByTerm/",
   "WCS_STORE_ID": "10151",
   "WCS_CATALOG_ID": "10052",
   "WCS_CART": "/cart/",
@@ -221,6 +223,7 @@ exports.default = {
   "WCS_CART_PROMOTIONS": "/cart/@self/assigned_promotion_code",
   "WCS_ITEM": "item",
   "WCS_PRODUCT_BYIDS": "/productview/byIds?",
+  "WCS_PRODUCT_BY_SINGLE_ID": "/productview/byId/",
   "WCS_CART_PRECHECKOUT": "/precheckout",
   "WCS_CART_CHECKOUT": "/checkout",
   "WCS_ORDER": "/order/",
@@ -234,7 +237,7 @@ exports.default = {
   "WCS_TOKEN_EXPIRATION_TIME": "1800000",
   "WCS_REGISTRATION": "/person?mode=self",
   "WCS_PERSON_AT_SELF": "/person/@self",
-  "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD": "/espot/RecViewed_CatEntries",
+  "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD": "/espot/RecentlyViewedItemsEspot",
   "WCS_PAYMENT_INSTRUCTION_MASKED": "/payment_instruction/sensitive_data_mask_by_plain_string",
   "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
   "HTTP_URI_CONSTANT": "http:",
@@ -937,6 +940,7 @@ exports.default = {
 					return;
 				},
 				uniqueId: 'uniqueID',
+				parentCatalogGroupID: 'parentCatalogGroupID',
 				catalogEntryTypeCode: 'catalogEntryTypeCode',
 				buyable: 'buyable',
 				store: 'storeID',
@@ -1164,6 +1168,82 @@ exports.default = {
 					name: 'name',
 					stringValue: 'stringValue'
 				})]
+			})]
+
+		});
+		var result = converter(body);
+		return result;
+	},
+
+	mapProductDetailBySingleIdJSON: function mapProductDetailBySingleIdJSON(body) {
+
+		var converter = _jsonMapper2.default.makeConverter({
+			catalogEntryView: ['catalogEntryView', _jsonMapper2.default.map({
+				hasSingleSKU: 'hasSingleSKU',
+				uniqueId: 'uniqueID',
+				catalogEntryTypeCode: 'catalogEntryTypeCode',
+				buyable: 'buyable',
+				store: 'storeID',
+				listPrice: 'price.0.value',
+				purchasePrice: 'price.1.value',
+				code: 'partNumber',
+				resourceId: 'resourceId',
+				displayName: 'name',
+				attributes: ['attributes', _jsonMapper2.default.map({
+					displayable: 'displayable',
+					name: 'name',
+					identifier: 'identifier',
+					values: ['values', _jsonMapper2.default.map({
+						identifier: 'identifier',
+						uniqueID: 'uniqueID',
+						image: ['image1path', function (url) {
+							if (url) {
+								return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+							}
+						}]
+					})]
+				})],
+				skus: ['sKUs', _jsonMapper2.default.map({
+					skuId: 'uniqueID',
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',
+					buyable: 'buyable',
+					store: 'storeID',
+					listPrice: 'price.0.value',
+					purchasePrice: 'price.1.value',
+					code: 'partNumber',
+					resourceId: 'resourceId',
+					displayName: 'name',
+					attributes: ['attributes', _jsonMapper2.default.map({
+						displayable: 'displayable',
+						name: 'name',
+						identifier: 'identifier',
+						values: ['values', _jsonMapper2.default.map({
+							identifier: 'identifier',
+							uniqueID: 'uniqueID',
+							image: ['image1path', function (url) {
+								if (url) {
+									return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+								}
+							}]
+						})]
+					})],
+					thumbnail: ['thumbnail', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}]
+				})],
+				thumbnail: ['thumbnail', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}],
+				fullImage: ['fullImage', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}]
 			})]
 
 		});
@@ -4832,7 +4912,7 @@ exports.default = {
 	},
 	getRecentlyViewedProducts: function getRecentlyViewedProducts(req, res) {
 		var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
-		var getRecentlyViewedProductsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, true);
+		var getRecentlyViewedProductsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, false);
 		logger.info("Get recently viewed products URL" + getRecentlyViewedProductsUrl);
 		var requestCall = (0, _util.constructRequestWithToken)(getRecentlyViewedProductsUrl, 'GET', '', (0, _util.getTokens)(req));
 		(0, _requestPromise2.default)(requestCall).then(function (body) {
@@ -4886,6 +4966,15 @@ router.get('/getTopCategories', function (req, res) {
 });
 
 /*
+ * router for getCategory
+ */
+
+router.get('/getCategory', function (req, res) {
+
+  _categoryCtlr2.default.getCategory(res, req);
+});
+
+/*
  * router for getSubCategories
  */
 
@@ -4912,7 +5001,7 @@ exports.default = router;
 
 
 Object.defineProperty(exports, "__esModule", {
-		value: true
+	value: true
 });
 
 var _constants = __webpack_require__(3);
@@ -4935,142 +5024,168 @@ var logger = (0, _util.getLogger)();
 
 exports.default = {
 
-		/*
-   * Method for getting Top Cateogries in WCS
-   * Request Method: GET
-   */
+	/*
+  * Method for getting Top Cateogries in WCS
+  * Request Method: GET
+  */
 
-		getTopCategories: function getTopCategories(res) {
+	getTopCategories: function getTopCategories(res) {
 
-				var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CATEGORY_TOP + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
-				var messageData = {};
-				var getTopCategoriesUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
-				logger.info("getTopCategoriesUrl: " + getTopCategoriesUrl);
-				var method = 'GET';
-				var requestCall = (0, _util.constructRequestWithoutToken)(getTopCategoriesUrl, method, messageData);
-				logger.info(JSON.stringify(requestCall));
-				(0, _requestPromise2.default)(requestCall).then(function (messageData) {
-						var result = _categoryMapper2.default.mapTopCategoryJSON(messageData);
-						res.send({
-								"success": true,
-								"result": result
-						});
-				}).catch(function (error) {
-						if (error) {
-								logger.error('errors in service to getTopCategories in WCS: ', error);
-								res.send({ "success": false, "error": error });
-						} else {
-								logger.error('errors in service to getTopCategories in WCS: ', error);
-								res.send({ "success": false, "error": error });
-						}
-				});
-		},
+		var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CATEGORY_TOP + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
+		var messageData = {};
+		var getTopCategoriesUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+		logger.info("getTopCategoriesUrl: " + getTopCategoriesUrl);
+		var method = 'GET';
+		var requestCall = (0, _util.constructRequestWithoutToken)(getTopCategoriesUrl, method, messageData);
+		logger.info(JSON.stringify(requestCall));
+		(0, _requestPromise2.default)(requestCall).then(function (messageData) {
+			var result = _categoryMapper2.default.mapTopCategoryJSON(messageData);
+			res.send({
+				"success": true,
+				"result": result
+			});
+		}).catch(function (error) {
+			if (error) {
+				logger.error('errors in service to getTopCategories in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			} else {
+				logger.error('errors in service to getTopCategories in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			}
+		});
+	},
 
-		/*
-   * Method for getting Sub Cateogries for given ParentId in WCS
-   * Request Method : GET
-   * Request Params : identifier
-  	 */
+	getCategory: function getCategory(res, req) {
+		var identifier = req.query.identifier;
+		var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CATEGORY + identifier + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
+		var messageData = {};
+		var getCategoriesUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+		logger.info("getCategoriesUrl: " + getCategoriesUrl);
+		var method = 'GET';
+		var requestCall = (0, _util.constructRequestWithoutToken)(getCategoriesUrl, method, messageData);
+		logger.info(JSON.stringify(requestCall));
+		(0, _requestPromise2.default)(requestCall).then(function (messageData) {
+			var result = _categoryMapper2.default.mapCategoryJSON(messageData);
+			res.send({
+				"success": true,
+				"result": result
+			});
+		}).catch(function (error) {
+			if (error) {
+				logger.error('errors in service to getCategories in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			} else {
+				logger.error('errors in service to getCategories in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			}
+		});
+	},
 
-		getSubCategories: function getSubCategories(res, req) {
+	/*
+  * Method for getting Sub Cateogries for given ParentId in WCS
+  * Request Method : GET
+  * Request Params : identifier
+ 	 */
 
-				var parentId = req.query.identifier;
-				var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_SUB_CATEGORY + parentId;
-				var messageData = {};
-				var getSubCategoriesUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
-				logger.info("getSubCategoriesUrl: " + getSubCategoriesUrl);
-				var method = 'GET';
-				var requestCall = (0, _util.constructRequestWithoutToken)(getSubCategoriesUrl, method, messageData);
-				logger.info(JSON.stringify(requestCall));
-				(0, _requestPromise2.default)(requestCall).then(function (messageData) {
-						var result = _categoryMapper2.default.mapSubCategoryJSON(messageData);
-						res.send({
-								"success": true,
-								"result": result
-						});
-				}).catch(function (error) {
-						if (error) {
-								logger.error('errors in service to getSubCategories in WCS: ', error);
-								res.send({ "success": false, "error": error });
-						} else {
-								logger.error('errors in service to getSubCategories in WCS: ', error);
-								res.send({ "success": false, "error": error });
-						}
-				});
-		},
+	getSubCategories: function getSubCategories(res, req) {
 
-		/* 
-   * Method for getting product list for a given category - category landing page
-   * Request Method : GET
-   * Request Params : pagesize, current
-   */
+		var parentId = req.query.identifier;
+		var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_SUB_CATEGORY + parentId;
+		var messageData = {};
+		var getSubCategoriesUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+		logger.info("getSubCategoriesUrl: " + getSubCategoriesUrl);
+		var method = 'GET';
+		var requestCall = (0, _util.constructRequestWithoutToken)(getSubCategoriesUrl, method, messageData);
+		logger.info(JSON.stringify(requestCall));
+		(0, _requestPromise2.default)(requestCall).then(function (messageData) {
+			var result = _categoryMapper2.default.mapSubCategoryJSON(messageData);
+			res.send({
+				"success": true,
+				"result": result
+			});
+		}).catch(function (error) {
+			if (error) {
+				logger.error('errors in service to getSubCategories in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			} else {
+				logger.error('errors in service to getSubCategories in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			}
+		});
+	},
 
-		getProductsListForCategory: function getProductsListForCategory(req, res, categoryId) {
-				var pageSize = req.query.pagesize;
-				var currentPageNumber = req.query.currentPage;
-				var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID + "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
-				if (req.query.orderBy) {
-						var orderBy = req.query.orderBy;
-						concatURL = concatURL + "&orderBy=" + orderBy;
-				}
-				if (req.query.facet) {
-						var facet = req.query.facet;
-						logger.info("Multiple facets" + Array.isArray(facet));
-						if (Array.isArray(facet)) {
+	/* 
+  * Method for getting product list for a given category - category landing page
+  * Request Method : GET
+  * Request Params : pagesize, current
+  */
 
-								var facetIterator = facet[Symbol.iterator]();
-								var _iteratorNormalCompletion = true;
-								var _didIteratorError = false;
-								var _iteratorError = undefined;
-
-								try {
-										for (var _iterator = facetIterator[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-												var facetvalue = _step.value;
-
-												concatURL = concatURL + "&facet=" + facetvalue;
-										}
-								} catch (err) {
-										_didIteratorError = true;
-										_iteratorError = err;
-								} finally {
-										try {
-												if (!_iteratorNormalCompletion && _iterator.return) {
-														_iterator.return();
-												}
-										} finally {
-												if (_didIteratorError) {
-														throw _iteratorError;
-												}
-										}
-								}
-						} else concatURL = concatURL + "&facet=" + facet;
-				}
-				var getProductsListForCategoryUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
-				logger.info("getProductsListForCategoryUrl: " + getProductsListForCategoryUrl);
-				var method = 'GET';
-				var requestCall = (0, _util.constructRequestWithoutToken)(getProductsListForCategoryUrl, method, '');
-				logger.info(JSON.stringify(requestCall));
-				(0, _requestPromise2.default)(requestCall).then(function (body) {
-						var messageData = {
-								'pageSize': pageSize,
-								'currentPage': currentPageNumber
-						};
-						if ((0, _util.isJson)(body)) body = JSON.parse(body);
-						var result = _categoryMapper2.default.mapProductsListForCategoryJSON(body, messageData);
-						res.send({
-								"success": true,
-								"result": result
-						});
-				}).catch(function (error) {
-						if (error) {
-								logger.error('errors in service to getProductsListForCategory in WCS: ', error);
-								res.send({ "success": false, "error": error });
-						} else {
-								logger.error('errors in service to getProductsListForCategory in WCS: ', error);
-								res.send({ "success": false, "error": error });
-						}
-				});
+	getProductsListForCategory: function getProductsListForCategory(req, res, categoryId) {
+		var pageSize = req.query.pagesize;
+		var currentPageNumber = req.query.currentPage;
+		var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID + "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
+		if (req.query.orderBy) {
+			var orderBy = req.query.orderBy;
+			concatURL = concatURL + "&orderBy=" + orderBy;
 		}
+		if (req.query.facet) {
+			var facet = req.query.facet;
+			logger.info("Multiple facets" + Array.isArray(facet));
+			if (Array.isArray(facet)) {
+
+				var facetIterator = facet[Symbol.iterator]();
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+
+				try {
+					for (var _iterator = facetIterator[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var facetvalue = _step.value;
+
+						concatURL = concatURL + "&facet=" + facetvalue;
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
+			} else concatURL = concatURL + "&facet=" + facet;
+		}
+		var getProductsListForCategoryUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+		logger.info("getProductsListForCategoryUrl: " + getProductsListForCategoryUrl);
+		var method = 'GET';
+		var requestCall = (0, _util.constructRequestWithoutToken)(getProductsListForCategoryUrl, method, '');
+		logger.info(JSON.stringify(requestCall));
+		(0, _requestPromise2.default)(requestCall).then(function (body) {
+			var messageData = {
+				'pageSize': pageSize,
+				'currentPage': currentPageNumber
+			};
+			if ((0, _util.isJson)(body)) body = JSON.parse(body);
+			var result = _categoryMapper2.default.mapProductsListForCategoryJSON(body, messageData);
+			res.send({
+				"success": true,
+				"result": result
+			});
+		}).catch(function (error) {
+			if (error) {
+				logger.error('errors in service to getProductsListForCategory in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			} else {
+				logger.error('errors in service to getProductsListForCategory in WCS: ', error);
+				res.send({ "success": false, "error": error });
+			}
+		});
+	}
 };
 
 /***/ }),
@@ -5081,7 +5196,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _jsonMapper = __webpack_require__(4);
@@ -5096,122 +5211,149 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
 
-  /* 
-   * JSON Mapper for generating responses for Top category
-   */
+	/* 
+  * JSON Mapper for generating responses for Top category
+  */
 
-  mapTopCategoryJSON: function mapTopCategoryJSON(input) {
-    var converter = _jsonMapper2.default.makeConverter({
-      TopCategories: ['catalogGroupView', _jsonMapper2.default.map({
-        name: 'name',
-        identifier: 'identifier',
-        id: 'uniqueID',
-        store: 'storeID'
+	mapTopCategoryJSON: function mapTopCategoryJSON(input) {
+		var converter = _jsonMapper2.default.makeConverter({
+			TopCategories: ['catalogGroupView', _jsonMapper2.default.map({
+				name: 'name',
+				identifier: 'identifier',
+				id: 'uniqueID',
+				store: 'storeID'
 
-      })],
-      totalCount: 'recordSetCount'
+			})],
+			totalCount: 'recordSetCount'
 
-    });
-    var result = converter(input);
-    return result;
-  },
+		});
+		var result = converter(input);
+		return result;
+	},
 
-  /* 
-   * JSON Mapper for generating responses for Sub Category
-   */
+	/* 
+  * JSON Mapper for generating responses for category
+  */
 
-  mapSubCategoryJSON: function mapSubCategoryJSON(input) {
-    var converter = _jsonMapper2.default.makeConverter({
-      SubCategories: ['catalogGroupView', _jsonMapper2.default.map({
-        name: 'name',
-        identifier: 'identifier',
-        id: 'uniqueID',
-        store: 'storeID',
-        thumbnail: ['thumbnail', function (url) {
-          if (url) {
-            return _constants2.default.HTTP_URI_CONSTANT + _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
-          }
-        }]
-      })],
-      totalCount: 'recordSetCount'
+	mapCategoryJSON: function mapCategoryJSON(input) {
+		var converter = _jsonMapper2.default.makeConverter({
+			Category: ['catalogGroupView', _jsonMapper2.default.map({
+				fullImage: 'fullImage',
+				fullImageAltDescription: 'fullImageAltDescription',
+				parentCatalogGroupID: 'parentCatalogGroupID',
+				identifier: 'identifier',
+				metaDescription: 'metaDescription',
+				metaKeyword: 'metaKeyword',
+				name: 'name',
+				productsURL: 'productsURL',
+				resourceId: 'resourceId',
+				shortDescription: 'shortDescription',
+				thumbnail: 'thumbnail',
+				title: 'title',
+				uniqueID: 'uniqueID'
+			})]
 
-    });
-    var result = converter(input);
-    return result;
-  },
+		});
+		var result = converter(input);
+		return result;
+	},
 
-  /* 
-   * JSON Mapper for generating responses for product list JSON for category landing page 
-   */
+	/* 
+  * JSON Mapper for generating responses for Sub Category
+  */
 
-  mapProductsListForCategoryJSON: function mapProductsListForCategoryJSON(body, messageData) {
-    var pageSize = Number(messageData.pageSize);
-    var recordSetTotal = Number(body.recordSetTotal);
-    var pages = Math.ceil(recordSetTotal / pageSize);
-    var converter = _jsonMapper2.default.makeConverter({
-      pagination: {
-        pageSize: _jsonMapper2.default.helpers.def(messageData.pageSize),
-        currentPageNumber: _jsonMapper2.default.helpers.def(messageData.currentPage),
-        resultsTotal: 'recordSetTotal',
-        resultsCurrentPage: 'recordSetCount',
-        pages: _jsonMapper2.default.helpers.def(pages)
-      },
-      resourceIdentifier: 'resourceId',
-      productsList: ['catalogEntryView', _jsonMapper2.default.map({
-        availability: '',
-        listPrice: 'price.0.value',
-        purchasePrice: 'price.1.value',
-        displayName: 'name',
-        code: 'partNumber',
-        uniqueID: 'uniqueID',
-        store: 'storeID',
-        thumbnail: ['thumbnail', function (url) {
-          if (url) {
-            return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
-          }
-        }],
+	mapSubCategoryJSON: function mapSubCategoryJSON(input) {
+		var converter = _jsonMapper2.default.makeConverter({
+			SubCategories: ['catalogGroupView', _jsonMapper2.default.map({
+				name: 'name',
+				identifier: 'identifier',
+				id: 'uniqueID',
+				store: 'storeID',
+				thumbnail: ['thumbnail', function (url) {
+					if (url) {
+						return _constants2.default.HTTP_URI_CONSTANT + _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}]
+			})],
+			totalCount: 'recordSetCount'
 
-        attributes: ['attributes', _jsonMapper2.default.map({
-          displayable: 'displayable',
-          name: 'name',
-          identifier: 'identifier',
-          values: 'values.0.value'
-        })],
-        hasSingleSKU: 'hasSingleSKU',
-        catalogEntryTypeCode: 'catalogEntryTypeCode'
-      })],
-      facets: ['facetView', _jsonMapper2.default.map({
-        entry: ['entry', _jsonMapper2.default.map({
-          count: 'count',
-          uniqueId: function uniqueId(input) {
-            return input.extendedData.uniqueId;
-          },
-          label: 'label',
-          value: 'value',
-          image: ['image', function (url) {
-            if (url) {
-              return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
-            }
-          }]
-        })],
-        extendedData: {
-          name: 'name',
-          value: 'value',
-          facet_id: 'extendedData.facet_id',
-          fdesc: 'extendedData.fdesc',
-          fname: 'extendedData.fname',
-          srchattr_id: 'extendedData.srchattr_id',
-          srchattridentifier: 'extendedData.srchattridentifier',
-          storeent_id: 'extendedData.storeent_id'
-        }
+		});
+		var result = converter(input);
+		return result;
+	},
 
-      })]
+	/* 
+  * JSON Mapper for generating responses for product list JSON for category landing page 
+  */
 
-    });
+	mapProductsListForCategoryJSON: function mapProductsListForCategoryJSON(body, messageData) {
+		var pageSize = Number(messageData.pageSize);
+		var recordSetTotal = Number(body.recordSetTotal);
+		var pages = Math.ceil(recordSetTotal / pageSize);
+		var converter = _jsonMapper2.default.makeConverter({
+			pagination: {
+				pageSize: _jsonMapper2.default.helpers.def(messageData.pageSize),
+				currentPageNumber: _jsonMapper2.default.helpers.def(messageData.currentPage),
+				resultsTotal: 'recordSetTotal',
+				resultsCurrentPage: 'recordSetCount',
+				pages: _jsonMapper2.default.helpers.def(pages)
+			},
+			resourceIdentifier: 'resourceId',
+			productsList: ['catalogEntryView', _jsonMapper2.default.map({
+				availability: '',
+				listPrice: 'price.0.value',
+				purchasePrice: 'price.1.value',
+				displayName: 'name',
+				code: 'partNumber',
+				uniqueID: 'uniqueID',
+				store: 'storeID',
+				thumbnail: ['thumbnail', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}],
 
-    var result = converter(body);
-    return result;
-  }
+				attributes: ['attributes', _jsonMapper2.default.map({
+					displayable: 'displayable',
+					name: 'name',
+					identifier: 'identifier',
+					values: 'values.0.value'
+				})],
+				hasSingleSKU: 'hasSingleSKU',
+				catalogEntryTypeCode: 'catalogEntryTypeCode'
+			})],
+			facets: ['facetView', _jsonMapper2.default.map({
+				entry: ['entry', _jsonMapper2.default.map({
+					count: 'count',
+					uniqueId: function uniqueId(input) {
+						return input.extendedData.uniqueId;
+					},
+					label: 'label',
+					value: 'value',
+					image: ['image', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}]
+				})],
+				extendedData: {
+					name: 'name',
+					value: 'value',
+					facet_id: 'extendedData.facet_id',
+					fdesc: 'extendedData.fdesc',
+					fname: 'extendedData.fname',
+					srchattr_id: 'extendedData.srchattr_id',
+					srchattridentifier: 'extendedData.srchattridentifier',
+					storeent_id: 'extendedData.storeent_id'
+				}
+
+			})]
+
+		});
+
+		var result = converter(body);
+		return result;
+	}
 };
 
 /***/ }),
@@ -5408,7 +5550,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _express = __webpack_require__(0);
@@ -5428,9 +5570,12 @@ var router = _express2.default.Router();
  */
 
 router.get('/getSearchResults', function (req, res) {
-  _searchCtlr2.default.getSearchResults(req, res);
+    _searchCtlr2.default.getSearchResults(req, res);
 });
 
+router.get('/keywordSuggestionsByTerm', function (req, res) {
+    _searchCtlr2.default.keywordSuggestionsByTerm(req, res);
+});
 exports.default = router;
 
 /***/ }),
@@ -5536,6 +5681,31 @@ exports.default = {
             } else {
                 logger.error('errors in service to getSearchResults in WCS: ', error);
                 res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
+        });
+    },
+
+    keywordSuggestionsByTerm: function keywordSuggestionsByTerm(req, res) {
+
+        var term = req.query.term;
+        var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_KEYWORD_SUGGESTION + term;
+        var keywordSuggestionsByTermUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+        logger.info("keywordSuggestionsByTermUrl: " + keywordSuggestionsByTermUrl);
+        var method = 'GET';
+        var messageData = {};
+        var requestCall = (0, _util.constructRequestWithoutToken)(keywordSuggestionsByTermUrl, method, messageData);
+        (0, _requestPromise2.default)(requestCall).then(function (messageData) {
+            res.send({
+                "success": true,
+                "result": messageData
+            });
+        }).catch(function (error) {
+            if (error.statusCode === 404) {
+                logger.error('404 error in service to keywordSuggestionsByTerm in WCS: ', error);
+                res.send({ "success": false, "error": error });
+            } else {
+                logger.error('errors in service to keywordSuggestionsByTerm in WCS: ', error);
+                res.send({ "success": false, "error": error });
             }
         });
     }
@@ -6256,8 +6426,13 @@ exports.default = {
                 "result": result
             });
         }).catch(function (error) {
-            logger.error('errors in service to getShoppingCart in WCS: ', JSON.stringify(error));
-            res.send({ "success": false, "error": error.response.body.errors[0] });
+            if (error.statusCode === 404 || error.statusCode === 400) {
+                logger.error('errors in service to shoppingCart in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to shoppingCart in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
         });
     },
 
@@ -6285,8 +6460,13 @@ exports.default = {
                 "result": result
             });
         }).catch(function (error) {
-            logger.error('errors in service to updateShoppingCartItem in WCS: ', JSON.stringify(error));
-            res.send({ "success": false, "error": error.response.body.errors[0] });
+            if (error.statusCode === 404 || error.statusCode === 400) {
+                logger.error('errors in service to updateShoppingCartItem in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to updateShoppingCartItem in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
         });
     },
 
@@ -6314,8 +6494,13 @@ exports.default = {
                 "result": result
             });
         }).catch(function (error) {
-            logger.error('errors in service to deleteShoppingCart in WCS: ', JSON.stringify(error));
-            res.send({ "success": false, "error": error.response.body.errors[0] });
+            if (error.statusCode === 404 || error.statusCode === 400) {
+                logger.error('errors in service to deleteShoppingCartItem in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to deleteShoppingCartItem in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
         });
     },
 
@@ -6342,8 +6527,13 @@ exports.default = {
                 "result": result
             });
         }).catch(function (error) {
-            logger.error('errors in service to deleteAllShoppingCartItem in WCS: ', JSON.stringify(error));
-            res.send({ "success": false, "error": error.response.body.errors[0] });
+            if (error.statusCode === 404 || error.statusCode === 400) {
+                logger.error('errors in service to deleteAllShoppingCartItem in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to deleteAllShoppingCartItem in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
         });
     },
 
@@ -7206,7 +7396,7 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _express = __webpack_require__(0);
@@ -7226,7 +7416,11 @@ var router = _express2.default.Router();
  */
 
 router.get('/getProductDetailsByIds', function (req, res) {
-  _productByIdsCtlr2.default.getProductDetailsByIds(res, req);
+    _productByIdsCtlr2.default.getProductDetailsByIds(req, res);
+});
+
+router.get('/getProductDetailBySingleId', function (req, res) {
+    _productByIdsCtlr2.default.getProductDetailBySingleId(req, res);
 });
 
 exports.default = router;
@@ -7272,7 +7466,7 @@ exports.default = {
    *  Request Method : GET
    */
 
-  getProductDetailsByIds: function getProductDetailsByIds(res, req) {
+  getProductDetailsByIds: function getProductDetailsByIds(req, res) {
     var ids = req.query.id;
     var urlIds = "";
     var _iteratorNormalCompletion = true;
@@ -7302,6 +7496,7 @@ exports.default = {
 
     var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PRODUCT_BYIDS + urlIds;
     logger.info("getProductDetailsByIds URL : " + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false));
+    logger.info("my URL : just checking ");
     var productByIdsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
     var method = 'GET';
     var messageData = {};
@@ -7332,7 +7527,34 @@ exports.default = {
         res.send({ "success": false, "error": error });
       }
     });
+  },
+
+  getProductDetailBySingleId: function getProductDetailBySingleId(req, res) {
+
+    var id = req.query.id;
+    var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PRODUCT_BY_SINGLE_ID + id;
+    logger.info("my new URL : just checking ");
+    var productBySingleIdUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+    var method = 'GET';
+    var messageData = {};
+    var requestCall = (0, _util.constructRequestWithoutToken)(productBySingleIdUrl, method, messageData);
+    (0, _requestPromise2.default)(requestCall).then(function (data) {
+      var result = _pdpMapper2.default.mapProductDetailBySingleIdJSON(data);
+      res.send({
+        "success": true,
+        "result": result
+      });
+    }).catch(function (error) {
+      if (error.statusCode === 404) {
+        logger.error('errors in service to getProductDetailBySingleId in WCS: ', error);
+        res.send({ "success": false, "error": error.response.body });
+      } else {
+        logger.error('errors in service to getProductDetailBySingleId in WCS: ', error);
+        res.send({ "success": false, "error": error.response.body.errors[0] });
+      }
+    });
   }
+
 };
 
 /***/ }),
@@ -7428,10 +7650,10 @@ exports.default = {
         logger.info("messageData = " + req.body.logonId + "|" + req.body.logonPassword);
         var logonCall = (0, _util.constructRequestWithoutToken)(loginUrl, method, messageData, '');
         (0, _requestPromise2.default)(logonCall).then(function (result) {
-            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
-            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
-            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
-            res.cookie(_constants2.default.WCS_USER_ID, result.userId, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
+            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
+            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
+            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
+            res.cookie(_constants2.default.WCS_USER_ID, result.userId);
             res.send({
                 "success": true
             });
@@ -7459,9 +7681,10 @@ exports.default = {
             var guestCall = (0, _util.constructRequestWithoutToken)(guestIdentityUrl, method, '');
             (0, _requestPromise2.default)(guestCall).then(function (result) {
                 result = JSON.parse(result);
-                res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
-                res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
-                res.cookie(_constants2.default.WCS_USER_ID, result.userId, { domain: _constants2.default.WCS_COOKIE_DOMAIN });
+                res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
+                res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
+                res.cookie(_constants2.default.WCS_USER_ID, result.userId);
+                res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
                 res.send({
                     "success": true
                 });
