@@ -235,6 +235,9 @@ Request : GET : http://localhost:5000/wcs/product/getProductDetailsByIds?id=1284
 Product search by keyword
 Request : GET : http://localhost:5000/wcs/search/getSearchResults?keyword=dress&pageSize=5&currentPage=1
 
+Search Keyword Suggestions
+Request : GET : http://localhost:5000/wcs/search/keywordSuggestionsByTerm?term=shir
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         Promotions
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

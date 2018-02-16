@@ -38,7 +38,9 @@ export default {
                           		return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
                       		}
                       	}],
-					  })], 
+					  })],
+					  usage: 'usage',
+					  sequence : 'sequence',
 				})],
 				merchandisingAssociations: ['merchandisingAssociations', JM.map({
 					hasSingleSKU: 'hasSingleSKU',
@@ -100,7 +102,9 @@ export default {
                           		return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
                       		}
                       	}],
-					  })], 	
+					  })],
+					  usage: 'usage',
+					  sequence : 'sequence',
 					})],
 					thumbnail : ['thumbnail',function(url){ 
                         if(url){

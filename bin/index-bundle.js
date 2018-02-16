@@ -961,7 +961,9 @@ exports.default = {
 								return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
 							}
 						}]
-					})]
+					})],
+					usage: 'usage',
+					sequence: 'sequence'
 				})],
 				merchandisingAssociations: ['merchandisingAssociations', _jsonMapper2.default.map({
 					hasSingleSKU: 'hasSingleSKU',
@@ -1023,7 +1025,9 @@ exports.default = {
 									return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
 								}
 							}]
-						})]
+						})],
+						usage: 'usage',
+						sequence: 'sequence'
 					})],
 					thumbnail: ['thumbnail', function (url) {
 						if (url) {
