@@ -71,7 +71,7 @@ export default {
         let term = req.query.term;
         let concatURL = constants.WCS_PRODUCT_DETAILS+ constants.WCS_STORE_ID + constants.WCS_KEYWORD_SUGGESTION+term;
         let keywordSuggestionsByTermUrl = constructUrl(constants.WCS_HOSTNAME,concatURL,false);
-        logger.info("my keywordSuggestionsByTermUrl URL : just checking "+keywordSuggestionsByTermUrl);
+        logger.info("keywordSuggestionsByTermUrl: "+keywordSuggestionsByTermUrl);
         let method ='GET';
         let messageData = {};
         let requestCall = constructRequestWithoutToken(keywordSuggestionsByTermUrl,method,messageData);
