@@ -31,6 +31,7 @@ export default {
 					  name: 'name',
 					  identifier: 'identifier',
 					  values: ['values', JM.map({
+					  	value: 'value',
 						identifier: 'identifier',
                         uniqueID: 'uniqueID',
                         image : ['image1path',function(url){ 
