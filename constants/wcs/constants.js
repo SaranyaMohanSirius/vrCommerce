@@ -69,6 +69,7 @@ export default {
    "WCS_ESPOT": "/espot/",
    "WCS_COOKIE_DOMAIN": ".herokuapp.com",
 
+   
    "WCS_ADDRESS_ADDED" : "Address Added Successfully",
    "WCS_ADDRESS_DELETED" : "Address Deleted Successfully",
    "WCS_ADDRESS_UPDATED"  : "Address Updated Successfully",
