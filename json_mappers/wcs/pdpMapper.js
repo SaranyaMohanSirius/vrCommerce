@@ -26,6 +26,7 @@ export default {
 				code: 'partNumber',			
 				resourceId : 'resourceId',			
 				displayName: 'name',
+				manufacturer: 'manufacturer',
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
