@@ -26,11 +26,13 @@ export default {
 				code: 'partNumber',			
 				resourceId : 'resourceId',			
 				displayName: 'name',
+				manufacturer: 'manufacturer',
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
 					  identifier: 'identifier',
 					  values: ['values', JM.map({
+					  	value: 'value',
 						identifier: 'identifier',
                         uniqueID: 'uniqueID',
                         image : ['image1path',function(url){ 
