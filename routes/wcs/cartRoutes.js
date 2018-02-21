@@ -31,7 +31,7 @@ router.put('/updateShoppingCartItem',function(req,res){
  * router for delete cart item 
  */
 
-router.delete('/deleteShoppingCartItem',function(req,res){
+router.post('/deleteShoppingCartItem',function(req,res){
 	cart.deleteShoppingCartItem(req,res);
 });
 
