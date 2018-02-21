@@ -60,7 +60,7 @@ export default {
    "WCS_TOKEN_EXPIRATION_TIME": "1800000",
    "WCS_REGISTRATION" : "/person?mode=self",
    "WCS_PERSON_AT_SELF": "/person/@self",
-   "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD":"/espot/RecentlyViewedItemsEspot",
+   "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD":"/espot/RecViewed_CatEntries",
    "WCS_PAYMENT_INSTRUCTION_MASKED": "/payment_instruction/sensitive_data_mask_by_plain_string",
    "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
    "HTTP_URI_CONSTANT": "http:",
