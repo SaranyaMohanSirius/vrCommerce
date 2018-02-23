@@ -1,6 +1,6 @@
-import constants from '../../constants/wcs/constants';
+import constants from '../../constants/wcs9/constants';
 import  {getLogger,isJson,constructUrl,constructRequestWithoutToken,constructRequestWithToken,getTokens} from '../../util/wcs/util';
-import pdpMapper from '../../json_mappers/wcs/pdpMapper';
+import pdpMapper from '../../json_mappers/wcs9/pdpMapper';
 import requestPromise from 'request-promise';
 import Promise from "bluebird";
 
@@ -18,9 +18,9 @@ export default {
 		let productId = req.query.productId;
 		let resourceName = req.query.resourceName;
 		let result;
-		let path = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+		let path = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
 		let pdpURL = constructUrl(constants.WCS_HOSTNAME, path, false);
-		logger.info("getProductDetails url:" + pdpURL);
+		logger.info("getProductDetails post form url:" + pdpURL);
    		let requestCall = constructRequestWithoutToken(pdpURL,'GET','');
 		requestPromise(requestCall).then(function(result){
 			return requestFunction(result);
@@ -36,11 +36,12 @@ export default {
 		let requestFunction = function(data){
 				return new Promise(function(resolve,reject){
 					if(isJson(data)) data = JSON.parse(data);
+					logger.info('data type', typeof(data));
 					let path = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_INV_AVL + productId;
 					let invAvlURL = constructUrl(constants.WCS_HOSTNAME_NOPORT, path, false);
 					let requestCall = constructRequestWithoutToken(invAvlURL,'GET','');
 					logger.info("request call = "+JSON.stringify(requestCall));
-					if(data.catalogEntryView[0].catalogEntryTypeCode == "ProductBean"){
+					if(data.CatalogEntryView[0].productType == "ProductBean"){
 						if(resourceName == "pdp"){
 							result = pdpMapper.mapPdpJSON(data,true);
 						}
