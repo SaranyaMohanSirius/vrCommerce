@@ -2,6 +2,8 @@ import constants from '../../constants/wcs/constants';
 import { 
 	constructUrl,
 	constructRequest,
+	constructRequestWithToken,
+	getTokens,
 	getLogger
 } from '../../util/wcs/util';
 import addressMapper from '../../json_mappers/wcs/addressMapper';
@@ -22,13 +24,13 @@ export default {
     logger.info("getAddress get form url:" + constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true));	
 	let method ='GET';
 	let messageData = {};
-	let requestCall = constructRequest(constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true),method,messageData);
+	let requestCall = constructRequestWithToken(constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true),method,messageData,getTokens(req));
 	logger.info("requestCAll " + constructUrl(constants.WCS_HOSTNAME_NOPORT, getAddressURL, true));
 	requestPromise(requestCall).then(function (data) {
 		let body1 = data;
 		let checkoutProfileURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CHECKOUT_PROFILE;
 		logger.info("checkout profile get form url:" + constructUrl(constants.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true));	
-		let secondRequestCall = constructRequest(constructUrl(constants.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true),"GET",messageData);
+		let secondRequestCall = constructRequestWithToken(constructUrl(constants.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true),"GET",messageData,getTokens(req));
 		logger.info("requestCAll " + constructUrl(constants.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true));
 		requestPromise(secondRequestCall).then(function (data) {
 			  let result = addressMapper.mapGetAddressJSON(body1,data);

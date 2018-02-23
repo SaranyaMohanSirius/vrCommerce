@@ -80,11 +80,11 @@ export default {
 	} ,
 	getRecentlyViewedProducts: function(req,res){
         let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
-        let getRecentlyViewedProductsUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,false);
+        let getRecentlyViewedProductsUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,true);
         logger.info("Get recently viewed products URL" +getRecentlyViewedProductsUrl);
         let requestCall = constructRequestWithToken(getRecentlyViewedProductsUrl,'GET','',getTokens(req))
         requestPromise(requestCall).then(function (body) {
-            let result = pdpMapper.mapRecentlyViewedProductsJSON(body);  
+            let result = pdpMapper.mapRecentlyViewedProductsJSON(JSON.parse(body));  
             res.send({
                 "success": true,
                 "result": result
