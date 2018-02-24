@@ -79,35 +79,35 @@ export default {
 
 	getSubCategories: function(res,req){
 
-			let parentId = req.query.identifier;
-			
-			
-		
-			//let parentId = seoController.getCategoryIdByKeyword('girls');
-			//logger.info("Response" + JSON.stringify(parentId));
-			//console.log("SEOCONROLTTER::: "+parentId);
-			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
-   			let messageData = {};
-			let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
-			logger.info("getSubCategoriesUrl: " +getSubCategoriesUrl);
-        	let method ='GET';
-          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
- 			logger.info(JSON.stringify(requestCall));
- 			requestPromise(requestCall).then(function (messageData) {
-	          let result = categoryMapper.mapSubCategoryJSON(messageData);
-	                  res.send({
-	                    "success": true ,
-	                    "result": result                                           
-	                });   
-	          }).catch(function (error) {
-	              if(error){
-	                logger.error('errors in service to getSubCategories in WCS: ', error);
-	                res.send({ "success": false, "error": error }); 
-	              }else{
-	                logger.error('errors in service to getSubCategories in WCS: ', error);
-	                res.send({ "success": false, "error": error});
-	              }
-	          });
+		logger.info(" categoryCtrl -> getSubCategories: ");
+		seoController.getCategoryIdByKeyword(req.query.identifier).then(function(value){
+				console.log("Value::"+value);
+			    
+				let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + value;
+	   			let messageData = {};
+				let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+				logger.info("getSubCategoriesUrl: " +getSubCategoriesUrl);
+	        	let method ='GET';
+	          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
+	 			logger.info(JSON.stringify(requestCall));
+	 			requestPromise(requestCall).then(function (messageData) {
+		          let result = categoryMapper.mapSubCategoryJSON(messageData);
+		                  res.send({
+		                    "success": true ,
+		                    "result": result                                           
+		                });   
+		          }).catch(function (error) {
+		              if(error){
+		                logger.error('errors in service to getSubCategories in WCS: ', error);
+		                res.send({ "success": false, "error": error }); 
+		              }else{
+		                logger.error('errors in service to getSubCategories in WCS: ', error);
+		                res.send({ "success": false, "error": error});
+		              }
+		          });
+
+	 			
+			});
 
 	},
 

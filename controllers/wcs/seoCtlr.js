@@ -106,7 +106,7 @@ export default {
          var tokenType = response[0].TOKENNAME;
          var tokenValue = response[0].TOKENVALUE;
          
-         console.log("tokenValue 22::"+tokenValue);
+         console.log("tokenValue::"+tokenValue);
 
          deferred.resolve(tokenValue);
          //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
