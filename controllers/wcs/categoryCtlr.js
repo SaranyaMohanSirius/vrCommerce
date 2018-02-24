@@ -79,13 +79,13 @@ export default {
 
 	getSubCategories: function(res,req){
 
-			let parentId1 = req.query.identifier;
+			let parentId = req.query.identifier;
 			
-			console.log("parentId::"+parentId1);
+			
 		
-			let parentId = seoController.getCategoryIdByKeyword('girls');
-			logger.info("Response" + JSON.stringify(parentId));
-			console.log("SEOCONROLTTER::: "+parentId);
+			//let parentId = seoController.getCategoryIdByKeyword('girls');
+			//logger.info("Response" + JSON.stringify(parentId));
+			//console.log("SEOCONROLTTER::: "+parentId);
 			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
    			let messageData = {};
 			let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
