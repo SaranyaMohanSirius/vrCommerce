@@ -6,6 +6,7 @@ import {getLogger,
 				isJson
        } from '../../util/wcs/util';
 import categoryMapper from '../../json_mappers/wcs/categoryMapper';
+import seoController from '../wcs/seoCtlr';
 import requestPromise from 'request-promise';
 
 let logger= getLogger();
@@ -78,7 +79,13 @@ export default {
 
 	getSubCategories: function(res,req){
 
-			let parentId = req.query.identifier;
+			let parentId1 = req.query.identifier;
+			
+			console.log("parentId::"+parentId1);
+		
+			let parentId = seoController.getCategoryIdByKeyword('girls');
+			logger.info("Response" + JSON.stringify(parentId));
+			console.log("SEOCONROLTTER::: "+parentId);
 			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
    			let messageData = {};
 			let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);

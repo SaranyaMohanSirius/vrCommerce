@@ -6,7 +6,7 @@ import {getLogger,
 import database from '../../util/wcs/databaseUtil';
 import requestPromise from 'request-promise';
 import Promise from "bluebird";
-
+import q from 'q';
 let logger= getLogger();
 
 export default {
@@ -66,6 +66,7 @@ export default {
     */
   
    getSEODetails: function(req,res){
+	   console.log("Request:"+req)
 
       database.getRecords(req.query.keyword).then(function(response) {
         logger.info("Response" + JSON.stringify(response));
@@ -77,10 +78,48 @@ export default {
         } else {
            res.send({ "success": false, "error": "No matching keyword found!" });
         }
+        
     });
 
 
-  }
+  },
+  
+  
+  
+  /* 
+   * Method for SEO in WCS
+   * Request Method : GET
+   * Request Body : keyword
+   * Response: TokenValue
+   */
+ 
+  getCategoryIdByKeyword(keyword){
+	   
+	   console.log("keyword::"+keyword);
+
+	   var deferred = q.defer();
+	   
+      database.getRecords(keyword, 'CategoryToken',-1, 10051).then(function(response) {
+       logger.info("Response" + JSON.stringify(response));
+       if (Object.keys(response[0]).length > 0) {
+         var keyword = response[0].URLKEYWORD;
+         var tokenType = response[0].TOKENNAME;
+         var tokenValue = response[0].TOKENVALUE;
+         
+         console.log("tokenValue 22::"+tokenValue);
+
+         deferred.resolve(tokenValue);
+         //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
+       } else {
+          //res.send({ "success": false, "error": "No matching keyword found!" });
+       }
+       
+
+   });
+
+      return deferred.promise;
+      
+ }
 
 };
 
