@@ -1,6 +1,7 @@
 
 import JM from 'json-mapper';
 import constants from '../../constants/wcs/constants';
+import seoController from '../../controllers/wcs/seoCtlr';
 
 export default {
 
@@ -66,6 +67,15 @@ export default {
 					identifier : 'identifier',
 					id: 'uniqueID',
 					store : 'storeID',
+					seoURL: 'identifier',
+					seoKeyword: ['uniqueID',function(uID){ 
+						var retVal = seoController.getSEOKeyword(uID, 'CategoryToken').then(function(value){
+							return value;
+						});
+						
+						return "dafafaf";
+
+					}],
 					thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           return (constants.HTTP_URI_CONSTANT+constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 

@@ -91,6 +91,7 @@ export default {
 	          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
 	 			logger.info(JSON.stringify(requestCall));
 	 			requestPromise(requestCall).then(function (messageData) {
+	 			  console.log("Before Mapper");
 		          let result = categoryMapper.mapSubCategoryJSON(messageData);
 		                  res.send({
 		                    "success": true ,
