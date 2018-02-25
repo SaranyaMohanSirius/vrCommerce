@@ -59,8 +59,9 @@ export default {
 	          var keyword = response[0].URLKEYWORD;
 	          var tokenType = response[0].TOKENNAME;
 	          var tokenValue = response[0].TOKENVALUE;
-	          
+	         
 	          logger.info("keyword:",keyword);
+	          $scope.que = keyword;
 	          deferred.resolve(keyword);
 	          	
 	        } else {
@@ -69,8 +70,10 @@ export default {
 	        
 	        
         });
+        
+        
 
-         return deferred.promise;
+         return  Promise.all("ssee");;
 
   },
 

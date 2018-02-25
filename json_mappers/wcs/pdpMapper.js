@@ -27,6 +27,7 @@ export default {
 				resourceId : 'resourceId',			
 				displayName: 'name',
 				manufacturer: 'manufacturer',
+				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -55,6 +56,7 @@ export default {
 					code: 'partNumber',			
 					resourceId : 'resourceId',			
 					displayName: 'name',	
+					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', JM.map({
 						  displayable: 'displayable',
 						  name: 'name',
@@ -92,6 +94,7 @@ export default {
 					code: 'partNumber',			
 					resourceId : 'resourceId',			
 					displayName: 'name',
+					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -157,6 +160,7 @@ export default {
 				code: 'partNumber',			
 				resourceId : 'resourceId',			
 				displayName: 'name',	
+				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -182,6 +186,7 @@ export default {
 					code: 'partNumber',			
 					resourceId : 'resourceId',			
 					displayName: 'name',
+					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -236,6 +241,7 @@ export default {
 			productId: 'productId',
 			purchasePrice: 'standardPrice',
 			listPrice: 'listPrice',
+			seoKeyword: 'seo_token_ntk',
 			description: ['description', JM.map({
 				thumbnail : ['thumbnail',function(url){ 
                   if(url){
@@ -274,6 +280,7 @@ export default {
 			code: 'partNumber',			
 			resourceId : 'resourceId',			
 			displayName: 'name',	
+			seoKeyword: 'seo_token_ntk',
 			attributes: ['attributes', JM.map({
 				  displayable: 'displayable',
 				  name: 'name',
@@ -299,6 +306,7 @@ export default {
 				code: 'partNumber',			
 				resourceId : 'resourceId',			
 				displayName: 'name',
+				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', JM.map({
 				  displayable: 'displayable',
 				  name: 'name',

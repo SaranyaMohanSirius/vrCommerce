@@ -44,6 +44,7 @@ export default {
 				productsURL: 'productsURL',
 				resourceId: 'resourceId',
 				shortDescription: 'shortDescription',
+				seoKeyword: 'seo_token_ntk',
 				thumbnail: 'thumbnail',
 				title: 'title',
 				uniqueID: 'uniqueID'
@@ -67,15 +68,7 @@ export default {
 					identifier : 'identifier',
 					id: 'uniqueID',
 					store : 'storeID',
-					seoURL: 'identifier',
-					seoKeyword: ['uniqueID',function(uID){ 
-						var retVal = seoController.getSEOKeyword(uID, 'CategoryToken').then(function(value){
-							return value;
-						});
-						
-						return "dafafaf";
-
-					}],
+					seoKeyword: 'seo_token_ntk',
 					thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           return (constants.HTTP_URI_CONSTANT+constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
@@ -116,6 +109,7 @@ export default {
                      code: 'partNumber',
 					 uniqueID: 'uniqueID',
                      store: 'storeID',
+                     seoKeyword: 'seo_token_ntk',
                      thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
