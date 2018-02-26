@@ -45,16 +45,38 @@ export default {
 
         return deferred.promise;
     },
+    /* 
+    * Method for getting the records from DB  Old Function
+    * Params: Keyword
+    */
+   getRecords: function(keyword) {
+    var deferred = q.defer();
+    var collection = database.collection('seo');
+    collection.find({ "URLKEYWORD" : keyword}).toArray(function(err, result) {
+        var response = {};
+        console.log(JSON.stringify(result));
+        if (err) {
+            console.log(err);
+            response.errorObject = err;
+            deferred.reject(response);
+        } else if (result.length) {
+            deferred.resolve(result);
+        } else {
+            console.log('No document(s) found with defined "find" criteria!');
+            deferred.resolve(result);
+        }
+    });
 
+    return deferred.promise;
+    },
     /* 
     * Method for getting the records from DB
-    * Params: uniqueId, tokenType
+    * Params:  keyWord, TokenName ,langId,storeId
     */
-    getRecords: function(keyword, tokenName,langId, storeId) {
-
+    getRecordsByKeyword: function(keyword, tokenName,langId, storeId) {
         var deferred = q.defer();
         var collection = database.collection('seo');
-        collection.find({ "URLKEYWORD" : keyword,"TOKENNAME": tokenName,"STOREENT_ID": storeId, "STATUS": 1, "LANGUAGE_ID": langId}).toArray(function(err, result) {
+        collection.find({ "URLKEYWORD" : keyword,"TOKENNAME": tokenName, "STOREENT_ID": parseInt(storeId) , "STATUS" : 1, "LANGUAGE_ID": langId }).toArray(function(err, result) {
             var response = {};
             console.log(JSON.stringify(result));
             if (err) {
@@ -70,5 +92,29 @@ export default {
         });
 
         return deferred.promise;
-    }
+    },
+     /* 
+    * Method for getting the records from DB
+    * Params: ProductId, TokenName ,langId,storeId
+    */
+   getRecordsByProductId: function(productId, tokenName,langId, storeId) {
+    var deferred = q.defer();
+    var collection = database.collection('seo');
+    collection.find({ "TOKENVALUE" : parseInt(productId),"TOKENNAME": tokenName, "STOREENT_ID": parseInt(storeId) , "STATUS" : 1, "LANGUAGE_ID": langId }).toArray(function(err, result) {
+        var response = {};
+        console.log(JSON.stringify(result));
+        if (err) {
+            console.log(err);
+            response.errorObject = err;
+            deferred.reject(response);
+        } else if (result.length) {
+            deferred.resolve(result);
+        } else {
+            console.log('No document(s) found with defined "find" criteria!');
+            deferred.resolve(result);
+        }
+    });
+
+    return deferred.promise;
+}
 };
