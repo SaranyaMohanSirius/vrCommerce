@@ -119,7 +119,11 @@ export default {
 	getProductsListForCategory: function(req,res,categoryId){
 	    	let pageSize = req.query.pagesize;
    			let currentPageNumber = req.query.currentPage;
-    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
+   			
+   			logger.info("getProductsListForCategory -> categoryId::" +categoryId);
+   			
+   			seoController.getIdByKeyword(categoryId,'CategoryToken').then(function(value){
+    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + value + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
 			 if(req.query.orderBy){
    				let orderBy = req.query.orderBy;
     			concatURL = concatURL + "&orderBy=" + orderBy; 
@@ -162,5 +166,7 @@ export default {
 	                res.send({ "success": false, "error": error});
 	              }
 	          });
+ 		  	
+   			});
 	}
 };

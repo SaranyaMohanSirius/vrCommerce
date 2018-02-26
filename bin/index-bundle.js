@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,7 +86,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _storeConstants = __webpack_require__(19);
+var _storeConstants = __webpack_require__(22);
 
 var _storeConstants2 = _interopRequireDefault(_storeConstants);
 
@@ -237,7 +237,7 @@ exports.default = {
   "WCS_TOKEN_EXPIRATION_TIME": "1800000",
   "WCS_REGISTRATION": "/person?mode=self",
   "WCS_PERSON_AT_SELF": "/person/@self",
-  "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD": "/espot/RecentlyViewedItemsEspot",
+  "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD": "/espot/RecViewed_CatEntries",
   "WCS_PAYMENT_INSTRUCTION_MASKED": "/payment_instruction/sensitive_data_mask_by_plain_string",
   "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
   "HTTP_URI_CONSTANT": "http:",
@@ -278,7 +278,7 @@ var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _mongodb = __webpack_require__(14);
+var _mongodb = __webpack_require__(15);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -302,7 +302,7 @@ module.exports = {
 	},
 
 	getLogger: function getLogger() {
-		var winston = __webpack_require__(11);
+		var winston = __webpack_require__(12);
 		var logger = new winston.Logger({
 			transports: [new winston.transports.Console(), new winston.transports.File({ filename: _constants2.default.WCS_LOG_DIR })]
 		});
@@ -413,7 +413,7 @@ module.exports = {
 	},
 
 	getLogger: function getLogger() {
-		var winston = __webpack_require__(11);
+		var winston = __webpack_require__(12);
 		var logger = new winston.Logger({
 			transports: [new winston.transports.Console(), new winston.transports.File({ filename: 'trace.log' })]
 		});
@@ -569,12 +569,164 @@ module.exports = {
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(3);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _util = __webpack_require__(5);
+
+var _databaseUtil = __webpack_require__(55);
+
+var _databaseUtil2 = _interopRequireDefault(_databaseUtil);
+
+var _requestPromise = __webpack_require__(1);
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _bluebird = __webpack_require__(7);
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+var _q = __webpack_require__(17);
+
+var _q2 = _interopRequireDefault(_q);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = (0, _util.getLogger)();
+
+exports.default = {
+
+  getSEOKeyword1: function getSEOKeyword1(uniqueId, tokenType) {
+    console.log("inside the getSEOKeyword1");
+    this.getSEOKeyword(uniqueId, tokenType);
+  },
+  /* 
+   * Method for SEO keyword in WCS
+   * Request Method : GET
+   * Request Body : type and uniqueId
+   */
+
+  getSEOKeyword: function getSEOKeyword(uniqueId, tokenType) {
+
+    // let type = req.query.type;
+    // let uniqueId = req.query.productId;
+    // let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_SEO + "?type=" + type + "&uniqueId=" + uniqueId;
+    // logger.info("SEOKeyword URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
+    // let SEOKeywordUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
+    // let method ='GET';
+    // let requestCall = constructRequestWithoutToken(SEOKeywordUrl,method,'');
+
+    // requestPromise(requestCall).then(function (data) {
+    //     var seoData = JSON.parse(data);
+    //     logger.info("SEO Keyword : "+ seoData.keyword);
+    //     res.send({
+    //             "type": seoData.type,
+    //             "uniqueId": seoData.uniqueId,
+    //             "keyword": seoData.keyword,                         
+    //     });   
+
+    //   }).catch(function (error) {
+    //       if(error){
+    //         logger.error('errors in service for SEOKeywordUrl in WCS: ', error);
+    //         res.send({ "success": false, "error": error }); 
+    //       }
+    //   });
+
+    var que = null;
+    var deferred = _q2.default.defer();
+
+    console.log("categoryId::" + uniqueId + ":::tokenType:::" + tokenType);
+    _databaseUtil2.default.getKeyword(uniqueId, tokenType, -1, 10051).then(function (response) {
+      logger.info("Response" + JSON.stringify(response));
+      if (Object.keys(response[0]).length > 0) {
+        var keyword = response[0].URLKEYWORD;
+        var tokenType = response[0].TOKENNAME;
+        var tokenValue = response[0].TOKENVALUE;
+
+        logger.info("keyword:", keyword);
+        $scope.que = keyword;
+        deferred.resolve(keyword);
+      } else {
+        logger.info("No results fetched for categoryId:", uniqueId);
+      }
+    });
+
+    return _bluebird2.default.all("ssee");;
+  },
+
+  /* 
+   * Method for SEO in WCS
+   * Request Method : GET
+   * Request Body : type and uniqueId
+   */
+
+  getSEODetails: function getSEODetails(req, res) {
+    console.log("Request:" + req);
+
+    _databaseUtil2.default.getRecords(req.query.keyword).then(function (response) {
+      logger.info("Response" + JSON.stringify(response));
+      if (Object.keys(response[0]).length > 0) {
+        var keyword = response[0].URLKEYWORD;
+        var tokenType = response[0].TOKENNAME;
+        var tokenValue = response[0].TOKENVALUE;
+        res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue });
+      } else {
+        res.send({ "success": false, "error": "No matching keyword found!" });
+      }
+    });
+  },
+
+  /* 
+   * Method for SEO in WCS
+   * Request Method : GET
+   * Request Body : keyword
+   * Response: TokenValue
+   */
+
+  getIdByKeyword: function getIdByKeyword(keyword, tokenName) {
+
+    console.log("keyword::" + keyword + "---TokenName::" + tokenName);
+
+    var deferred = _q2.default.defer();
+
+    _databaseUtil2.default.getRecords(keyword, tokenName, -1, 10051).then(function (response) {
+      logger.info("Response" + JSON.stringify(response));
+      if (Object.keys(response[0]).length > 0) {
+        var keyword = response[0].URLKEYWORD;
+        var tokenType = response[0].TOKENNAME;
+        var tokenValue = response[0].TOKENVALUE;
+
+        console.log("tokenValue::" + tokenValue);
+
+        deferred.resolve(tokenValue);
+        //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
+      } else {
+          //res.send({ "success": false, "error": "No matching keyword found!" });
+        }
+    });
+
+    return deferred.promise;
+  }
+};
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = require("body-parser");
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -880,31 +1032,31 @@ exports.default = {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("winston");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("underscore");
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("request");
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = require("mongodb");
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -949,11 +1101,14 @@ exports.default = {
 				code: 'partNumber',
 				resourceId: 'resourceId',
 				displayName: 'name',
+				manufacturer: 'manufacturer',
+				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', _jsonMapper2.default.map({
 					displayable: 'displayable',
 					name: 'name',
 					identifier: 'identifier',
 					values: ['values', _jsonMapper2.default.map({
+						value: 'value',
 						identifier: 'identifier',
 						uniqueID: 'uniqueID',
 						image: ['image1path', function (url) {
@@ -976,6 +1131,7 @@ exports.default = {
 					code: 'partNumber',
 					resourceId: 'resourceId',
 					displayName: 'name',
+					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', _jsonMapper2.default.map({
 						displayable: 'displayable',
 						name: 'name',
@@ -1013,6 +1169,7 @@ exports.default = {
 					code: 'partNumber',
 					resourceId: 'resourceId',
 					displayName: 'name',
+					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', _jsonMapper2.default.map({
 						displayable: 'displayable',
 						name: 'name',
@@ -1078,6 +1235,7 @@ exports.default = {
 				code: 'partNumber',
 				resourceId: 'resourceId',
 				displayName: 'name',
+				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', _jsonMapper2.default.map({
 					displayable: 'displayable',
 					name: 'name',
@@ -1103,6 +1261,7 @@ exports.default = {
 					code: 'partNumber',
 					resourceId: 'resourceId',
 					displayName: 'name',
+					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', _jsonMapper2.default.map({
 						displayable: 'displayable',
 						name: 'name',
@@ -1157,6 +1316,7 @@ exports.default = {
 				productId: 'productId',
 				purchasePrice: 'standardPrice',
 				listPrice: 'listPrice',
+				seoKeyword: 'seo_token_ntk',
 				description: ['description', _jsonMapper2.default.map({
 					thumbnail: ['thumbnail', function (url) {
 						if (url) {
@@ -1193,6 +1353,7 @@ exports.default = {
 				code: 'partNumber',
 				resourceId: 'resourceId',
 				displayName: 'name',
+				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', _jsonMapper2.default.map({
 					displayable: 'displayable',
 					name: 'name',
@@ -1218,6 +1379,7 @@ exports.default = {
 					code: 'partNumber',
 					resourceId: 'resourceId',
 					displayName: 'name',
+					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', _jsonMapper2.default.map({
 						displayable: 'displayable',
 						name: 'name',
@@ -1257,7 +1419,106 @@ exports.default = {
 };
 
 /***/ }),
-/* 16 */
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = require("q");
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+
+  "WCS_HOSTNAME": "192.168.29.245",
+  "WCS_HOSTNAME_NOPORT": "192.168.29.245",
+  "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
+  "WCS_CATEGORY_TOP": "/categoryview/@top",
+  "WCS_CATEGORY": "/categoryview/byId/",
+  "WCS_SUB_CATEGORY": "/categoryview/byParentCategory/",
+  "WCS_CATEGORY_DETAILS_APPEND": "/productview/byCategory/",
+  "WCS_REST_URL": "/wcs/resources/store/",
+  "WCS_GUEST_IDENTITY": "/guestidentity",
+  "WCS_LOGIN_IDENTITY": "/loginidentity",
+  "WCS_KEYWORD_SUGGESTION": "/sitecontent/keywordSuggestionsByTerm/",
+  "WCS_STORE_ID": "1",
+  "WCS_CATALOG_ID": "10502",
+  "WCS_CART": "/cart/",
+  "WCS_CART_EXT": "/cart",
+  "WCS_DEFAULT": "/@default",
+  "WCS_WISHLIST": "/wishlist",
+  "WCS_WISHLIST_DELETE": "/wishlist/",
+  "WCS_LANG_ID": "-1",
+  "WCS_SHIPMODES_APPEND": "/cart/shipping_modes",
+  "WCS_INV_AVL": "/inventoryavailability/",
+  "WCS_UPDATE_SHIP_INFO": "/cart/@self/shipping_info",
+  "WCS_LOG_DIR": "log/wcs/trace.log",
+  "HTML_DIR": "WebContent/html/",
+  "WCS_PRODUCT_SEARCH_BY_KEYWORD": "/productview/bySearchTerm/",
+  "WCS_ADDRESS_DETAILS": "/person/@self/contact",
+  "WCS_CHECKOUT_PROFILE": "/person/@self/checkoutProfile",
+  "WCS_PRODUCT_ADDED": "Product Added Successfully",
+  "SLASH": "/",
+  "SHIP_CALC_USAGE": "-1,-2,-3,-4,-5,-6,-7",
+  "WCS_SHIP_INFO": "/cart/@self/shipping_info",
+  "MONGO_DB_URL": "mongodb://admin:passw0rd@ds121716.mlab.com:21716/projectc",
+  "MONGO_DB_COLLECTION_USERS": "users",
+  "WCS_GET_SHOPPINGCART": "/@self",
+  "WCS_AT_SELF": "/@self",
+  "WCS_UPDATE_CART": "/update_order_item",
+  "WCS_DELETE_CART": "/delete_order_item",
+  "WCS_UPDATECART_CALC_USAGE": "-1,-2,-3,-4,-5,-6,-7",
+  "WCS_UPDATECART_CALC_ORDER": "1",
+  "WCS_CART_AT_SELF": "/cart/@self",
+  "WCS_CART_PROMOTIONS": "/cart/@self/assigned_promotion_code",
+  "WCS_ITEM": "item",
+  "WCS_PRODUCT_BYIDS": "/productview/byIds?",
+  "WCS_PRODUCT_BY_SINGLE_ID": "/productview/byId/",
+  "WCS_CART_PRECHECKOUT": "/precheckout",
+  "WCS_CART_CHECKOUT": "/checkout",
+  "WCS_ORDER": "/order/",
+  "WCS_HISTORY": "@history",
+  "WCS_PERSON": "/person/",
+  "WCS_PROFILE_NAME": "?profileName=IBM_User_Registration_Details",
+  "WCS_ACCESS_TOKEN": "access_token",
+  "WCS_TRUSTED_ACCESS_TOKEN": "WCTrustedToken",
+  "WCS_USER_ID": "userId",
+  "WCS_PERSONALIZATION_ID": "personalizationID",
+  "WCS_TOKEN_EXPIRATION_TIME": "1800000",
+  "WCS_REGISTRATION": "/person?mode=self",
+  "WCS_PERSON_AT_SELF": "/person/@self",
+  "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD": "/espot/RecViewed_CatEntries",
+  "WCS_PAYMENT_INSTRUCTION_MASKED": "/payment_instruction/sensitive_data_mask_by_plain_string",
+  "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
+  "HTTP_URI_CONSTANT": "http:",
+  "WCS_SEO": "/seo/seoKeyword",
+  "WCS_LAYOUT": "/page_design?q=byObjectIdentifier",
+  "WCS_ESPOT": "/espot/",
+  "WCS_COOKIE_DOMAIN": ".herokuapp.com",
+
+  "WCS_ADDRESS_ADDED": "Address Added Successfully",
+  "WCS_ADDRESS_DELETED": "Address Deleted Successfully",
+  "WCS_ADDRESS_UPDATED": "Address Updated Successfully",
+  "WCS_ADDRESS_SELECTED": "Address Selected Successfully",
+  "WCS_SHIPMODE_SELECTED": "Ship mode updated successfully",
+
+  /*To be got from the UI*/
+  "WCS_AUTH_TOKEN": "12022%2C16Y0w9HO0rAvYKi42p4R3in9WzOQPJ2r8TMIejt6MF%2B4Skkt9f%2F%2FKf71IjRZHCf2cYp2UYzx2i3BGMwV9r5PzWAX5FGAZDsQhAErIsRZEEqWwLMXy6h6ethm5ngU0ijtNQaniaD%2FTOlllsVOreE4PYegQVzOkaXtACIhtQWUZr2RbaMC80nqEG6ORDp6CfKqua3wmqRUbHyqdRhmceBeMDfCs3OziIpsrO7tKefTyJQ%3D",
+  "WCS_TRUSTED_TOKEN": "12022%2CR97hA7x3qfhBXYmRxOYjCaldMf8A9E2b%2BeLYoYpCneY%3D",
+  "WCS_DOUBLE_SLASH": "//",
+
+  "DB_URL": "mongodb://HeadStart:Headless1@ds125628.mlab.com:25628/headstartdb"
+
+};
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1267,21 +1528,25 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _bodyParser = __webpack_require__(9);
+var _bodyParser = __webpack_require__(10);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
 var _util = __webpack_require__(6);
 
-var _epIndex = __webpack_require__(17);
+var _epIndex = __webpack_require__(20);
 
 var _epIndex2 = _interopRequireDefault(_epIndex);
 
-var _wcsIndex = __webpack_require__(49);
+var _wcsIndex = __webpack_require__(52);
 
 var _wcsIndex2 = _interopRequireDefault(_wcsIndex);
 
-var _cookieParser = __webpack_require__(94);
+var _wcs9Index = __webpack_require__(95);
+
+var _wcs9Index2 = _interopRequireDefault(_wcs9Index);
+
+var _cookieParser = __webpack_require__(99);
 
 var _cookieParser2 = _interopRequireDefault(_cookieParser);
 
@@ -1324,6 +1589,7 @@ app.use(_bodyParser2.default.json());
  */
 app.all('/ep/*', _epIndex2.default);
 app.all('/wcs/*', _wcsIndex2.default);
+app.all('/wcs9/*', _wcs9Index2.default);
 
 // Spin up the server
 app.listen(app.get('port'), function () {
@@ -1331,7 +1597,7 @@ app.listen(app.get('port'), function () {
 });
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1345,47 +1611,47 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _loginRoutes = __webpack_require__(18);
+var _loginRoutes = __webpack_require__(21);
 
 var _loginRoutes2 = _interopRequireDefault(_loginRoutes);
 
-var _searchRoutes = __webpack_require__(20);
+var _searchRoutes = __webpack_require__(23);
 
 var _searchRoutes2 = _interopRequireDefault(_searchRoutes);
 
-var _categoryRoutes = __webpack_require__(23);
+var _categoryRoutes = __webpack_require__(26);
 
 var _categoryRoutes2 = _interopRequireDefault(_categoryRoutes);
 
-var _pdpRoutes = __webpack_require__(26);
+var _pdpRoutes = __webpack_require__(29);
 
 var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
 
-var _cartRoutes = __webpack_require__(29);
+var _cartRoutes = __webpack_require__(32);
 
 var _cartRoutes2 = _interopRequireDefault(_cartRoutes);
 
-var _shipModeRoutes = __webpack_require__(32);
+var _shipModeRoutes = __webpack_require__(35);
 
 var _shipModeRoutes2 = _interopRequireDefault(_shipModeRoutes);
 
-var _addressRoutes = __webpack_require__(35);
+var _addressRoutes = __webpack_require__(38);
 
 var _addressRoutes2 = _interopRequireDefault(_addressRoutes);
 
-var _wishListRoutes = __webpack_require__(38);
+var _wishListRoutes = __webpack_require__(41);
 
 var _wishListRoutes2 = _interopRequireDefault(_wishListRoutes);
 
-var _promotionsRoutes = __webpack_require__(41);
+var _promotionsRoutes = __webpack_require__(44);
 
 var _promotionsRoutes2 = _interopRequireDefault(_promotionsRoutes);
 
-var _registerRoutes = __webpack_require__(44);
+var _registerRoutes = __webpack_require__(47);
 
 var _registerRoutes2 = _interopRequireDefault(_registerRoutes);
 
-var _userProfileRoutes = __webpack_require__(46);
+var _userProfileRoutes = __webpack_require__(49);
 
 var _userProfileRoutes2 = _interopRequireDefault(_userProfileRoutes);
 
@@ -1408,7 +1674,7 @@ app.use('/ep/userProfile/', _userProfileRoutes2.default);
 exports.default = app;
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1422,7 +1688,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _bodyParser = __webpack_require__(9);
+var _bodyParser = __webpack_require__(10);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
@@ -1454,7 +1720,7 @@ router.delete('/logout', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1471,7 +1737,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1485,7 +1751,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _searchCtlr = __webpack_require__(21);
+var _searchCtlr = __webpack_require__(24);
 
 var _searchCtlr2 = _interopRequireDefault(_searchCtlr);
 
@@ -1508,7 +1774,7 @@ router.get('/getSearchResults', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1520,7 +1786,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _searchMapper = __webpack_require__(22);
+var _searchMapper = __webpack_require__(25);
 
 var _searchMapper2 = _interopRequireDefault(_searchMapper);
 
@@ -1595,7 +1861,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1667,7 +1933,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1681,7 +1947,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _categoryCtlr = __webpack_require__(24);
+var _categoryCtlr = __webpack_require__(27);
 
 var _categoryCtlr2 = _interopRequireDefault(_categoryCtlr);
 
@@ -1708,7 +1974,7 @@ router.get('/getProductsListForCategory', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1722,7 +1988,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _categoryMapper = __webpack_require__(25);
+var _categoryMapper = __webpack_require__(28);
 
 var _categoryMapper2 = _interopRequireDefault(_categoryMapper);
 
@@ -1852,7 +2118,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1965,7 +2231,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1979,7 +2245,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpCtlr = __webpack_require__(27);
+var _pdpCtlr = __webpack_require__(30);
 
 var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
 
@@ -1998,7 +2264,7 @@ router.get('/getProductDetails', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2012,7 +2278,7 @@ var _util = __webpack_require__(6);
 
 var _loginCtlr = __webpack_require__(8);
 
-var _pdpMapper = __webpack_require__(28);
+var _pdpMapper = __webpack_require__(31);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -2024,7 +2290,7 @@ var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _underscore = __webpack_require__(12);
+var _underscore = __webpack_require__(13);
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -2094,7 +2360,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2248,7 +2514,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2262,7 +2528,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _cartCtlr = __webpack_require__(30);
+var _cartCtlr = __webpack_require__(33);
 
 var _cartCtlr2 = _interopRequireDefault(_cartCtlr);
 
@@ -2322,7 +2588,7 @@ router.post('/submitOrder', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2336,7 +2602,7 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _cartMapper = __webpack_require__(31);
+var _cartMapper = __webpack_require__(34);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
 
@@ -2601,7 +2867,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2938,7 +3204,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2952,7 +3218,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _shipModeCtlr = __webpack_require__(33);
+var _shipModeCtlr = __webpack_require__(36);
 
 var _shipModeCtlr2 = _interopRequireDefault(_shipModeCtlr);
 
@@ -2981,7 +3247,7 @@ router.get('/updateShippingMethod', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2995,11 +3261,11 @@ var _util = __webpack_require__(6);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _shipModeMapper = __webpack_require__(34);
+var _shipModeMapper = __webpack_require__(37);
 
 var _shipModeMapper2 = _interopRequireDefault(_shipModeMapper);
 
-var _request = __webpack_require__(13);
+var _request = __webpack_require__(14);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -3073,7 +3339,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3124,7 +3390,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3138,7 +3404,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _addressCtlr = __webpack_require__(36);
+var _addressCtlr = __webpack_require__(39);
 
 var _addressCtlr2 = _interopRequireDefault(_addressCtlr);
 
@@ -3203,7 +3469,7 @@ router.post('/selectBillingAddress', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3217,7 +3483,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _addressMapper = __webpack_require__(37);
+var _addressMapper = __webpack_require__(40);
 
 var _addressMapper2 = _interopRequireDefault(_addressMapper);
 
@@ -3480,7 +3746,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3635,7 +3901,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3649,7 +3915,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _wishListCtlr = __webpack_require__(39);
+var _wishListCtlr = __webpack_require__(42);
 
 var _wishListCtlr2 = _interopRequireDefault(_wishListCtlr);
 
@@ -3690,7 +3956,7 @@ router.post('/moveWishListItemToCart', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3706,7 +3972,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _wishListMapper = __webpack_require__(40);
+var _wishListMapper = __webpack_require__(43);
 
 var _wishListMapper2 = _interopRequireDefault(_wishListMapper);
 
@@ -3902,7 +4168,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3975,7 +4241,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3989,7 +4255,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _promotionsCtlr = __webpack_require__(42);
+var _promotionsCtlr = __webpack_require__(45);
 
 var _promotionsCtlr2 = _interopRequireDefault(_promotionsCtlr);
 
@@ -4042,7 +4308,7 @@ router.delete('/delete', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4060,7 +4326,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _promotionsMapper = __webpack_require__(43);
+var _promotionsMapper = __webpack_require__(46);
 
 var _promotionsMapper2 = _interopRequireDefault(_promotionsMapper);
 
@@ -4198,7 +4464,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4261,7 +4527,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4275,11 +4541,11 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _bodyParser = __webpack_require__(9);
+var _bodyParser = __webpack_require__(10);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _registerCtlr = __webpack_require__(45);
+var _registerCtlr = __webpack_require__(48);
 
 var _registerCtlr2 = _interopRequireDefault(_registerCtlr);
 
@@ -4300,7 +4566,7 @@ router.post('/register', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4367,7 +4633,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4381,7 +4647,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _userProfileCtlr = __webpack_require__(47);
+var _userProfileCtlr = __webpack_require__(50);
 
 var _userProfileCtlr2 = _interopRequireDefault(_userProfileCtlr);
 
@@ -4420,7 +4686,7 @@ router.get('/getPersonalInformation', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4438,7 +4704,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _userProfileMapper = __webpack_require__(48);
+var _userProfileMapper = __webpack_require__(51);
 
 var _userProfileMapper2 = _interopRequireDefault(_userProfileMapper);
 
@@ -4539,7 +4805,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4671,7 +4937,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4685,67 +4951,67 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpRoutes = __webpack_require__(50);
+var _pdpRoutes = __webpack_require__(53);
 
 var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
 
-var _categoryRoutes = __webpack_require__(52);
+var _categoryRoutes = __webpack_require__(57);
 
 var _categoryRoutes2 = _interopRequireDefault(_categoryRoutes);
 
-var _shipModeRoutes = __webpack_require__(55);
+var _shipModeRoutes = __webpack_require__(60);
 
 var _shipModeRoutes2 = _interopRequireDefault(_shipModeRoutes);
 
-var _searchRoutes = __webpack_require__(58);
+var _searchRoutes = __webpack_require__(63);
 
 var _searchRoutes2 = _interopRequireDefault(_searchRoutes);
 
-var _addressRoutes = __webpack_require__(61);
+var _addressRoutes = __webpack_require__(66);
 
 var _addressRoutes2 = _interopRequireDefault(_addressRoutes);
 
-var _cartRoutes = __webpack_require__(65);
+var _cartRoutes = __webpack_require__(70);
 
 var _cartRoutes2 = _interopRequireDefault(_cartRoutes);
 
-var _promotionsRoutes = __webpack_require__(67);
+var _promotionsRoutes = __webpack_require__(72);
 
 var _promotionsRoutes2 = _interopRequireDefault(_promotionsRoutes);
 
-var _wishListRoutes = __webpack_require__(70);
+var _wishListRoutes = __webpack_require__(75);
 
 var _wishListRoutes2 = _interopRequireDefault(_wishListRoutes);
 
-var _productByIdsRoutes = __webpack_require__(73);
+var _productByIdsRoutes = __webpack_require__(78);
 
 var _productByIdsRoutes2 = _interopRequireDefault(_productByIdsRoutes);
 
-var _loginRoute = __webpack_require__(75);
+var _loginRoute = __webpack_require__(80);
 
 var _loginRoute2 = _interopRequireDefault(_loginRoute);
 
-var _userProfileRoutes = __webpack_require__(77);
+var _userProfileRoutes = __webpack_require__(82);
 
 var _userProfileRoutes2 = _interopRequireDefault(_userProfileRoutes);
 
-var _registrationRoutes = __webpack_require__(80);
+var _registrationRoutes = __webpack_require__(85);
 
 var _registrationRoutes2 = _interopRequireDefault(_registrationRoutes);
 
-var _myAccountRoutes = __webpack_require__(82);
+var _myAccountRoutes = __webpack_require__(87);
 
 var _myAccountRoutes2 = _interopRequireDefault(_myAccountRoutes);
 
-var _paymentRoutes = __webpack_require__(84);
+var _paymentRoutes = __webpack_require__(89);
 
 var _paymentRoutes2 = _interopRequireDefault(_paymentRoutes);
 
-var _seoRoutes = __webpack_require__(87);
+var _seoRoutes = __webpack_require__(92);
 
 var _seoRoutes2 = _interopRequireDefault(_seoRoutes);
 
-var _layoutRoutes = __webpack_require__(92);
+var _layoutRoutes = __webpack_require__(93);
 
 var _layoutRoutes2 = _interopRequireDefault(_layoutRoutes);
 
@@ -4773,7 +5039,7 @@ app.use('/wcs/page', _layoutRoutes2.default);
 exports.default = app;
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4787,7 +5053,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpCtlr = __webpack_require__(51);
+var _pdpCtlr = __webpack_require__(54);
 
 var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
 
@@ -4813,7 +5079,7 @@ router.get('/getRecentlyViewedProducts', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4829,7 +5095,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _pdpMapper = __webpack_require__(15);
+var _pdpMapper = __webpack_require__(16);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -4840,6 +5106,10 @@ var _requestPromise2 = _interopRequireDefault(_requestPromise);
 var _bluebird = __webpack_require__(7);
 
 var _bluebird2 = _interopRequireDefault(_bluebird);
+
+var _seoCtlr = __webpack_require__(9);
+
+var _seoCtlr2 = _interopRequireDefault(_seoCtlr);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4854,73 +5124,79 @@ exports.default = {
   */
 
 	getProductDetails: function getProductDetails(req, res) {
+
 		var productId = req.query.productId;
 		var resourceName = req.query.resourceName;
 		var result = void 0;
-		var path = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
-		var pdpURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, path, false);
-		logger.info("getProductDetails post form url:" + pdpURL);
-		var requestCall = (0, _util.constructRequestWithoutToken)(pdpURL, 'GET', '');
-		(0, _requestPromise2.default)(requestCall).then(function (result) {
-			return requestFunction(result);
-		}).catch(function (error) {
-			if (error.statusCode === 404 || error.statusCode === 500) {
-				logger.error('error in service to getPromotionsAtCart in WCS: ', error);
-				res.send({ "success": false, "error": error.response.body });
-			} else {
-				logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
-				res.send({ "success": false, "error": error.response.body.errors[0] });
-			}
-		});;
-		var requestFunction = function requestFunction(data) {
-			return new _bluebird2.default(function (resolve, reject) {
-				if ((0, _util.isJson)(data)) data = JSON.parse(data);
-				var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_INV_AVL + productId;
-				var invAvlURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, false);
-				var requestCall = (0, _util.constructRequestWithoutToken)(invAvlURL, 'GET', '');
-				logger.info("request call = " + JSON.stringify(requestCall));
-				if (data.catalogEntryView[0].catalogEntryTypeCode == "ProductBean") {
-					if (resourceName == "pdp") {
-						result = _pdpMapper2.default.mapPdpJSON(data, true);
-					} else if (resourceName == "qv" || resourceName == "cart") {
-						result = _pdpMapper2.default.mapQuickViewJSON(data, true);
-					}
-					res.send({
-						"success": true,
-						"result": result
-					});
+
+		logger.info("getProductDetails product KeyWord:" + productId);
+
+		_seoCtlr2.default.getIdByKeyword(productId, 'ProductToken').then(function (value) {
+			var path = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PRODUCT_DETAILS_APPEND + value + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
+			var pdpURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, path, false);
+			logger.info("getProductDetails url:" + pdpURL);
+			var requestCall = (0, _util.constructRequestWithoutToken)(pdpURL, 'GET', '');
+			(0, _requestPromise2.default)(requestCall).then(function (result) {
+				return requestFunction(result);
+			}).catch(function (error) {
+				if (error.statusCode === 404 || error.statusCode === 500) {
+					logger.error('error in service to getProductDetails in WCS: ', error);
+					res.send({ "success": false, "error": error.response.body });
 				} else {
-					(0, _requestPromise2.default)(requestCall).then(function (body) {
-						if ((0, _util.isJson)(body)) body = JSON.parse(body);
+					logger.error('errors in service to getProductDetails in WCS: ', error);
+					res.send({ "success": false, "error": error.response.body.errors[0] });
+				}
+			});;
+			var requestFunction = function requestFunction(data) {
+				return new _bluebird2.default(function (resolve, reject) {
+					if ((0, _util.isJson)(data)) data = JSON.parse(data);
+					var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_INV_AVL + productId;
+					var invAvlURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, false);
+					var requestCall = (0, _util.constructRequestWithoutToken)(invAvlURL, 'GET', '');
+					logger.info("request call = " + JSON.stringify(requestCall));
+					if (data.catalogEntryView[0].catalogEntryTypeCode == "ProductBean") {
 						if (resourceName == "pdp") {
-							result = _pdpMapper2.default.mapPdpJSON(data, body);
+							result = _pdpMapper2.default.mapPdpJSON(data, true);
 						} else if (resourceName == "qv" || resourceName == "cart") {
-							result = _pdpMapper2.default.mapQuickViewJSON(data, body);
+							result = _pdpMapper2.default.mapQuickViewJSON(data, true);
 						}
 						res.send({
 							"success": true,
 							"result": result
 						});
-					}).catch(function (error) {
-						if (error.statusCode === 404 || error.statusCode === 500) {
-							logger.error('error in service to getPromotionsAtCart in WCS: ', error);
-							res.send({ "success": false, "error": error.response.body });
-						} else {
-							logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
-							res.send({ "success": false, "error": error.response.body.errors[0] });
-						}
-					});
-				}
-			});
-		};
+					} else {
+						(0, _requestPromise2.default)(requestCall).then(function (body) {
+							if ((0, _util.isJson)(body)) body = JSON.parse(body);
+							if (resourceName == "pdp") {
+								result = _pdpMapper2.default.mapPdpJSON(data, body);
+							} else if (resourceName == "qv" || resourceName == "cart") {
+								result = _pdpMapper2.default.mapQuickViewJSON(data, body);
+							}
+							res.send({
+								"success": true,
+								"result": result
+							});
+						}).catch(function (error) {
+							if (error.statusCode === 404 || error.statusCode === 500) {
+								logger.error('error in service to getProductDetails in WCS: ', error);
+								res.send({ "success": false, "error": error.response.body });
+							} else {
+								logger.error('errors in service to getProductDetails in WCS: ', error);
+								res.send({ "success": false, "error": error.response.body.errors[0] });
+							}
+						});
+					}
+				});
+			};
+		});
 	},
 	getRecentlyViewedProducts: function getRecentlyViewedProducts(req, res) {
 		var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
-		var getRecentlyViewedProductsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, false);
+		var getRecentlyViewedProductsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, true);
 		logger.info("Get recently viewed products URL" + getRecentlyViewedProductsUrl);
 		var requestCall = (0, _util.constructRequestWithToken)(getRecentlyViewedProductsUrl, 'GET', '', (0, _util.getTokens)(req));
 		(0, _requestPromise2.default)(requestCall).then(function (body) {
-			var result = _pdpMapper2.default.mapRecentlyViewedProductsJSON(body);
+			var result = _pdpMapper2.default.mapRecentlyViewedProductsJSON(JSON.parse(body));
 			res.send({
 				"success": true,
 				"result": result
@@ -4938,7 +5214,112 @@ exports.default = {
 };
 
 /***/ }),
-/* 52 */
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _constants = __webpack_require__(3);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _q = __webpack_require__(17);
+
+var _q2 = _interopRequireDefault(_q);
+
+var _util = __webpack_require__(56);
+
+var _util2 = _interopRequireDefault(_util);
+
+var _mongodb = __webpack_require__(15);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var database;
+// let logger= getLogger();
+
+// Use connect method to connect to the Server
+// Init method
+
+
+//lets import the mongodb native drivers.
+//We need to work with "MongoClient" interface in order to connect to a mongodb server.
+_mongodb.MongoClient.connect(_constants2.default.DB_URL, function (err, db) {
+    if (err) {
+        console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+        console.log('Connection established to: ' + _constants2.default.DB_URL);
+        database = db;
+    }
+});
+
+exports.default = {
+    /* 
+     * Method for getting the keywords from DB
+     * Params: uniqueId, tokenType
+     */
+    getKeyword: function getKeyword(uniqueId, tokenType, langId, storeId) {
+
+        var deferred = _q2.default.defer();
+        var collection = database.collection('seo');
+        collection.find({ "TOKENNAME": tokenType, "TOKENVALUE": parseInt(uniqueId), "STOREENT_ID": storeId, "STATUS": 1, "LANGUAGE_ID": langId }).toArray(function (err, result) {
+            var response = {};
+            console.log(JSON.stringify(result));
+            if (err) {
+                console.log(err);
+                response.errorObject = err;
+                deferred.reject(response);
+            } else if (result.length) {
+                deferred.resolve(result);
+            } else {
+                console.log('No document(s) found with defined "find" criteria!');
+                deferred.resolve(result);
+            }
+        });
+
+        return deferred.promise;
+    },
+
+    /* 
+    * Method for getting the records from DB
+    * Params: uniqueId, tokenType
+    */
+    getRecords: function getRecords(keyword, tokenName, langId, storeId) {
+
+        var deferred = _q2.default.defer();
+        var collection = database.collection('seo');
+        collection.find({ "URLKEYWORD": keyword, "TOKENNAME": tokenName, "STOREENT_ID": storeId, "STATUS": 1, "LANGUAGE_ID": langId }).toArray(function (err, result) {
+            var response = {};
+            console.log(JSON.stringify(result));
+            if (err) {
+                console.log(err);
+                response.errorObject = err;
+                deferred.reject(response);
+            } else if (result.length) {
+                deferred.resolve(result);
+            } else {
+                console.log('No document(s) found with defined "find" criteria!');
+                deferred.resolve(result);
+            }
+        });
+
+        return deferred.promise;
+    }
+};
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports) {
+
+module.exports = require("util");
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4952,7 +5333,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _categoryCtlr = __webpack_require__(53);
+var _categoryCtlr = __webpack_require__(58);
 
 var _categoryCtlr2 = _interopRequireDefault(_categoryCtlr);
 
@@ -4998,7 +5379,7 @@ router.get('/getProductsListForCategory', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 53 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5014,9 +5395,13 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _categoryMapper = __webpack_require__(54);
+var _categoryMapper = __webpack_require__(59);
 
 var _categoryMapper2 = _interopRequireDefault(_categoryMapper);
+
+var _seoCtlr = __webpack_require__(9);
+
+var _seoCtlr2 = _interopRequireDefault(_seoCtlr);
 
 var _requestPromise = __webpack_require__(1);
 
@@ -5093,28 +5478,31 @@ exports.default = {
 
 	getSubCategories: function getSubCategories(res, req) {
 
-		var parentId = req.query.identifier;
-		var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_SUB_CATEGORY + parentId;
-		var messageData = {};
-		var getSubCategoriesUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
-		logger.info("getSubCategoriesUrl: " + getSubCategoriesUrl);
-		var method = 'GET';
-		var requestCall = (0, _util.constructRequestWithoutToken)(getSubCategoriesUrl, method, messageData);
-		logger.info(JSON.stringify(requestCall));
-		(0, _requestPromise2.default)(requestCall).then(function (messageData) {
-			var result = _categoryMapper2.default.mapSubCategoryJSON(messageData);
-			res.send({
-				"success": true,
-				"result": result
+		logger.info(" categoryCtrl -> getSubCategories: ");
+		_seoCtlr2.default.getIdByKeyword(req.query.identifier, 'CategoryToken').then(function (value) {
+			var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_SUB_CATEGORY + value;
+			var messageData = {};
+			var getSubCategoriesUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+			logger.info("getSubCategoriesUrl: " + getSubCategoriesUrl);
+			var method = 'GET';
+			var requestCall = (0, _util.constructRequestWithoutToken)(getSubCategoriesUrl, method, messageData);
+			logger.info(JSON.stringify(requestCall));
+			(0, _requestPromise2.default)(requestCall).then(function (messageData) {
+				console.log("Before Mapper");
+				var result = _categoryMapper2.default.mapSubCategoryJSON(messageData);
+				res.send({
+					"success": true,
+					"result": result
+				});
+			}).catch(function (error) {
+				if (error) {
+					logger.error('errors in service to getSubCategories in WCS: ', error);
+					res.send({ "success": false, "error": error });
+				} else {
+					logger.error('errors in service to getSubCategories in WCS: ', error);
+					res.send({ "success": false, "error": error });
+				}
 			});
-		}).catch(function (error) {
-			if (error) {
-				logger.error('errors in service to getSubCategories in WCS: ', error);
-				res.send({ "success": false, "error": error });
-			} else {
-				logger.error('errors in service to getSubCategories in WCS: ', error);
-				res.send({ "success": false, "error": error });
-			}
 		});
 	},
 
@@ -5127,73 +5515,78 @@ exports.default = {
 	getProductsListForCategory: function getProductsListForCategory(req, res, categoryId) {
 		var pageSize = req.query.pagesize;
 		var currentPageNumber = req.query.currentPage;
-		var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID + "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
-		if (req.query.orderBy) {
-			var orderBy = req.query.orderBy;
-			concatURL = concatURL + "&orderBy=" + orderBy;
-		}
-		if (req.query.facet) {
-			var facet = req.query.facet;
-			logger.info("Multiple facets" + Array.isArray(facet));
-			if (Array.isArray(facet)) {
 
-				var facetIterator = facet[Symbol.iterator]();
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
+		logger.info("getProductsListForCategory -> categoryId::" + categoryId);
 
-				try {
-					for (var _iterator = facetIterator[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var facetvalue = _step.value;
-
-						concatURL = concatURL + "&facet=" + facetvalue;
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
-					}
-				}
-			} else concatURL = concatURL + "&facet=" + facet;
-		}
-		var getProductsListForCategoryUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
-		logger.info("getProductsListForCategoryUrl: " + getProductsListForCategoryUrl);
-		var method = 'GET';
-		var requestCall = (0, _util.constructRequestWithoutToken)(getProductsListForCategoryUrl, method, '');
-		logger.info(JSON.stringify(requestCall));
-		(0, _requestPromise2.default)(requestCall).then(function (body) {
-			var messageData = {
-				'pageSize': pageSize,
-				'currentPage': currentPageNumber
-			};
-			if ((0, _util.isJson)(body)) body = JSON.parse(body);
-			var result = _categoryMapper2.default.mapProductsListForCategoryJSON(body, messageData);
-			res.send({
-				"success": true,
-				"result": result
-			});
-		}).catch(function (error) {
-			if (error) {
-				logger.error('errors in service to getProductsListForCategory in WCS: ', error);
-				res.send({ "success": false, "error": error });
-			} else {
-				logger.error('errors in service to getProductsListForCategory in WCS: ', error);
-				res.send({ "success": false, "error": error });
+		_seoCtlr2.default.getIdByKeyword(categoryId, 'CategoryToken').then(function (value) {
+			var concatURL = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CATEGORY_DETAILS_APPEND + value + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID + "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
+			if (req.query.orderBy) {
+				var orderBy = req.query.orderBy;
+				concatURL = concatURL + "&orderBy=" + orderBy;
 			}
+			if (req.query.facet) {
+				var facet = req.query.facet;
+				logger.info("Multiple facets" + Array.isArray(facet));
+				if (Array.isArray(facet)) {
+
+					var facetIterator = facet[Symbol.iterator]();
+					var _iteratorNormalCompletion = true;
+					var _didIteratorError = false;
+					var _iteratorError = undefined;
+
+					try {
+						for (var _iterator = facetIterator[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+							var facetvalue = _step.value;
+
+							concatURL = concatURL + "&facet=" + facetvalue;
+						}
+					} catch (err) {
+						_didIteratorError = true;
+						_iteratorError = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion && _iterator.return) {
+								_iterator.return();
+							}
+						} finally {
+							if (_didIteratorError) {
+								throw _iteratorError;
+							}
+						}
+					}
+				} else concatURL = concatURL + "&facet=" + facet;
+			}
+			var getProductsListForCategoryUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, concatURL, false);
+			logger.info("getProductsListForCategoryUrl: " + getProductsListForCategoryUrl);
+			var method = 'GET';
+			var requestCall = (0, _util.constructRequestWithoutToken)(getProductsListForCategoryUrl, method, '');
+			logger.info(JSON.stringify(requestCall));
+			(0, _requestPromise2.default)(requestCall).then(function (body) {
+				var messageData = {
+					'pageSize': pageSize,
+					'currentPage': currentPageNumber
+				};
+				if ((0, _util.isJson)(body)) body = JSON.parse(body);
+				var result = _categoryMapper2.default.mapProductsListForCategoryJSON(body, messageData);
+				res.send({
+					"success": true,
+					"result": result
+				});
+			}).catch(function (error) {
+				if (error) {
+					logger.error('errors in service to getProductsListForCategory in WCS: ', error);
+					res.send({ "success": false, "error": error });
+				} else {
+					logger.error('errors in service to getProductsListForCategory in WCS: ', error);
+					res.send({ "success": false, "error": error });
+				}
+			});
 		});
 	}
 };
 
 /***/ }),
-/* 54 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5211,6 +5604,10 @@ var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
+var _seoCtlr = __webpack_require__(9);
+
+var _seoCtlr2 = _interopRequireDefault(_seoCtlr);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -5225,6 +5622,7 @@ exports.default = {
 				name: 'name',
 				identifier: 'identifier',
 				id: 'uniqueID',
+				seoKeyword: 'seo_token_ntk',
 				store: 'storeID'
 
 			})],
@@ -5252,6 +5650,7 @@ exports.default = {
 				productsURL: 'productsURL',
 				resourceId: 'resourceId',
 				shortDescription: 'shortDescription',
+				seoKeyword: 'seo_token_ntk',
 				thumbnail: 'thumbnail',
 				title: 'title',
 				uniqueID: 'uniqueID'
@@ -5273,6 +5672,7 @@ exports.default = {
 				identifier: 'identifier',
 				id: 'uniqueID',
 				store: 'storeID',
+				seoKeyword: 'seo_token_ntk',
 				thumbnail: ['thumbnail', function (url) {
 					if (url) {
 						return _constants2.default.HTTP_URI_CONSTANT + _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
@@ -5311,6 +5711,7 @@ exports.default = {
 				code: 'partNumber',
 				uniqueID: 'uniqueID',
 				store: 'storeID',
+				seoKeyword: 'seo_token_ntk',
 				thumbnail: ['thumbnail', function (url) {
 					if (url) {
 						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
@@ -5361,7 +5762,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 55 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5375,7 +5776,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _shipModeCtlr = __webpack_require__(56);
+var _shipModeCtlr = __webpack_require__(61);
 
 var _shipModeCtlr2 = _interopRequireDefault(_shipModeCtlr);
 
@@ -5402,7 +5803,7 @@ router.get('/updateShippingMethods', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 56 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5418,11 +5819,11 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _shipModeMapper = __webpack_require__(57);
+var _shipModeMapper = __webpack_require__(62);
 
 var _shipModeMapper2 = _interopRequireDefault(_shipModeMapper);
 
-var _request = __webpack_require__(13);
+var _request = __webpack_require__(14);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -5503,7 +5904,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 57 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5547,7 +5948,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 58 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5561,7 +5962,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _searchCtlr = __webpack_require__(59);
+var _searchCtlr = __webpack_require__(64);
 
 var _searchCtlr2 = _interopRequireDefault(_searchCtlr);
 
@@ -5583,7 +5984,7 @@ router.get('/keywordSuggestionsByTerm', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 59 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5599,7 +6000,7 @@ var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _searchMapper = __webpack_require__(60);
+var _searchMapper = __webpack_require__(65);
 
 var _searchMapper2 = _interopRequireDefault(_searchMapper);
 
@@ -5716,7 +6117,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 60 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5809,7 +6210,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 61 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5823,7 +6224,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _addressCtlr = __webpack_require__(62);
+var _addressCtlr = __webpack_require__(67);
 
 var _addressCtlr2 = _interopRequireDefault(_addressCtlr);
 
@@ -5874,7 +6275,7 @@ router.put('/selectShippingAddress', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 62 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5890,7 +6291,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _addressMapper = __webpack_require__(63);
+var _addressMapper = __webpack_require__(68);
 
 var _addressMapper2 = _interopRequireDefault(_addressMapper);
 
@@ -5915,13 +6316,13 @@ exports.default = {
 		logger.info("getAddress get form url:" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, getAddressURL, true));
 		var method = 'GET';
 		var messageData = {};
-		var requestCall = (0, _util.constructRequest)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, getAddressURL, true), method, messageData);
+		var requestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, getAddressURL, true), method, messageData, (0, _util.getTokens)(req));
 		logger.info("requestCAll " + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, getAddressURL, true));
 		(0, _requestPromise2.default)(requestCall).then(function (data) {
 			var body1 = data;
 			var checkoutProfileURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CHECKOUT_PROFILE;
 			logger.info("checkout profile get form url:" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true));
-			var secondRequestCall = (0, _util.constructRequest)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true), "GET", messageData);
+			var secondRequestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true), "GET", messageData, (0, _util.getTokens)(req));
 			logger.info("requestCAll " + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, checkoutProfileURL, true));
 			(0, _requestPromise2.default)(secondRequestCall).then(function (data) {
 				var result = _addressMapper2.default.mapGetAddressJSON(body1, data);
@@ -6104,7 +6505,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 63 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6118,11 +6519,11 @@ var _jsonMapper = __webpack_require__(4);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _underscore = __webpack_require__(12);
+var _underscore = __webpack_require__(13);
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
-var _extendify = __webpack_require__(64);
+var _extendify = __webpack_require__(69);
 
 var _extendify2 = _interopRequireDefault(_extendify);
 
@@ -6245,13 +6646,13 @@ exports.default = {
 };
 
 /***/ }),
-/* 64 */
+/* 69 */
 /***/ (function(module, exports) {
 
 module.exports = require("extendify");
 
 /***/ }),
-/* 65 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6265,7 +6666,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _cartCtlr = __webpack_require__(66);
+var _cartCtlr = __webpack_require__(71);
 
 var _cartCtlr2 = _interopRequireDefault(_cartCtlr);
 
@@ -6301,7 +6702,7 @@ router.put('/updateShoppingCartItem', function (req, res) {
  * router for delete cart item 
  */
 
-router.delete('/deleteShoppingCartItem', function (req, res) {
+router.post('/deleteShoppingCartItem', function (req, res) {
   _cartCtlr2.default.deleteShoppingCartItem(req, res);
 });
 
@@ -6340,7 +6741,7 @@ router.post('/orderReview', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 66 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6356,7 +6757,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _cartMapper = __webpack_require__(10);
+var _cartMapper = __webpack_require__(11);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
 
@@ -6744,7 +7145,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 67 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6758,7 +7159,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _promotionsCtlr = __webpack_require__(68);
+var _promotionsCtlr = __webpack_require__(73);
 
 var _promotionsCtlr2 = _interopRequireDefault(_promotionsCtlr);
 
@@ -6801,7 +7202,7 @@ router.delete('/delete', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 68 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6815,7 +7216,7 @@ var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _promotionsMapper = __webpack_require__(69);
+var _promotionsMapper = __webpack_require__(74);
 
 var _promotionsMapper2 = _interopRequireDefault(_promotionsMapper);
 
@@ -6972,7 +7373,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 69 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7028,7 +7429,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 70 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7042,7 +7443,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _wishListCtlr = __webpack_require__(71);
+var _wishListCtlr = __webpack_require__(76);
 
 var _wishListCtlr2 = _interopRequireDefault(_wishListCtlr);
 
@@ -7085,7 +7486,7 @@ router.post('/moveWishListItemToCart', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 71 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7105,11 +7506,11 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _wishListMapper = __webpack_require__(72);
+var _wishListMapper = __webpack_require__(77);
 
 var _wishListMapper2 = _interopRequireDefault(_wishListMapper);
 
-var _cartMapper = __webpack_require__(10);
+var _cartMapper = __webpack_require__(11);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
 
@@ -7319,7 +7720,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 72 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7393,7 +7794,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 73 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7407,7 +7808,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _productByIdsCtlr = __webpack_require__(74);
+var _productByIdsCtlr = __webpack_require__(79);
 
 var _productByIdsCtlr2 = _interopRequireDefault(_productByIdsCtlr);
 
@@ -7430,7 +7831,7 @@ router.get('/getProductDetailBySingleId', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 74 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7446,7 +7847,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _pdpMapper = __webpack_require__(15);
+var _pdpMapper = __webpack_require__(16);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -7562,7 +7963,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 75 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7576,7 +7977,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _loginCtlr = __webpack_require__(76);
+var _loginCtlr = __webpack_require__(81);
 
 var _loginCtlr2 = _interopRequireDefault(_loginCtlr);
 
@@ -7608,7 +8009,7 @@ router.delete('/logoutUser', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 76 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7740,7 +8141,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 77 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7754,7 +8155,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _userProfileCtlr = __webpack_require__(78);
+var _userProfileCtlr = __webpack_require__(83);
 
 var _userProfileCtlr2 = _interopRequireDefault(_userProfileCtlr);
 
@@ -7789,7 +8190,7 @@ router.get('/getAddressBook', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 78 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7805,7 +8206,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _userProfileMapper = __webpack_require__(79);
+var _userProfileMapper = __webpack_require__(84);
 
 var _userProfileMapper2 = _interopRequireDefault(_userProfileMapper);
 
@@ -7927,7 +8328,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 79 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8080,7 +8481,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 80 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8094,7 +8495,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _registrationCtlr = __webpack_require__(81);
+var _registrationCtlr = __webpack_require__(86);
 
 var _registrationCtlr2 = _interopRequireDefault(_registrationCtlr);
 
@@ -8113,7 +8514,7 @@ router.post('/user', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 81 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8129,7 +8530,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _cartMapper = __webpack_require__(10);
+var _cartMapper = __webpack_require__(11);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
 
@@ -8182,7 +8583,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 82 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8196,7 +8597,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _myAccountCtlr = __webpack_require__(83);
+var _myAccountCtlr = __webpack_require__(88);
 
 var _myAccountCtlr2 = _interopRequireDefault(_myAccountCtlr);
 
@@ -8213,7 +8614,7 @@ router.put('/resetPassword', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 83 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8269,7 +8670,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 84 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8283,7 +8684,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _paymentCtlr = __webpack_require__(85);
+var _paymentCtlr = __webpack_require__(90);
 
 var _paymentCtlr2 = _interopRequireDefault(_paymentCtlr);
 
@@ -8318,7 +8719,7 @@ router.delete('/deletePaymentInstruction', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 85 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8338,7 +8739,7 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _paymentMapper = __webpack_require__(86);
+var _paymentMapper = __webpack_require__(91);
 
 var _paymentMapper2 = _interopRequireDefault(_paymentMapper);
 
@@ -8435,7 +8836,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 86 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8485,7 +8886,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 87 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8499,7 +8900,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _seoCtlr = __webpack_require__(88);
+var _seoCtlr = __webpack_require__(9);
 
 var _seoCtlr2 = _interopRequireDefault(_seoCtlr);
 
@@ -8523,221 +8924,7 @@ router.get('/seoDetails', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _constants = __webpack_require__(3);
-
-var _constants2 = _interopRequireDefault(_constants);
-
-var _util = __webpack_require__(5);
-
-var _databaseUtil = __webpack_require__(89);
-
-var _databaseUtil2 = _interopRequireDefault(_databaseUtil);
-
-var _requestPromise = __webpack_require__(1);
-
-var _requestPromise2 = _interopRequireDefault(_requestPromise);
-
-var _bluebird = __webpack_require__(7);
-
-var _bluebird2 = _interopRequireDefault(_bluebird);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var logger = (0, _util.getLogger)();
-
-exports.default = {
-
-  /* 
-   * Method for SEO keyword in WCS
-   * Request Method : GET
-   * Request Body : type and uniqueId
-   */
-
-  getSEOKeyword: function getSEOKeyword(req, res) {
-
-    // let type = req.query.type;
-    // let uniqueId = req.query.productId;
-    // let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_SEO + "?type=" + type + "&uniqueId=" + uniqueId;
-    // logger.info("SEOKeyword URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
-    // let SEOKeywordUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
-    // let method ='GET';
-    // let requestCall = constructRequestWithoutToken(SEOKeywordUrl,method,'');
-
-    // requestPromise(requestCall).then(function (data) {
-    //     var seoData = JSON.parse(data);
-    //     logger.info("SEO Keyword : "+ seoData.keyword);
-    //     res.send({
-    //             "type": seoData.type,
-    //             "uniqueId": seoData.uniqueId,
-    //             "keyword": seoData.keyword,                         
-    //     });   
-
-    //   }).catch(function (error) {
-    //       if(error){
-    //         logger.error('errors in service for SEOKeywordUrl in WCS: ', error);
-    //         res.send({ "success": false, "error": error }); 
-    //       }
-    //   });
-
-    _databaseUtil2.default.getKeyword(req.query.uniqueId, req.query.tokenType).then(function (response) {
-      logger.info("Response" + JSON.stringify(response));
-      if (Object.keys(response[0]).length > 0) {
-        var keyword = response[0].URLKEYWORD;
-        var tokenType = response[0].TOKENNAME;
-        var tokenValue = response[0].TOKENVALUE;
-        res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue });
-      } else {
-        res.send({ "success": false, "error": "No matching keyword found!" });
-      }
-    });
-  },
-
-  /* 
-   * Method for SEO in WCS
-   * Request Method : GET
-   * Request Body : type and uniqueId
-   */
-
-  getSEODetails: function getSEODetails(req, res) {
-
-    _databaseUtil2.default.getRecords(req.query.keyword).then(function (response) {
-      logger.info("Response" + JSON.stringify(response));
-      if (Object.keys(response[0]).length > 0) {
-        var keyword = response[0].URLKEYWORD;
-        var tokenType = response[0].TOKENNAME;
-        var tokenValue = response[0].TOKENVALUE;
-        res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue });
-      } else {
-        res.send({ "success": false, "error": "No matching keyword found!" });
-      }
-    });
-  }
-
-};
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _constants = __webpack_require__(3);
-
-var _constants2 = _interopRequireDefault(_constants);
-
-var _q = __webpack_require__(90);
-
-var _q2 = _interopRequireDefault(_q);
-
-var _util = __webpack_require__(91);
-
-var _util2 = _interopRequireDefault(_util);
-
-var _mongodb = __webpack_require__(14);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var database;
-// let logger= getLogger();
-
-// Use connect method to connect to the Server
-// Init method
-
-
-//lets import the mongodb native drivers.
-//We need to work with "MongoClient" interface in order to connect to a mongodb server.
-_mongodb.MongoClient.connect(_constants2.default.DB_URL, function (err, db) {
-    if (err) {
-        console.log('Unable to connect to the mongoDB server. Error:', err);
-    } else {
-        console.log('Connection established to: ' + _constants2.default.DB_URL);
-        database = db;
-    }
-});
-
-exports.default = {
-    /* 
-     * Method for getting the keywords from DB
-     * Params: uniqueId, tokenType
-     */
-    getKeyword: function getKeyword(uniqueId, tokenType) {
-
-        var deferred = _q2.default.defer();
-        var collection = database.collection('seo');
-        collection.find({ "TOKENNAME": tokenType, "TOKENVALUE": parseInt(uniqueId) }).toArray(function (err, result) {
-            var response = {};
-            console.log(JSON.stringify(result));
-            if (err) {
-                console.log(err);
-                response.errorObject = err;
-                deferred.reject(response);
-            } else if (result.length) {
-                deferred.resolve(result);
-            } else {
-                console.log('No document(s) found with defined "find" criteria!');
-                deferred.resolve(result);
-            }
-        });
-
-        return deferred.promise;
-    },
-
-    /* 
-    * Method for getting the records from DB
-    * Params: uniqueId, tokenType
-    */
-    getRecords: function getRecords(keyword) {
-
-        var deferred = _q2.default.defer();
-        var collection = database.collection('seo');
-        collection.find({ "URLKEYWORD": keyword }).toArray(function (err, result) {
-            var response = {};
-            console.log(JSON.stringify(result));
-            if (err) {
-                console.log(err);
-                response.errorObject = err;
-                deferred.reject(response);
-            } else if (result.length) {
-                deferred.resolve(result);
-            } else {
-                console.log('No document(s) found with defined "find" criteria!');
-                deferred.resolve(result);
-            }
-        });
-
-        return deferred.promise;
-    }
-};
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports) {
-
-module.exports = require("q");
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports) {
-
-module.exports = require("util");
-
-/***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8751,7 +8938,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _layoutCtlr = __webpack_require__(93);
+var _layoutCtlr = __webpack_require__(94);
 
 var _layoutCtlr2 = _interopRequireDefault(_layoutCtlr);
 
@@ -8775,7 +8962,7 @@ router.post('/espot', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8788,6 +8975,10 @@ Object.defineProperty(exports, "__esModule", {
 var _constants = __webpack_require__(3);
 
 var _constants2 = _interopRequireDefault(_constants);
+
+var _seoCtlr = __webpack_require__(9);
+
+var _seoCtlr2 = _interopRequireDefault(_seoCtlr);
 
 var _util = __webpack_require__(5);
 
@@ -8816,20 +9007,34 @@ exports.default = {
     var objectId = req.query.objectId;
     var deviceClass = req.query.device;
     var pageGroup = req.query.pageGroup;
-    var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_LAYOUT + "&objectIdentifier=" + objectId + "&deviceClass=" + deviceClass + "&pageGroup=" + pageGroup;
-    logger.info("Layout URL" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true));
-    var layoutUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true);
-    var method = 'GET';
-    var requestCall = (0, _util.constructRequestWithoutToken)(layoutUrl, method, '');
+    var tokenName = "CategoryToken";
 
-    (0, _requestPromise2.default)(requestCall).then(function (data) {
-      var layoutData = JSON.parse(data);
-      res.send(layoutData);
-    }).catch(function (error) {
-      if (error) {
-        logger.error('errors in service for layoutUrl in WCS: ', error);
-        res.send({ "success": false, "error": error });
-      }
+    if (pageGroup == 'Category') {
+      tokenName = "CategoryToken";
+    } else if (pageGroup == 'Product') {
+      tokenName = "ProductToken";
+    }
+    console.log("objectId::" + objectId);
+
+    _seoCtlr2.default.getIdByKeyword(objectId, tokenName).then(function (value) {
+
+      console.log("value:::" + value);
+
+      var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_LAYOUT + "&objectIdentifier=" + value + "&deviceClass=" + deviceClass + "&pageGroup=" + pageGroup;
+      logger.info("Layout URL" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true));
+      var layoutUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true);
+      var method = 'GET';
+      var requestCall = (0, _util.constructRequestWithoutToken)(layoutUrl, method, '');
+
+      (0, _requestPromise2.default)(requestCall).then(function (data) {
+        var layoutData = JSON.parse(data);
+        res.send(layoutData);
+      }).catch(function (error) {
+        if (error) {
+          logger.error('errors in service for layoutUrl in WCS: ', error);
+          res.send({ "success": false, "error": error });
+        }
+      });
     });
   },
 
@@ -8862,7 +9067,557 @@ exports.default = {
 };
 
 /***/ }),
-/* 94 */
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(0);
+
+var _express2 = _interopRequireDefault(_express);
+
+var _pdpRoutes = __webpack_require__(96);
+
+var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var app = (0, _express2.default)();
+
+app.use('/wcs9/PDP', _pdpRoutes2.default);
+
+exports.default = app;
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(0);
+
+var _express2 = _interopRequireDefault(_express);
+
+var _pdpCtlr = __webpack_require__(97);
+
+var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var router = _express2.default.Router();
+
+/* 
+ * Router for getProductDetails
+ */
+
+router.get('/getProductDetails', function (req, res) {
+  _pdpCtlr2.default.getProductDetails(req, res);
+});
+
+/**
+ * Router for getting recently viewed products
+ */
+router.get('/getRecentlyViewedProducts', function (req, res) {
+  _pdpCtlr2.default.getRecentlyViewedProducts(req, res);
+});
+
+exports.default = router;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _constants = __webpack_require__(18);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _util = __webpack_require__(5);
+
+var _pdpMapper = __webpack_require__(98);
+
+var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
+
+var _requestPromise = __webpack_require__(1);
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _bluebird = __webpack_require__(7);
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = (0, _util.getLogger)();
+
+exports.default = {
+
+	/*
+  * Method for getting product details
+  * Request Method: GET
+  * Request Params: productId
+  */
+
+	getProductDetails: function getProductDetails(req, res) {
+		var productId = req.query.productId;
+		var resourceName = req.query.resourceName;
+		var result = void 0;
+		var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
+		var pdpURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, path, false);
+		logger.info("getProductDetails post form url:" + pdpURL);
+		var requestCall = (0, _util.constructRequestWithoutToken)(pdpURL, 'GET', '');
+		(0, _requestPromise2.default)(requestCall).then(function (result) {
+			return requestFunction(result);
+		}).catch(function (error) {
+			if (error.statusCode === 404 || error.statusCode === 500) {
+				logger.error('error in service to getProductDetails in WCS: ', error);
+				res.send({ "success": false, "error": error.response.body });
+			} else {
+				logger.error('errors in service to getProductDetails in WCS: ', error);
+				res.send({ "success": false, "error": error.response.body.errors[0] });
+			}
+		});;
+		var requestFunction = function requestFunction(data) {
+			return new _bluebird2.default(function (resolve, reject) {
+				if ((0, _util.isJson)(data)) data = JSON.parse(data);
+				logger.info('data type', typeof data === 'undefined' ? 'undefined' : _typeof(data));
+				var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_INV_AVL + productId;
+				var invAvlURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, false);
+				var requestCall = (0, _util.constructRequestWithoutToken)(invAvlURL, 'GET', '');
+				logger.info("request call = " + JSON.stringify(requestCall));
+				if (data.CatalogEntryView[0].productType == "ProductBean") {
+					if (resourceName == "pdp") {
+						result = _pdpMapper2.default.mapPdpJSON(data, true);
+					} else if (resourceName == "qv" || resourceName == "cart") {
+						result = _pdpMapper2.default.mapQuickViewJSON(data, true);
+					}
+					res.send({
+						"success": true,
+						"result": result
+					});
+				} else {
+					(0, _requestPromise2.default)(requestCall).then(function (body) {
+						if ((0, _util.isJson)(body)) body = JSON.parse(body);
+						if (resourceName == "pdp") {
+							result = _pdpMapper2.default.mapPdpJSON(data, body);
+						} else if (resourceName == "qv" || resourceName == "cart") {
+							result = _pdpMapper2.default.mapQuickViewJSON(data, body);
+						}
+						res.send({
+							"success": true,
+							"result": result
+						});
+					}).catch(function (error) {
+						if (error.statusCode === 404 || error.statusCode === 500) {
+							logger.error('error in service to getProductDetails in WCS: ', error);
+							res.send({ "success": false, "error": error.response.body });
+						} else {
+							logger.error('errors in service to getProductDetails in WCS: ', error);
+							res.send({ "success": false, "error": error.response.body.errors[0] });
+						}
+					});
+				}
+			});
+		};
+	},
+	getRecentlyViewedProducts: function getRecentlyViewedProducts(req, res) {
+		var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
+		var getRecentlyViewedProductsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, false);
+		logger.info("Get recently viewed products URL" + getRecentlyViewedProductsUrl);
+		var requestCall = (0, _util.constructRequestWithToken)(getRecentlyViewedProductsUrl, 'GET', '', (0, _util.getTokens)(req));
+		(0, _requestPromise2.default)(requestCall).then(function (body) {
+			var result = _pdpMapper2.default.mapRecentlyViewedProductsJSON(body);
+			res.send({
+				"success": true,
+				"result": result
+			});
+		}).catch(function (error) {
+			if (error.statusCode === 404 || error.statusCode === 401) {
+				logger.error('errors in service to getRecentlyViewedProducts in WCS: ', error);
+				res.send({ "success": false, "error": error.response.body });
+			} else {
+				logger.error('errors in service to getRecentlyViewedProducts in WCS: ', error);
+				res.send({ "success": false, "error": error.response.body.errors[0] });
+			}
+		});
+	}
+};
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _jsonMapper = __webpack_require__(4);
+
+var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
+
+var _constants = __webpack_require__(18);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+
+	/* 
+  * JSON Mapper for generating responses for PDP page 
+  */
+
+	mapPdpJSON: function mapPdpJSON(body, inv) {
+		var converter = _jsonMapper2.default.makeConverter({
+			catalogEntryView: ['CatalogEntryView', _jsonMapper2.default.map({
+				hasSingleSKU: function hasSingleSKU(input) {
+					if (inv == true) {
+						return input.hasSingleSKU;
+					}
+					return;
+				},
+				uniqueId: 'uniqueID',
+				parentCatalogGroupID: 'parentCategoryID',
+				catalogEntryTypeCode: 'productType',
+				buyable: 'buyable',
+				store: 'storeID',
+				listPrice: 'price.0.value',
+				purchasePrice: 'price.1.value',
+				code: 'partNumber',
+				resourceId: 'resourceId',
+				displayName: 'name',
+				manufacturer: 'manufacturer',
+				attributes: ['attributes', _jsonMapper2.default.map({
+					displayable: 'displayable',
+					name: 'name',
+					identifier: 'identifier',
+					values: ['values', _jsonMapper2.default.map({
+						value: 'value',
+						identifier: 'identifier',
+						uniqueID: 'uniqueID',
+						image: ['image1path', function (url) {
+							if (url) {
+								return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+							}
+						}]
+					})],
+					usage: 'usage',
+					sequence: 'sequence'
+				})],
+				merchandisingAssociations: ['merchandisingAssociations', _jsonMapper2.default.map({
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',
+					buyable: 'buyable',
+					store: 'storeID',
+					uniqueID: 'uniqueID',
+					listPrice: 'price.0.value',
+					purchasePrice: 'price.1.value',
+					code: 'partNumber',
+					resourceId: 'resourceId',
+					displayName: 'name',
+					attributes: ['attributes', _jsonMapper2.default.map({
+						displayable: 'displayable',
+						name: 'name',
+						identifier: 'identifier',
+						values: ['values', _jsonMapper2.default.map({
+							identifier: 'identifier',
+							uniqueID: 'uniqueID',
+							image: ['image1path', function (url) {
+								if (url) {
+									return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+								}
+							}]
+						})]
+					})],
+
+					thumbnail: ['thumbnail', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}],
+					fullImage: ['fullImage', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}]
+				})],
+				skus: ['sKUs', _jsonMapper2.default.map({
+					skuId: 'uniqueID',
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',
+					buyable: 'buyable',
+					store: 'storeID',
+					listPrice: 'price.0.value',
+					purchasePrice: 'price.1.value',
+					code: 'partNumber',
+					resourceId: 'resourceId',
+					displayName: 'name',
+					attributes: ['attributes', _jsonMapper2.default.map({
+						displayable: 'displayable',
+						name: 'name',
+						identifier: 'identifier',
+						values: ['values', _jsonMapper2.default.map({
+							identifier: 'identifier',
+							uniqueID: 'uniqueID',
+							image: ['image1path', function (url) {
+								if (url) {
+									return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+								}
+							}]
+						})],
+						usage: 'usage',
+						sequence: 'sequence'
+					})],
+					thumbnail: ['thumbnail', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}]
+				})],
+				thumbnail: ['thumbnail', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}],
+				fullImage: ['fullImage', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}]
+			})]
+		});
+		var result = converter(body);
+		var jsonObj = result;
+
+		if (inv != true) {
+			for (var i = 0; i < jsonObj.catalogEntryView.length; i++) {
+				var invAvailability = inv.InventoryAvailability[i].inventoryStatus;
+				var quantityAvailable = inv.InventoryAvailability[i].availableQuantity;
+
+				jsonObj.catalogEntryView[i].availability = invAvailability;
+				jsonObj.catalogEntryView[i].quantity = quantityAvailable;
+			}
+		}
+		return jsonObj;
+	},
+	/* 
+ * JSON Mapper for generating responses for Quick View page 
+ */
+
+	mapQuickViewJSON: function mapQuickViewJSON(body, inv) {
+		var converter = _jsonMapper2.default.makeConverter({
+			catalogEntryView: ['catalogEntryView', _jsonMapper2.default.map({
+				hasSingleSKU: 'hasSingleSKU',
+				uniqueId: 'uniqueID',
+				catalogEntryTypeCode: 'catalogEntryTypeCode',
+				buyable: 'buyable',
+				store: 'storeID',
+				listPrice: 'price.0.value',
+				purchasePrice: 'price.1.value',
+				code: 'partNumber',
+				resourceId: 'resourceId',
+				displayName: 'name',
+				attributes: ['attributes', _jsonMapper2.default.map({
+					displayable: 'displayable',
+					name: 'name',
+					identifier: 'identifier',
+					values: ['values', _jsonMapper2.default.map({
+						identifier: 'identifier',
+						uniqueID: 'uniqueID',
+						image: ['image1path', function (url) {
+							if (url) {
+								return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+							}
+						}]
+					})]
+				})],
+				skus: ['sKUs', _jsonMapper2.default.map({
+					skuId: 'uniqueID',
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',
+					buyable: 'buyable',
+					store: 'storeID',
+					listPrice: 'price.0.value',
+					purchasePrice: 'price.1.value',
+					code: 'partNumber',
+					resourceId: 'resourceId',
+					displayName: 'name',
+					attributes: ['attributes', _jsonMapper2.default.map({
+						displayable: 'displayable',
+						name: 'name',
+						identifier: 'identifier',
+						values: ['values', _jsonMapper2.default.map({
+							identifier: 'identifier',
+							uniqueID: 'uniqueID',
+							image: ['image1path', function (url) {
+								if (url) {
+									return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+								}
+							}]
+						})]
+					})],
+					thumbnail: ['thumbnail', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}]
+				})],
+				thumbnail: ['thumbnail', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}],
+				fullImage: ['fullImage', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}]
+			})]
+		});
+		var result = converter(body);
+		var jsonObj = result;
+
+		for (var i = 0; i < jsonObj.catalogEntryView.length; i++) {
+			var invAvailability = inv.InventoryAvailability[i].inventoryStatus;
+			var quantityAvailable = inv.InventoryAvailability[i].availableQuantity;
+
+			jsonObj.catalogEntryView[i].availability = invAvailability;
+			jsonObj.catalogEntryView[i].quantity = quantityAvailable;
+		}
+		return jsonObj;
+	},
+	mapRecentlyViewedProductsJSON: function mapRecentlyViewedProductsJSON(body) {
+		var converter = _jsonMapper2.default.makeConverter({
+			resourceId: 'resourceId',
+			recentlyViewedProducts: ['MarketingSpotData.0.baseMarketingSpotActivityData', _jsonMapper2.default.map({
+				catalogEntryTypeCode: 'catalogEntryTypeCode',
+				currency: 'currency',
+				partNumber: 'productPartNumber',
+				productId: 'productId',
+				purchasePrice: 'standardPrice',
+				listPrice: 'listPrice',
+				description: ['description', _jsonMapper2.default.map({
+					thumbnail: ['thumbnail', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}],
+					shortDescription: 'shortDescription',
+					longDescription: 'longDescription',
+					language: 'language',
+					productName: 'productName'
+				})],
+				attributes: ['attributes', _jsonMapper2.default.map({
+					name: 'name',
+					stringValue: 'stringValue'
+				})]
+			})]
+
+		});
+		var result = converter(body);
+		return result;
+	},
+
+	mapProductDetailBySingleIdJSON: function mapProductDetailBySingleIdJSON(body) {
+
+		var converter = _jsonMapper2.default.makeConverter({
+			catalogEntryView: ['catalogEntryView', _jsonMapper2.default.map({
+				hasSingleSKU: 'hasSingleSKU',
+				uniqueId: 'uniqueID',
+				catalogEntryTypeCode: 'catalogEntryTypeCode',
+				buyable: 'buyable',
+				store: 'storeID',
+				listPrice: 'price.0.value',
+				purchasePrice: 'price.1.value',
+				code: 'partNumber',
+				resourceId: 'resourceId',
+				displayName: 'name',
+				attributes: ['attributes', _jsonMapper2.default.map({
+					displayable: 'displayable',
+					name: 'name',
+					identifier: 'identifier',
+					values: ['values', _jsonMapper2.default.map({
+						identifier: 'identifier',
+						uniqueID: 'uniqueID',
+						image: ['image1path', function (url) {
+							if (url) {
+								return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+							}
+						}]
+					})]
+				})],
+				skus: ['sKUs', _jsonMapper2.default.map({
+					skuId: 'uniqueID',
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',
+					buyable: 'buyable',
+					store: 'storeID',
+					listPrice: 'price.0.value',
+					purchasePrice: 'price.1.value',
+					code: 'partNumber',
+					resourceId: 'resourceId',
+					displayName: 'name',
+					attributes: ['attributes', _jsonMapper2.default.map({
+						displayable: 'displayable',
+						name: 'name',
+						identifier: 'identifier',
+						values: ['values', _jsonMapper2.default.map({
+							identifier: 'identifier',
+							uniqueID: 'uniqueID',
+							image: ['image1path', function (url) {
+								if (url) {
+									return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+								}
+							}]
+						})]
+					})],
+					thumbnail: ['thumbnail', function (url) {
+						if (url) {
+							return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+						}
+					}]
+				})],
+				thumbnail: ['thumbnail', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}],
+				fullImage: ['fullImage', function (url) {
+					if (url) {
+						return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
+					}
+				}]
+			})]
+
+		});
+		var result = converter(body);
+		return result;
+	}
+};
+
+/***/ }),
+/* 99 */
 /***/ (function(module, exports) {
 
 module.exports = require("cookie-parser");
