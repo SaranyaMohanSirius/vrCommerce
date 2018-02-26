@@ -27,6 +27,7 @@ export default {
                      displayName: 'name',
                      code: 'partNumber',
                      store: 'storeID',
+                     seoKeyword: 'seo_token_ntk',
                      thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
