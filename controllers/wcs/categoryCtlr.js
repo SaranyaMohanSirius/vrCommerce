@@ -6,6 +6,7 @@ import {getLogger,
 				isJson
        } from '../../util/wcs/util';
 import categoryMapper from '../../json_mappers/wcs/categoryMapper';
+import seoController from '../wcs/seoCtlr';
 import requestPromise from 'request-promise';
 
 let logger= getLogger();
@@ -78,29 +79,34 @@ export default {
 
 	getSubCategories: function(res,req){
 
-			let parentId = req.query.identifier;
-			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + parentId;
-   			let messageData = {};
-			let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
-			logger.info("getSubCategoriesUrl: " +getSubCategoriesUrl);
-        	let method ='GET';
-          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
- 			logger.info(JSON.stringify(requestCall));
- 			requestPromise(requestCall).then(function (messageData) {
-	          let result = categoryMapper.mapSubCategoryJSON(messageData);
-	                  res.send({
-	                    "success": true ,
-	                    "result": result                                           
-	                });   
-	          }).catch(function (error) {
-	              if(error){
-	                logger.error('errors in service to getSubCategories in WCS: ', error);
-	                res.send({ "success": false, "error": error }); 
-	              }else{
-	                logger.error('errors in service to getSubCategories in WCS: ', error);
-	                res.send({ "success": false, "error": error});
-	              }
-	          });
+		logger.info(" categoryCtrl -> getSubCategories: ");
+		seoController.getIdByKeyword(req.query.identifier,'CategoryToken').then(function(value){
+				let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + value;
+	   			let messageData = {};
+				let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+				logger.info("getSubCategoriesUrl: " +getSubCategoriesUrl);
+	        	let method ='GET';
+	          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
+	 			logger.info(JSON.stringify(requestCall));
+	 			requestPromise(requestCall).then(function (messageData) {
+	 			  console.log("Before Mapper");
+		          let result = categoryMapper.mapSubCategoryJSON(messageData);
+		                  res.send({
+		                    "success": true ,
+		                    "result": result                                           
+		                });   
+		          }).catch(function (error) {
+		              if(error){
+		                logger.error('errors in service to getSubCategories in WCS: ', error);
+		                res.send({ "success": false, "error": error }); 
+		              }else{
+		                logger.error('errors in service to getSubCategories in WCS: ', error);
+		                res.send({ "success": false, "error": error});
+		              }
+		          });
+
+	 			
+			});
 
 	},
 
@@ -113,7 +119,11 @@ export default {
 	getProductsListForCategory: function(req,res,categoryId){
 	    	let pageSize = req.query.pagesize;
    			let currentPageNumber = req.query.currentPage;
-    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + categoryId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
+   			
+   			logger.info("getProductsListForCategory -> categoryId::" +categoryId);
+   			
+   			seoController.getIdByKeyword(categoryId,'CategoryToken').then(function(value){
+    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + value + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
 			 if(req.query.orderBy){
    				let orderBy = req.query.orderBy;
     			concatURL = concatURL + "&orderBy=" + orderBy; 
@@ -156,5 +166,7 @@ export default {
 	                res.send({ "success": false, "error": error});
 	              }
 	          });
+ 		  	
+   			});
 	}
 };

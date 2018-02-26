@@ -24,11 +24,11 @@ export default {
     * Method for getting the keywords from DB
     * Params: uniqueId, tokenType
     */
-    getKeyword: function(uniqueId, tokenType) {
+    getKeyword: function(uniqueId, tokenType, langId, storeId) {
 
         var deferred = q.defer();
         var collection = database.collection('seo');
-        collection.find({ "TOKENNAME" : tokenType, "TOKENVALUE" : parseInt(uniqueId)}).toArray(function(err, result) {
+        collection.find({ "TOKENNAME" : tokenType, "TOKENVALUE" : parseInt(uniqueId), "STOREENT_ID": storeId, "STATUS": 1, "LANGUAGE_ID": langId}).toArray(function(err, result) {
             var response = {};
             console.log(JSON.stringify(result));
            if (err) {
@@ -50,11 +50,11 @@ export default {
     * Method for getting the records from DB
     * Params: uniqueId, tokenType
     */
-    getRecords: function(keyword) {
+    getRecords: function(keyword, tokenName,langId, storeId) {
 
         var deferred = q.defer();
         var collection = database.collection('seo');
-        collection.find({ "URLKEYWORD" : keyword}).toArray(function(err, result) {
+        collection.find({ "URLKEYWORD" : keyword,"TOKENNAME": tokenName,"STOREENT_ID": storeId, "STATUS": 1, "LANGUAGE_ID": langId}).toArray(function(err, result) {
             var response = {};
             console.log(JSON.stringify(result));
             if (err) {

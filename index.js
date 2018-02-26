@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import {getLogger} from './util/elasticPath/util';
 import epRoute from './routes/ep-index';
 import wcsRoute from './routes/wcs-index';
+import wcs9Route from './routes/wcs9-index';
 import cookieParser from 'cookie-parser';
 
 let logger=getLogger();
@@ -44,6 +45,7 @@ app.use(bodyParser.json());
  */
 app.all('/ep/*',epRoute);
 app.all('/wcs/*',wcsRoute);
+app.all('/wcs9/*',wcs9Route);
 
 // Spin up the server
 app.listen(app.get('port'), function() {

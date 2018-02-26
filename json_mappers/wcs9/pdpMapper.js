@@ -1,5 +1,5 @@
 import JM from 'json-mapper';
-import constants from '../../constants/wcs/constants';
+import constants from '../../constants/wcs9/constants';
 
 export default {
 
@@ -9,7 +9,7 @@ export default {
 
    mapPdpJSON: function(body,inv){	
 		let converter = JM.makeConverter({
-			catalogEntryView: ['catalogEntryView', JM.map({		
+			catalogEntryView: ['CatalogEntryView', JM.map({		
 				hasSingleSKU: function(input){ 
 					if(inv == true){
 						return input.hasSingleSKU;
@@ -17,8 +17,8 @@ export default {
 					return; 
 				},
 				uniqueId: 'uniqueID',
-				parentCatalogGroupID: 'parentCatalogGroupID',
-				catalogEntryTypeCode: 'catalogEntryTypeCode',				
+				parentCatalogGroupID: 'parentCategoryID',
+				catalogEntryTypeCode: 'productType',				
 				buyable: 'buyable',				
 				store: 'storeID',			
 				listPrice : 'price.0.value',			
@@ -27,7 +27,6 @@ export default {
 				resourceId : 'resourceId',			
 				displayName: 'name',
 				manufacturer: 'manufacturer',
-				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -56,7 +55,6 @@ export default {
 					code: 'partNumber',			
 					resourceId : 'resourceId',			
 					displayName: 'name',	
-					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', JM.map({
 						  displayable: 'displayable',
 						  name: 'name',
@@ -94,7 +92,6 @@ export default {
 					code: 'partNumber',			
 					resourceId : 'resourceId',			
 					displayName: 'name',
-					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -160,7 +157,6 @@ export default {
 				code: 'partNumber',			
 				resourceId : 'resourceId',			
 				displayName: 'name',	
-				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -186,7 +182,6 @@ export default {
 					code: 'partNumber',			
 					resourceId : 'resourceId',			
 					displayName: 'name',
-					seoKeyword: 'seo_token_ntk',
 					attributes: ['attributes', JM.map({
 					  displayable: 'displayable',
 					  name: 'name',
@@ -241,7 +236,6 @@ export default {
 			productId: 'productId',
 			purchasePrice: 'standardPrice',
 			listPrice: 'listPrice',
-			seoKeyword: 'seo_token_ntk',
 			description: ['description', JM.map({
 				thumbnail : ['thumbnail',function(url){ 
                   if(url){
@@ -280,7 +274,6 @@ export default {
 			code: 'partNumber',			
 			resourceId : 'resourceId',			
 			displayName: 'name',	
-			seoKeyword: 'seo_token_ntk',
 			attributes: ['attributes', JM.map({
 				  displayable: 'displayable',
 				  name: 'name',
@@ -306,7 +299,6 @@ export default {
 				code: 'partNumber',			
 				resourceId : 'resourceId',			
 				displayName: 'name',
-				seoKeyword: 'seo_token_ntk',
 				attributes: ['attributes', JM.map({
 				  displayable: 'displayable',
 				  name: 'name',

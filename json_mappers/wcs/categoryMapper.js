@@ -1,6 +1,7 @@
 
 import JM from 'json-mapper';
 import constants from '../../constants/wcs/constants';
+import seoController from '../../controllers/wcs/seoCtlr';
 
 export default {
 
@@ -14,6 +15,7 @@ export default {
 					name : 'name',
 					identifier : 'identifier',
 					id: 'uniqueID',
+					seoKeyword: 'seo_token_ntk',
 					store : 'storeID',
 					
 			}) ],
@@ -43,6 +45,7 @@ export default {
 				productsURL: 'productsURL',
 				resourceId: 'resourceId',
 				shortDescription: 'shortDescription',
+				seoKeyword: 'seo_token_ntk',
 				thumbnail: 'thumbnail',
 				title: 'title',
 				uniqueID: 'uniqueID'
@@ -66,6 +69,7 @@ export default {
 					identifier : 'identifier',
 					id: 'uniqueID',
 					store : 'storeID',
+					seoKeyword: 'seo_token_ntk',
 					thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           return (constants.HTTP_URI_CONSTANT+constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
@@ -106,6 +110,7 @@ export default {
                      code: 'partNumber',
 					 uniqueID: 'uniqueID',
                      store: 'storeID',
+                     seoKeyword: 'seo_token_ntk',
                      thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 

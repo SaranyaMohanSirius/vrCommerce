@@ -6,18 +6,24 @@ import {getLogger,
 import database from '../../util/wcs/databaseUtil';
 import requestPromise from 'request-promise';
 import Promise from "bluebird";
-
+import q from 'q';
 let logger= getLogger();
 
 export default {
 
+	
+	
+	getSEOKeyword1: function(uniqueId, tokenType){
+		console.log("inside the getSEOKeyword1");
+		this.getSEOKeyword(uniqueId, tokenType);
+	},
    /* 
     * Method for SEO keyword in WCS
     * Request Method : GET
     * Request Body : type and uniqueId
     */
   
-   getSEOKeyword: function(req,res){
+   getSEOKeyword: function(uniqueId, tokenType){
         
         // let type = req.query.type;
         // let uniqueId = req.query.productId;
@@ -42,19 +48,32 @@ export default {
         //         res.send({ "success": false, "error": error }); 
         //       }
         //   });
+	   
+	   var que = null;
+	   var deferred = q.defer();
 
-      database.getKeyword(req.query.uniqueId, req.query.tokenType).then(function(response) {
-        logger.info("Response" + JSON.stringify(response));
-        if (Object.keys(response[0]).length > 0) {
-          var keyword = response[0].URLKEYWORD;
-          var tokenType = response[0].TOKENNAME;
-          var tokenValue = response[0].TOKENVALUE;
-          res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
-        } else {
-           res.send({ "success": false, "error": "No matching keyword found!" });
-        }
-    });
+	   console.log("categoryId::"+uniqueId +":::tokenType:::"+tokenType);
+        database.getKeyword(uniqueId, tokenType,-1,10051).then(function(response) {
+	        logger.info("Response" + JSON.stringify(response));
+	        if (Object.keys(response[0]).length > 0) {
+	          var keyword = response[0].URLKEYWORD;
+	          var tokenType = response[0].TOKENNAME;
+	          var tokenValue = response[0].TOKENVALUE;
+	         
+	          logger.info("keyword:",keyword);
+	          $scope.que = keyword;
+	          deferred.resolve(keyword);
+	          	
+	        } else {
+	        	logger.info("No results fetched for categoryId:",uniqueId);
+	        }
+	        
+	        
+        });
+        
+        
 
+         return  Promise.all("ssee");;
 
   },
 
@@ -66,6 +85,7 @@ export default {
     */
   
    getSEODetails: function(req,res){
+	   console.log("Request:"+req)
 
       database.getRecords(req.query.keyword).then(function(response) {
         logger.info("Response" + JSON.stringify(response));
@@ -77,10 +97,48 @@ export default {
         } else {
            res.send({ "success": false, "error": "No matching keyword found!" });
         }
+        
     });
 
 
-  }
+  },
+  
+  
+  
+  /* 
+   * Method for SEO in WCS
+   * Request Method : GET
+   * Request Body : keyword
+   * Response: TokenValue
+   */
+ 
+  getIdByKeyword(keyword,tokenName){
+	   
+	   console.log("keyword::"+keyword+"---TokenName::"+tokenName);
+
+	   var deferred = q.defer();
+	   
+      database.getRecords(keyword, tokenName,-1, 10051).then(function(response) {
+       logger.info("Response" + JSON.stringify(response));
+       if (Object.keys(response[0]).length > 0) {
+         var keyword = response[0].URLKEYWORD;
+         var tokenType = response[0].TOKENNAME;
+         var tokenValue = response[0].TOKENVALUE;
+         
+         console.log("tokenValue::"+tokenValue);
+
+         deferred.resolve(tokenValue);
+         //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
+       } else {
+          //res.send({ "success": false, "error": "No matching keyword found!" });
+       }
+       
+
+   });
+
+      return deferred.promise;
+      
+ }
 
 };
 
