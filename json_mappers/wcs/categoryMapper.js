@@ -15,6 +15,7 @@ export default {
 					name : 'name',
 					identifier : 'identifier',
 					id: 'uniqueID',
+					seoKeyword: 'seo_token_ntk',
 					store : 'storeID',
 					
 			}) ],

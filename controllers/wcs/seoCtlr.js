@@ -112,13 +112,13 @@ export default {
    * Response: TokenValue
    */
  
-  getCategoryIdByKeyword(keyword){
+  getIdByKeyword(keyword,tokenName){
 	   
-	   console.log("keyword::"+keyword);
+	   console.log("keyword::"+keyword+"---TokenName::"+tokenName);
 
 	   var deferred = q.defer();
 	   
-      database.getRecords(keyword, 'CategoryToken',-1, 10051).then(function(response) {
+      database.getRecords(keyword, tokenName,-1, 10051).then(function(response) {
        logger.info("Response" + JSON.stringify(response));
        if (Object.keys(response[0]).length > 0) {
          var keyword = response[0].URLKEYWORD;

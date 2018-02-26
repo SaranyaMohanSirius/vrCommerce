@@ -80,9 +80,7 @@ export default {
 	getSubCategories: function(res,req){
 
 		logger.info(" categoryCtrl -> getSubCategories: ");
-		seoController.getCategoryIdByKeyword(req.query.identifier).then(function(value){
-				console.log("Value::"+value);
-			    
+		seoController.getIdByKeyword(req.query.identifier,'CategoryToken').then(function(value){
 				let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + value;
 	   			let messageData = {};
 				let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);

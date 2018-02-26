@@ -1,4 +1,5 @@
 import constants from '../../constants/wcs/constants';
+import seoController from '../wcs/seoCtlr';
 import {getLogger,
         constructUrl,
         constructRequestWithoutToken
@@ -21,7 +22,20 @@ export default {
         let objectId = req.query.objectId;
         let deviceClass = req.query.device;
         let pageGroup = req.query.pageGroup;
-        let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_LAYOUT + "&objectIdentifier=" + objectId + "&deviceClass=" + deviceClass + "&pageGroup=" + pageGroup;
+        let tokenName = "CategoryToken";
+        
+        if(pageGroup == 'Category'){
+        	tokenName = "CategoryToken";
+        }else if(pageGroup == 'Product'){
+        	tokenName = "ProductToken";
+        }
+        console.log("objectId::"+objectId);
+
+        seoController.getIdByKeyword(objectId,tokenName).then(function(value){
+        	
+        console.log("value:::"+value);
+        
+        let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_LAYOUT + "&objectIdentifier=" + value + "&deviceClass=" + deviceClass + "&pageGroup=" + pageGroup;
         logger.info("Layout URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
         let layoutUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
         let method ='GET';
@@ -36,6 +50,8 @@ export default {
                 res.send({ "success": false, "error": error }); 
               }
           });
+        
+        });
 
 
   },
