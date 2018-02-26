@@ -114,32 +114,37 @@ export default {
  
   getIdByKeyword(keyword,tokenName){
 	   
-	   console.log("keyword::"+keyword+"---TokenName::"+tokenName);
+	   logger.info("keyword::"+keyword+"---TokenName::"+tokenName);
 
 	   var deferred = q.defer();
-	   
-      database.getRecords(keyword, tokenName,-1, 10051).then(function(response) {
-       logger.info("Response" + JSON.stringify(response));
-       if (Object.keys(response[0]).length > 0) {
-         var keyword = response[0].URLKEYWORD;
-         var tokenType = response[0].TOKENNAME;
-         var tokenValue = response[0].TOKENVALUE;
-         
-         console.log("tokenValue::"+tokenValue);
-
-         deferred.resolve(tokenValue);
-         //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
-       } else {
-          //res.send({ "success": false, "error": "No matching keyword found!" });
-       }
-       
-
-   });
-
+      if(isNaN(keyword)){
+        logger.info("Param is  KeyWord ");
+        database.getRecordsByKeyword(keyword, tokenName,-1, constants.WCS_CAS_STORE_ID).then(function(response) {
+          logger.info("Response" + JSON.stringify(response));
+          if (Object.keys(response[0]).length > 0) {
+            var keyword = response[0].URLKEYWORD;
+            var tokenType = response[0].TOKENNAME;
+            var tokenValue = response[0].TOKENVALUE;
+            deferred.resolve(tokenValue);
+            //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
+          } 
+        });
+      }else{
+        logger.info("Param is  ProductId ");
+        database.getRecordsByProductId(keyword, tokenName,-1, constants.WCS_CAS_STORE_ID).then(function(response) {
+          logger.info("Response" + JSON.stringify(response));
+          if (Object.keys(response[0]).length > 0) {
+            var keyword = response[0].URLKEYWORD;
+            var tokenType = response[0].TOKENNAME;
+            var tokenValue = response[0].TOKENVALUE;
+            deferred.resolve(tokenValue);
+          } 
+        });
+      }
+     
       return deferred.promise;
       
  }
-
 };
 
 

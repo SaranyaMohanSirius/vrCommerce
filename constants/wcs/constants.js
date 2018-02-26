@@ -15,6 +15,7 @@ export default {
    "WCS_LOGIN_IDENTITY": "/loginidentity",
    "WCS_KEYWORD_SUGGESTION":"/sitecontent/keywordSuggestionsByTerm/",
    "WCS_STORE_ID": "10151",
+   "WCS_CAS_STORE_ID": "10051",
    "WCS_CATALOG_ID": "10052",
    "WCS_CART": "/cart/",
    "WCS_CART_EXT": "/cart",

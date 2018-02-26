@@ -17,15 +17,15 @@ export default {
 	getProductDetails: function(req,res){
 		
 		
-		let productId = req.query.productId;
+		let keyWord = req.query.productId;
 		let resourceName = req.query.resourceName;
 		let result;
+		let productId;
 		
-		logger.info("getProductDetails product KeyWord:" + productId);
-		
-		
-		seoController.getIdByKeyword(productId,'ProductToken').then(function(value){
-			let path = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + value + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+		logger.info("getProductDetails product KeyWord:" + keyWord);
+			seoController.getIdByKeyword(keyWord,'ProductToken').then(function(value){
+			productId=value;
+			let path = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
 			let pdpURL = constructUrl(constants.WCS_HOSTNAME, path, false);
 			logger.info("getProductDetails url:" + pdpURL);
 	   		let requestCall = constructRequestWithoutToken(pdpURL,'GET','');
@@ -39,7 +39,8 @@ export default {
 					logger.error('errors in service to getProductDetails in WCS: ', error);
 					res.send({ "success": false, "error": error.response.body.errors[0] }); 
 				}
-	        });;
+			});;
+			
 			let requestFunction = function(data){
 					return new Promise(function(resolve,reject){
 						if(isJson(data)) data = JSON.parse(data);
