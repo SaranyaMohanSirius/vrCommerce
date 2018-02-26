@@ -31,7 +31,7 @@ router.post('/apply', function(req, res){
  *  Route for Delete promotion
  */
 
-router.delete('/delete', function(req, res){
+router.post('/delete', function(req, res){
     promotions.delete(req,res);
 });
 
