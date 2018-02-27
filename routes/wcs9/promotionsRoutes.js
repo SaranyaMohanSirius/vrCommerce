@@ -1,7 +1,8 @@
 import express from 'express';
-import promotions from '../../controllers/wcs/promotionsCtlr';
+import promotions from '../../controllers/wcs9/promotionsCtlr';
 
 let router = express.Router();
+
 
 
 /*
