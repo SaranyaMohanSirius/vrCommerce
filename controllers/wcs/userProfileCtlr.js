@@ -55,18 +55,14 @@ export default {
     getPersonalInformation : function(req,res){
     	logger.info("inside getPersonalInformation");
 
-    	
-        let userId = req.query.userId;
-        
-        console.log("UserId::"+userId);
+        let userId = req.cookies.userId;   
     	let concatPersonalInformationUrl = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_PERSON + userId +constants.WCS_PROFILE_NAME;
         let getPersonalInformationDetailsUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatPersonalInformationUrl,true);
         let methodForPersonalInformation = 'GET';
         let messageData = {};
 
         logger.info("getPersonalInformationDetailsUrl: "+ getPersonalInformationDetailsUrl);
-        let requestCall = constructRequestWithToken(getPersonalInformationDetailsUrl,methodForPersonalInformation,messageData,getTokens(req));
-
+        let requestCall = constructRequestWithToken(getPersonalInformationDetailsUrl,methodForPersonalInformation,messageData,getTokens(req))
         requestPromise(requestCall).then(function (body) {
         	
             let result = userProfileMapper.personalInformationJSON(body); 
