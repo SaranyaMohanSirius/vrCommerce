@@ -128,6 +128,41 @@ export default {
    },
 
    /*
+    * Method to get the all the wishlists for the user  
+    * Request Method: GET
+    */
+
+   loadWishLists: function(req,res){
+    logger.info("inside loadWishLists Controller Load1");
+
+       
+ 	 let concatloadWishListURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_WISHLIST + constants.WCS_AT_SELF+"?responseFormat=json";
+     let loadWishListURL = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatloadWishListURL,true);
+     let methodForLoadWishList = 'GET';
+     let messageData = {};
+
+     logger.info("loadWishListURL: "+ loadWishListURL);
+     let requestCall = constructRequestWithToken(loadWishListURL,methodForLoadWishList,messageData,getTokens(req))
+     requestPromise(requestCall).then(function (body) {
+     	
+         let result = wishListMapper.getWishListLists(body); 
+         console.log("REsult::"+JSON.stringify(result));
+         res.send({
+             "success": true ,
+             "result": result                                          
+         });
+         }).catch(function (error) {
+         if(error.statusCode === 404 || error.statusCode === 400){
+             logger.error('errors in service to getPersonalInformation in WCS: ', JSON.stringify(error));
+             res.send({ "success": false, "error": error.response.body });
+         }else{
+             logger.error('errors in service to getPersonalInformation in WCS: OTHER ', JSON.stringify(error));
+             res.send({ "success": false, "error": error.response.body.errors[0] }); 
+         } 
+         });
+   },
+   
+   /*
     * Method to move a product from wishlist to cart in WCS  
     * Request Method: POST
     * Request Body: 

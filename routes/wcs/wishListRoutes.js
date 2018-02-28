@@ -35,4 +35,12 @@ router.post('/moveWishListItemToCart', function(req, res){
     wishList.moveWishListItemToCart(req,res);
 }); 
 
+/* 
+ * router for loadWishLists 
+ */
+
+router.get('/loadWishLists', function(req, res){
+    wishList.loadWishLists(req,res);
+}); 
+
 export default router;
