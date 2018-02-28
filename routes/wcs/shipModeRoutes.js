@@ -15,7 +15,7 @@ router.get('/getShippingMethods', function(req, res){
  * Router for updateShippingMethods
  */
 
-router.get('/updateShippingMethods', function(req, res){
+router.put('/updateShippingMethods', function(req, res){
     wcsShipModeCtrl.updateShipModes(res,req);
 });
 
