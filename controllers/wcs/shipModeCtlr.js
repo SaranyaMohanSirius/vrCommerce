@@ -3,7 +3,8 @@ import {
 	getLogger,
 	constructUrl,
 	constructRequestWithoutToken,
-	constructRequestWithToken
+	constructRequestWithToken,
+	getTokens
 } from '../../util/wcs/util';
 import shipModeMapper from '../../json_mappers/wcs/shipModeMapper';
 import request from 'request';
@@ -52,7 +53,7 @@ export default {
 
 	updateShipModes: function(res,req){
 	   
-		let shipModeId = req.query.shipModeId;
+		let shipModeId = req.body.shipModeId;
 		let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_UPDATE_SHIP_INFO;
 		logger.info("updateShipModes post form url:" + constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true));		
 		let messageData = {
@@ -60,23 +61,36 @@ export default {
 			"x_calculationUsage": constants.SHIP_CALC_USAGE
 		};
 		let method = "PUT";
-		let requestCall = constructRequestWithToken(constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true),method,messageData);
+		let requestCall = constructRequestWithToken(constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true),method,messageData,getTokens(req));
 		requestPromise(requestCall).then(function (data) {
 			  res.send({
-				"success": true ,
-				"result": {
-					'updateShipModeMsg' : constants.WCS_SHIPMODE_SELECTED
-				},                                            
+				"success": true                                           
 			  });
 		}).catch(function (error) {
-				if(error.response.body){
-					logger.error('errors in service to get ship modes in WCS: ', error.response.body);
-					res.send({ "success": false, "error": error.response.body });
-				}
-			    else {
-					logger.error('errors in service to get ship modes in WCS: ', error);
 					res.send({ "success": false, "error": error });
-			  }
+		});
+	 
+	},
+
+   /*
+    * Method for updating shipping information in WCS  
+    * Request Method: GET
+    */
+
+	getShippingInfo: function(res,req){
+	   
+		let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_UPDATE_SHIP_INFO;
+		logger.info("getShippingInfo get form url:" + constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true));		
+		let messageData = {};
+		let method = "GET";
+		let requestCall = constructRequestWithToken(constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true),method,messageData,getTokens(req));
+		requestPromise(requestCall).then(function (data) {
+			  res.send({
+				"success": true  ,
+				"result": data
+			  });
+		}).catch(function (error) {
+					res.send({ "success": false, "error": error });
 		});
 	 
 	}
