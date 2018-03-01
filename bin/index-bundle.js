@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,7 +86,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _storeConstants = __webpack_require__(22);
+var _storeConstants = __webpack_require__(23);
 
 var _storeConstants2 = _interopRequireDefault(_storeConstants);
 
@@ -167,6 +167,12 @@ exports.default = {
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("json-mapper");
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -192,6 +198,7 @@ exports.default = {
   "WCS_LOGIN_IDENTITY": "/loginidentity",
   "WCS_KEYWORD_SUGGESTION": "/sitecontent/keywordSuggestionsByTerm/",
   "WCS_STORE_ID": "10151",
+  "WCS_CAS_STORE_ID": "10051",
   "WCS_CATALOG_ID": "10052",
   "WCS_CART": "/cart/",
   "WCS_CART_EXT": "/cart",
@@ -262,23 +269,17 @@ exports.default = {
 };
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("json-mapper");
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _mongodb = __webpack_require__(15);
+var _mongodb = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -302,7 +303,7 @@ module.exports = {
 	},
 
 	getLogger: function getLogger() {
-		var winston = __webpack_require__(12);
+		var winston = __webpack_require__(13);
 		var logger = new winston.Logger({
 			transports: [new winston.transports.Console(), new winston.transports.File({ filename: _constants2.default.WCS_LOG_DIR })]
 		});
@@ -413,7 +414,7 @@ module.exports = {
 	},
 
 	getLogger: function getLogger() {
-		var winston = __webpack_require__(12);
+		var winston = __webpack_require__(13);
 		var logger = new winston.Logger({
 			transports: [new winston.transports.Console(), new winston.transports.File({ filename: 'trace.log' })]
 		});
@@ -578,13 +579,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _databaseUtil = __webpack_require__(55);
+var _databaseUtil = __webpack_require__(56);
 
 var _databaseUtil2 = _interopRequireDefault(_databaseUtil);
 
@@ -596,7 +597,7 @@ var _bluebird = __webpack_require__(7);
 
 var _bluebird2 = _interopRequireDefault(_bluebird);
 
-var _q = __webpack_require__(17);
+var _q = __webpack_require__(18);
 
 var _q2 = _interopRequireDefault(_q);
 
@@ -695,25 +696,33 @@ exports.default = {
 
   getIdByKeyword: function getIdByKeyword(keyword, tokenName) {
 
-    console.log("keyword::" + keyword + "---TokenName::" + tokenName);
+    logger.info("keyword::" + keyword + "---TokenName::" + tokenName);
 
     var deferred = _q2.default.defer();
-
-    _databaseUtil2.default.getRecords(keyword, tokenName, -1, 10051).then(function (response) {
-      logger.info("Response" + JSON.stringify(response));
-      if (Object.keys(response[0]).length > 0) {
-        var keyword = response[0].URLKEYWORD;
-        var tokenType = response[0].TOKENNAME;
-        var tokenValue = response[0].TOKENVALUE;
-
-        console.log("tokenValue::" + tokenValue);
-
-        deferred.resolve(tokenValue);
-        //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
-      } else {
-          //res.send({ "success": false, "error": "No matching keyword found!" });
+    if (isNaN(keyword)) {
+      logger.info("Param is  KeyWord ");
+      _databaseUtil2.default.getRecordsByKeyword(keyword, tokenName, -1, _constants2.default.WCS_CAS_STORE_ID).then(function (response) {
+        logger.info("Response" + JSON.stringify(response));
+        if (Object.keys(response[0]).length > 0) {
+          var keyword = response[0].URLKEYWORD;
+          var tokenType = response[0].TOKENNAME;
+          var tokenValue = response[0].TOKENVALUE;
+          deferred.resolve(tokenValue);
+          //res.send({ "success": true, "keyword": keyword, "tokenType": tokenType, "tokenValue": tokenValue});
         }
-    });
+      });
+    } else {
+      logger.info("Param is  ProductId ");
+      _databaseUtil2.default.getRecordsByProductId(keyword, tokenName, -1, _constants2.default.WCS_CAS_STORE_ID).then(function (response) {
+        logger.info("Response" + JSON.stringify(response));
+        if (Object.keys(response[0]).length > 0) {
+          var keyword = response[0].URLKEYWORD;
+          var tokenType = response[0].TOKENNAME;
+          var tokenValue = response[0].TOKENVALUE;
+          deferred.resolve(tokenValue);
+        }
+      });
+    }
 
     return deferred.promise;
   }
@@ -736,11 +745,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -1033,30 +1042,123 @@ exports.default = {
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("winston");
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+
+  "WCS_HOSTNAME": "35.164.254.111",
+  "WCS_HOSTNAME_NOPORT": "35.164.254.111",
+  "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
+  "WCS_CATEGORY_TOP": "/categoryview/@top",
+  "WCS_CATEGORY": "/categoryview/byId/",
+  "WCS_SUB_CATEGORY": "/categoryview/byParentCategory/",
+  "WCS_CATEGORY_DETAILS_APPEND": "/productview/byCategory/",
+  "WCS_REST_URL": "/wcs/resources/store/",
+  "WCS_GUEST_IDENTITY": "/guestidentity",
+  "WCS_LOGIN_IDENTITY": "/loginidentity",
+  "WCS_KEYWORD_SUGGESTION": "/sitecontent/keywordSuggestionsByTerm/",
+  "WCS_STORE_ID": "1",
+  "WCS_CATALOG_ID": "10502",
+  "WCS_CART": "/cart/",
+  "WCS_CART_EXT": "/cart",
+  "WCS_DEFAULT": "/@default",
+  "WCS_WISHLIST": "/wishlist",
+  "WCS_WISHLIST_DELETE": "/wishlist/",
+  "WCS_LANG_ID": "-1",
+  "WCS_SHIPMODES_APPEND": "/cart/shipping_modes",
+  "WCS_INV_AVL": "/inventoryavailability/",
+  "WCS_UPDATE_SHIP_INFO": "/cart/@self/shipping_info",
+  "WCS_LOG_DIR": "log/wcs/trace.log",
+  "HTML_DIR": "WebContent/html/",
+  "WCS_PRODUCT_SEARCH_BY_KEYWORD": "/productview/bySearchTerm/",
+  "WCS_ADDRESS_DETAILS": "/person/@self/contact",
+  "WCS_CHECKOUT_PROFILE": "/person/@self/checkoutProfile",
+  "WCS_PRODUCT_ADDED": "Product Added Successfully",
+  "SLASH": "/",
+  "SHIP_CALC_USAGE": "-1,-2,-3,-4,-5,-6,-7",
+  "WCS_SHIP_INFO": "/cart/@self/shipping_info",
+  "MONGO_DB_URL": "mongodb://admin:passw0rd@ds121716.mlab.com:21716/projectc",
+  "MONGO_DB_COLLECTION_USERS": "users",
+  "WCS_GET_SHOPPINGCART": "/@self",
+  "WCS_AT_SELF": "/@self",
+  "WCS_UPDATE_CART": "/update_order_item",
+  "WCS_DELETE_CART": "/delete_order_item",
+  "WCS_UPDATECART_CALC_USAGE": "-1,-2,-3,-4,-5,-6,-7",
+  "WCS_UPDATECART_CALC_ORDER": "1",
+  "WCS_CART_AT_SELF": "/cart/@self",
+  "WCS_CART_PROMOTIONS": "/cart/@self/assigned_promotion_code",
+  "WCS_ITEM": "item",
+  "WCS_PRODUCT_BYIDS": "/productview/byIds?",
+  "WCS_PRODUCT_BY_SINGLE_ID": "/productview/byId/",
+  "WCS_CART_PRECHECKOUT": "/precheckout",
+  "WCS_CART_CHECKOUT": "/checkout",
+  "WCS_ORDER": "/order/",
+  "WCS_HISTORY": "@history",
+  "WCS_PERSON": "/person/",
+  "WCS_PROFILE_NAME": "?profileName=IBM_User_Registration_Details",
+  "WCS_ACCESS_TOKEN": "access_token",
+  "WCS_TRUSTED_ACCESS_TOKEN": "WCTrustedToken",
+  "WCS_USER_ID": "userId",
+  "WCS_PERSONALIZATION_ID": "personalizationID",
+  "WCS_TOKEN_EXPIRATION_TIME": "1800000",
+  "WCS_REGISTRATION": "/person?mode=self",
+  "WCS_PERSON_AT_SELF": "/person/@self",
+  "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD": "/espot/RecViewed_CatEntries",
+  "WCS_PAYMENT_INSTRUCTION_MASKED": "/payment_instruction/sensitive_data_mask_by_plain_string",
+  "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
+  "HTTP_URI_CONSTANT": "http:",
+  "WCS_SEO": "/seo/seoKeyword",
+  "WCS_LAYOUT": "/page_design?q=byObjectIdentifier",
+  "WCS_ESPOT": "/espot/",
+  "WCS_COOKIE_DOMAIN": ".herokuapp.com",
+
+  "WCS_ADDRESS_ADDED": "Address Added Successfully",
+  "WCS_ADDRESS_DELETED": "Address Deleted Successfully",
+  "WCS_ADDRESS_UPDATED": "Address Updated Successfully",
+  "WCS_ADDRESS_SELECTED": "Address Selected Successfully",
+  "WCS_SHIPMODE_SELECTED": "Ship mode updated successfully",
+
+  /*To be got from the UI*/
+  "WCS_AUTH_TOKEN": "12022%2C16Y0w9HO0rAvYKi42p4R3in9WzOQPJ2r8TMIejt6MF%2B4Skkt9f%2F%2FKf71IjRZHCf2cYp2UYzx2i3BGMwV9r5PzWAX5FGAZDsQhAErIsRZEEqWwLMXy6h6ethm5ngU0ijtNQaniaD%2FTOlllsVOreE4PYegQVzOkaXtACIhtQWUZr2RbaMC80nqEG6ORDp6CfKqua3wmqRUbHyqdRhmceBeMDfCs3OziIpsrO7tKefTyJQ%3D",
+  "WCS_TRUSTED_TOKEN": "12022%2CR97hA7x3qfhBXYmRxOYjCaldMf8A9E2b%2BeLYoYpCneY%3D",
+  "WCS_DOUBLE_SLASH": "//",
+
+  "DB_URL": "mongodb://HeadStart:Headless1@ds125628.mlab.com:25628/headstartdb"
+
+};
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = require("underscore");
+module.exports = require("winston");
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports) {
 
-module.exports = require("request");
+module.exports = require("underscore");
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = require("mongodb");
+module.exports = require("request");
 
 /***/ }),
 /* 16 */
+/***/ (function(module, exports) {
+
+module.exports = require("mongodb");
+
+/***/ }),
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1066,11 +1168,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -1419,106 +1521,145 @@ exports.default = {
 };
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("q");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+
+var _constants = __webpack_require__(4);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _util = __webpack_require__(5);
+
+var _requestPromise = __webpack_require__(1);
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _bluebird = __webpack_require__(7);
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = (0, _util.getLogger)();
+
 exports.default = {
+    /**
+     * Method for logging in
+     * Request method - POST
+     * Request body - logonId,logonPassword
+     */
+    loginIdentityHandler: function loginIdentityHandler(req, res) {
+        var concatUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_LOGIN_IDENTITY;
+        var loginUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatUrl, true);
+        logger.info("Login url = " + loginUrl);
+        var method = 'POST';
+        var messageData = {
+            "logonId": req.body.logonId,
+            "logonPassword": req.body.logonPassword
+        };
+        logger.info("messageData = " + req.body.logonId + "|" + req.body.logonPassword);
+        var logonCall = (0, _util.constructRequestWithoutToken)(loginUrl, method, messageData, '');
+        (0, _requestPromise2.default)(logonCall).then(function (result) {
+            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
+            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
+            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
+            res.cookie(_constants2.default.WCS_USER_ID, result.userId);
+            res.send({
+                "success": true
+            });
+        }).catch(function (error) {
+            if (error.statusCode === 404) {
+                logger.error('errors in service to loginIdentityHandler in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to loginIdentityHandler in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
+        });
+    },
+    /**
+     * Method for creating guest user
+     * Request method - POST
+     */
+    guestIdentityHandler: function guestIdentityHandler(req, res) {
+        logger.info("inside guestIdentityHandler");
+        return new _bluebird2.default(function (resolve, reject) {
+            var concatUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_GUEST_IDENTITY;
+            var guestIdentityUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatUrl, true);
+            logger.info("GuestIdentityUrl = " + guestIdentityUrl);
+            var method = 'POST';
+            var guestCall = (0, _util.constructRequestWithoutToken)(guestIdentityUrl, method, '');
+            (0, _requestPromise2.default)(guestCall).then(function (result) {
+                result = JSON.parse(result);
+                res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
+                res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
+                res.cookie(_constants2.default.WCS_USER_ID, result.userId);
+                res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
+                res.send({
+                    "success": true
+                });
+            }).catch(function (error) {
+                if (error.statusCode === 404) {
+                    logger.error('errors in service to guestIdentityHandler in WCS: ', error);
+                    res.send({ "success": false, "error": error.response.body });
+                } else {
+                    logger.error('errors in service to guestIdentityHandler in WCS: ', error);
+                    res.send({ "success": false, "error": error.response.body.errors[0] });
+                }
+            });
+        });
+    },
 
-  "WCS_HOSTNAME": "192.168.29.245",
-  "WCS_HOSTNAME_NOPORT": "192.168.29.245",
-  "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
-  "WCS_CATEGORY_TOP": "/categoryview/@top",
-  "WCS_CATEGORY": "/categoryview/byId/",
-  "WCS_SUB_CATEGORY": "/categoryview/byParentCategory/",
-  "WCS_CATEGORY_DETAILS_APPEND": "/productview/byCategory/",
-  "WCS_REST_URL": "/wcs/resources/store/",
-  "WCS_GUEST_IDENTITY": "/guestidentity",
-  "WCS_LOGIN_IDENTITY": "/loginidentity",
-  "WCS_KEYWORD_SUGGESTION": "/sitecontent/keywordSuggestionsByTerm/",
-  "WCS_STORE_ID": "1",
-  "WCS_CATALOG_ID": "10502",
-  "WCS_CART": "/cart/",
-  "WCS_CART_EXT": "/cart",
-  "WCS_DEFAULT": "/@default",
-  "WCS_WISHLIST": "/wishlist",
-  "WCS_WISHLIST_DELETE": "/wishlist/",
-  "WCS_LANG_ID": "-1",
-  "WCS_SHIPMODES_APPEND": "/cart/shipping_modes",
-  "WCS_INV_AVL": "/inventoryavailability/",
-  "WCS_UPDATE_SHIP_INFO": "/cart/@self/shipping_info",
-  "WCS_LOG_DIR": "log/wcs/trace.log",
-  "HTML_DIR": "WebContent/html/",
-  "WCS_PRODUCT_SEARCH_BY_KEYWORD": "/productview/bySearchTerm/",
-  "WCS_ADDRESS_DETAILS": "/person/@self/contact",
-  "WCS_CHECKOUT_PROFILE": "/person/@self/checkoutProfile",
-  "WCS_PRODUCT_ADDED": "Product Added Successfully",
-  "SLASH": "/",
-  "SHIP_CALC_USAGE": "-1,-2,-3,-4,-5,-6,-7",
-  "WCS_SHIP_INFO": "/cart/@self/shipping_info",
-  "MONGO_DB_URL": "mongodb://admin:passw0rd@ds121716.mlab.com:21716/projectc",
-  "MONGO_DB_COLLECTION_USERS": "users",
-  "WCS_GET_SHOPPINGCART": "/@self",
-  "WCS_AT_SELF": "/@self",
-  "WCS_UPDATE_CART": "/update_order_item",
-  "WCS_DELETE_CART": "/delete_order_item",
-  "WCS_UPDATECART_CALC_USAGE": "-1,-2,-3,-4,-5,-6,-7",
-  "WCS_UPDATECART_CALC_ORDER": "1",
-  "WCS_CART_AT_SELF": "/cart/@self",
-  "WCS_CART_PROMOTIONS": "/cart/@self/assigned_promotion_code",
-  "WCS_ITEM": "item",
-  "WCS_PRODUCT_BYIDS": "/productview/byIds?",
-  "WCS_PRODUCT_BY_SINGLE_ID": "/productview/byId/",
-  "WCS_CART_PRECHECKOUT": "/precheckout",
-  "WCS_CART_CHECKOUT": "/checkout",
-  "WCS_ORDER": "/order/",
-  "WCS_HISTORY": "@history",
-  "WCS_PERSON": "/person/",
-  "WCS_PROFILE_NAME": "?profileName=IBM_User_Registration_Details",
-  "WCS_ACCESS_TOKEN": "access_token",
-  "WCS_TRUSTED_ACCESS_TOKEN": "WCTrustedToken",
-  "WCS_USER_ID": "userId",
-  "WCS_PERSONALIZATION_ID": "personalizationID",
-  "WCS_TOKEN_EXPIRATION_TIME": "1800000",
-  "WCS_REGISTRATION": "/person?mode=self",
-  "WCS_PERSON_AT_SELF": "/person/@self",
-  "WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD": "/espot/RecViewed_CatEntries",
-  "WCS_PAYMENT_INSTRUCTION_MASKED": "/payment_instruction/sensitive_data_mask_by_plain_string",
-  "WCS_PAYMENT_INSTRUCTION": "/payment_instruction",
-  "HTTP_URI_CONSTANT": "http:",
-  "WCS_SEO": "/seo/seoKeyword",
-  "WCS_LAYOUT": "/page_design?q=byObjectIdentifier",
-  "WCS_ESPOT": "/espot/",
-  "WCS_COOKIE_DOMAIN": ".herokuapp.com",
-
-  "WCS_ADDRESS_ADDED": "Address Added Successfully",
-  "WCS_ADDRESS_DELETED": "Address Deleted Successfully",
-  "WCS_ADDRESS_UPDATED": "Address Updated Successfully",
-  "WCS_ADDRESS_SELECTED": "Address Selected Successfully",
-  "WCS_SHIPMODE_SELECTED": "Ship mode updated successfully",
-
-  /*To be got from the UI*/
-  "WCS_AUTH_TOKEN": "12022%2C16Y0w9HO0rAvYKi42p4R3in9WzOQPJ2r8TMIejt6MF%2B4Skkt9f%2F%2FKf71IjRZHCf2cYp2UYzx2i3BGMwV9r5PzWAX5FGAZDsQhAErIsRZEEqWwLMXy6h6ethm5ngU0ijtNQaniaD%2FTOlllsVOreE4PYegQVzOkaXtACIhtQWUZr2RbaMC80nqEG6ORDp6CfKqua3wmqRUbHyqdRhmceBeMDfCs3OziIpsrO7tKefTyJQ%3D",
-  "WCS_TRUSTED_TOKEN": "12022%2CR97hA7x3qfhBXYmRxOYjCaldMf8A9E2b%2BeLYoYpCneY%3D",
-  "WCS_DOUBLE_SLASH": "//",
-
-  "DB_URL": "mongodb://HeadStart:Headless1@ds125628.mlab.com:25628/headstartdb"
+    /**
+     * Method for creating guest user
+     * Request method - DELETE
+     */
+    logoutUser: function logoutUser(req, res) {
+        logger.info("inside logout user");
+        return new _bluebird2.default(function (resolve, reject) {
+            var concatUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_LOGIN_IDENTITY + _constants2.default.WCS_AT_SELF;
+            var logoutUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatUrl, true);
+            logger.info("Logout user = " + logoutUrl);
+            var method = 'DELETE';
+            var messageData = {};
+            var guestCall = (0, _util.constructRequestWithoutToken)(logoutUrl, method, messageData);
+            (0, _requestPromise2.default)(guestCall).then(function (result) {
+                res.clearCookie(_constants2.default.WCS_ACCESS_TOKEN);
+                res.clearCookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN);
+                res.clearCookie(_constants2.default.WCS_PERSONALIZATION_ID);
+                res.clearCookie(_constants2.default.WCS_USER_ID);
+                res.send({
+                    "success": true
+                });
+            }).catch(function (error) {
+                if (error.statusCode === 404) {
+                    logger.error('errors in service to logout in WCS: ', error);
+                    res.send({ "success": false, "error": error.response.body });
+                } else {
+                    logger.error('errors in service to logout in WCS: ', error);
+                    res.send({ "success": false, "error": error.response.body.errors[0] });
+                }
+            });
+        });
+    }
 
 };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1534,19 +1675,19 @@ var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
 var _util = __webpack_require__(6);
 
-var _epIndex = __webpack_require__(20);
+var _epIndex = __webpack_require__(21);
 
 var _epIndex2 = _interopRequireDefault(_epIndex);
 
-var _wcsIndex = __webpack_require__(52);
+var _wcsIndex = __webpack_require__(53);
 
 var _wcsIndex2 = _interopRequireDefault(_wcsIndex);
 
-var _wcs9Index = __webpack_require__(95);
+var _wcs9Index = __webpack_require__(94);
 
 var _wcs9Index2 = _interopRequireDefault(_wcs9Index);
 
-var _cookieParser = __webpack_require__(99);
+var _cookieParser = __webpack_require__(101);
 
 var _cookieParser2 = _interopRequireDefault(_cookieParser);
 
@@ -1563,7 +1704,7 @@ app.use((0, _cookieParser2.default)());
 
 //To Allow Cross Domain
 var allowCrossDomain = function allowCrossDomain(req, res, next) {
-  var allowedOrigins = ['http://localhost:4200', 'http://project-c-web-app.herokuapp.com', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200'];
+  var allowedOrigins = ['http://localhost:4200', 'http://project-c-web-app.herokuapp.com', 'https://project-c-web-app.herokuapp.com', 'http://127.0.0.1:4200', 'http://34.216.254.83:4200', 'http://34.216.254.83:5000'];
   var origin = req.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -1597,7 +1738,7 @@ app.listen(app.get('port'), function () {
 });
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1611,47 +1752,47 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _loginRoutes = __webpack_require__(21);
+var _loginRoutes = __webpack_require__(22);
 
 var _loginRoutes2 = _interopRequireDefault(_loginRoutes);
 
-var _searchRoutes = __webpack_require__(23);
+var _searchRoutes = __webpack_require__(24);
 
 var _searchRoutes2 = _interopRequireDefault(_searchRoutes);
 
-var _categoryRoutes = __webpack_require__(26);
+var _categoryRoutes = __webpack_require__(27);
 
 var _categoryRoutes2 = _interopRequireDefault(_categoryRoutes);
 
-var _pdpRoutes = __webpack_require__(29);
+var _pdpRoutes = __webpack_require__(30);
 
 var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
 
-var _cartRoutes = __webpack_require__(32);
+var _cartRoutes = __webpack_require__(33);
 
 var _cartRoutes2 = _interopRequireDefault(_cartRoutes);
 
-var _shipModeRoutes = __webpack_require__(35);
+var _shipModeRoutes = __webpack_require__(36);
 
 var _shipModeRoutes2 = _interopRequireDefault(_shipModeRoutes);
 
-var _addressRoutes = __webpack_require__(38);
+var _addressRoutes = __webpack_require__(39);
 
 var _addressRoutes2 = _interopRequireDefault(_addressRoutes);
 
-var _wishListRoutes = __webpack_require__(41);
+var _wishListRoutes = __webpack_require__(42);
 
 var _wishListRoutes2 = _interopRequireDefault(_wishListRoutes);
 
-var _promotionsRoutes = __webpack_require__(44);
+var _promotionsRoutes = __webpack_require__(45);
 
 var _promotionsRoutes2 = _interopRequireDefault(_promotionsRoutes);
 
-var _registerRoutes = __webpack_require__(47);
+var _registerRoutes = __webpack_require__(48);
 
 var _registerRoutes2 = _interopRequireDefault(_registerRoutes);
 
-var _userProfileRoutes = __webpack_require__(49);
+var _userProfileRoutes = __webpack_require__(50);
 
 var _userProfileRoutes2 = _interopRequireDefault(_userProfileRoutes);
 
@@ -1674,7 +1815,7 @@ app.use('/ep/userProfile/', _userProfileRoutes2.default);
 exports.default = app;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1720,7 +1861,7 @@ router.delete('/logout', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1737,7 +1878,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1751,7 +1892,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _searchCtlr = __webpack_require__(24);
+var _searchCtlr = __webpack_require__(25);
 
 var _searchCtlr2 = _interopRequireDefault(_searchCtlr);
 
@@ -1774,7 +1915,7 @@ router.get('/getSearchResults', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1786,7 +1927,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _searchMapper = __webpack_require__(25);
+var _searchMapper = __webpack_require__(26);
 
 var _searchMapper2 = _interopRequireDefault(_searchMapper);
 
@@ -1861,7 +2002,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1871,7 +2012,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -1933,7 +2074,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1947,7 +2088,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _categoryCtlr = __webpack_require__(27);
+var _categoryCtlr = __webpack_require__(28);
 
 var _categoryCtlr2 = _interopRequireDefault(_categoryCtlr);
 
@@ -1974,7 +2115,7 @@ router.get('/getProductsListForCategory', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1988,7 +2129,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _categoryMapper = __webpack_require__(28);
+var _categoryMapper = __webpack_require__(29);
 
 var _categoryMapper2 = _interopRequireDefault(_categoryMapper);
 
@@ -2118,7 +2259,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2128,7 +2269,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -2231,7 +2372,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2245,7 +2386,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpCtlr = __webpack_require__(30);
+var _pdpCtlr = __webpack_require__(31);
 
 var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
 
@@ -2264,7 +2405,7 @@ router.get('/getProductDetails', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2278,7 +2419,7 @@ var _util = __webpack_require__(6);
 
 var _loginCtlr = __webpack_require__(8);
 
-var _pdpMapper = __webpack_require__(31);
+var _pdpMapper = __webpack_require__(32);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -2286,11 +2427,11 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _underscore = __webpack_require__(13);
+var _underscore = __webpack_require__(14);
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -2360,7 +2501,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2370,7 +2511,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -2514,7 +2655,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2528,7 +2669,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _cartCtlr = __webpack_require__(33);
+var _cartCtlr = __webpack_require__(34);
 
 var _cartCtlr2 = _interopRequireDefault(_cartCtlr);
 
@@ -2588,7 +2729,7 @@ router.post('/submitOrder', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2602,7 +2743,7 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _cartMapper = __webpack_require__(34);
+var _cartMapper = __webpack_require__(35);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
 
@@ -2867,7 +3008,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2883,7 +3024,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -3204,7 +3345,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3218,7 +3359,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _shipModeCtlr = __webpack_require__(36);
+var _shipModeCtlr = __webpack_require__(37);
 
 var _shipModeCtlr2 = _interopRequireDefault(_shipModeCtlr);
 
@@ -3247,7 +3388,7 @@ router.get('/updateShippingMethod', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3261,11 +3402,11 @@ var _util = __webpack_require__(6);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _shipModeMapper = __webpack_require__(37);
+var _shipModeMapper = __webpack_require__(38);
 
 var _shipModeMapper2 = _interopRequireDefault(_shipModeMapper);
 
-var _request = __webpack_require__(14);
+var _request = __webpack_require__(15);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -3339,7 +3480,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3349,7 +3490,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -3390,7 +3531,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3404,7 +3545,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _addressCtlr = __webpack_require__(39);
+var _addressCtlr = __webpack_require__(40);
 
 var _addressCtlr2 = _interopRequireDefault(_addressCtlr);
 
@@ -3469,7 +3610,7 @@ router.post('/selectBillingAddress', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3483,7 +3624,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _addressMapper = __webpack_require__(40);
+var _addressMapper = __webpack_require__(41);
 
 var _addressMapper2 = _interopRequireDefault(_addressMapper);
 
@@ -3746,7 +3887,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3756,7 +3897,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -3901,7 +4042,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3915,7 +4056,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _wishListCtlr = __webpack_require__(42);
+var _wishListCtlr = __webpack_require__(43);
 
 var _wishListCtlr2 = _interopRequireDefault(_wishListCtlr);
 
@@ -3956,7 +4097,7 @@ router.post('/moveWishListItemToCart', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3972,7 +4113,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _wishListMapper = __webpack_require__(43);
+var _wishListMapper = __webpack_require__(44);
 
 var _wishListMapper2 = _interopRequireDefault(_wishListMapper);
 
@@ -4168,7 +4309,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4184,7 +4325,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -4241,7 +4382,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4255,7 +4396,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _promotionsCtlr = __webpack_require__(45);
+var _promotionsCtlr = __webpack_require__(46);
 
 var _promotionsCtlr2 = _interopRequireDefault(_promotionsCtlr);
 
@@ -4308,7 +4449,7 @@ router.delete('/delete', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4326,7 +4467,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _promotionsMapper = __webpack_require__(46);
+var _promotionsMapper = __webpack_require__(47);
 
 var _promotionsMapper2 = _interopRequireDefault(_promotionsMapper);
 
@@ -4464,7 +4605,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4474,7 +4615,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -4527,7 +4668,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4545,7 +4686,7 @@ var _bodyParser = __webpack_require__(10);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _registerCtlr = __webpack_require__(48);
+var _registerCtlr = __webpack_require__(49);
 
 var _registerCtlr2 = _interopRequireDefault(_registerCtlr);
 
@@ -4566,7 +4707,7 @@ router.post('/register', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4633,7 +4774,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4647,7 +4788,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _userProfileCtlr = __webpack_require__(50);
+var _userProfileCtlr = __webpack_require__(51);
 
 var _userProfileCtlr2 = _interopRequireDefault(_userProfileCtlr);
 
@@ -4686,7 +4827,7 @@ router.get('/getPersonalInformation', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4704,7 +4845,7 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(6);
 
-var _userProfileMapper = __webpack_require__(51);
+var _userProfileMapper = __webpack_require__(52);
 
 var _userProfileMapper2 = _interopRequireDefault(_userProfileMapper);
 
@@ -4805,7 +4946,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4821,7 +4962,7 @@ var _constants = __webpack_require__(2);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -4937,7 +5078,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4951,7 +5092,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpRoutes = __webpack_require__(53);
+var _pdpRoutes = __webpack_require__(54);
 
 var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
 
@@ -4991,27 +5132,27 @@ var _loginRoute = __webpack_require__(80);
 
 var _loginRoute2 = _interopRequireDefault(_loginRoute);
 
-var _userProfileRoutes = __webpack_require__(82);
+var _userProfileRoutes = __webpack_require__(81);
 
 var _userProfileRoutes2 = _interopRequireDefault(_userProfileRoutes);
 
-var _registrationRoutes = __webpack_require__(85);
+var _registrationRoutes = __webpack_require__(84);
 
 var _registrationRoutes2 = _interopRequireDefault(_registrationRoutes);
 
-var _myAccountRoutes = __webpack_require__(87);
+var _myAccountRoutes = __webpack_require__(86);
 
 var _myAccountRoutes2 = _interopRequireDefault(_myAccountRoutes);
 
-var _paymentRoutes = __webpack_require__(89);
+var _paymentRoutes = __webpack_require__(88);
 
 var _paymentRoutes2 = _interopRequireDefault(_paymentRoutes);
 
-var _seoRoutes = __webpack_require__(92);
+var _seoRoutes = __webpack_require__(91);
 
 var _seoRoutes2 = _interopRequireDefault(_seoRoutes);
 
-var _layoutRoutes = __webpack_require__(93);
+var _layoutRoutes = __webpack_require__(92);
 
 var _layoutRoutes2 = _interopRequireDefault(_layoutRoutes);
 
@@ -5039,7 +5180,7 @@ app.use('/wcs/page', _layoutRoutes2.default);
 exports.default = app;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5053,7 +5194,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpCtlr = __webpack_require__(54);
+var _pdpCtlr = __webpack_require__(55);
 
 var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
 
@@ -5079,7 +5220,7 @@ router.get('/getRecentlyViewedProducts', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5089,13 +5230,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _pdpMapper = __webpack_require__(16);
+var _pdpMapper = __webpack_require__(17);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -5125,14 +5266,15 @@ exports.default = {
 
 	getProductDetails: function getProductDetails(req, res) {
 
-		var productId = req.query.productId;
+		var keyWord = req.query.productId;
 		var resourceName = req.query.resourceName;
 		var result = void 0;
+		var productId = void 0;
 
-		logger.info("getProductDetails product KeyWord:" + productId);
-
-		_seoCtlr2.default.getIdByKeyword(productId, 'ProductToken').then(function (value) {
-			var path = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PRODUCT_DETAILS_APPEND + value + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
+		logger.info("getProductDetails product KeyWord:" + keyWord);
+		_seoCtlr2.default.getIdByKeyword(keyWord, 'ProductToken').then(function (value) {
+			productId = value;
+			var path = _constants2.default.WCS_PRODUCT_DETAILS + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PRODUCT_DETAILS_APPEND + productId + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
 			var pdpURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME, path, false);
 			logger.info("getProductDetails url:" + pdpURL);
 			var requestCall = (0, _util.constructRequestWithoutToken)(pdpURL, 'GET', '');
@@ -5147,6 +5289,7 @@ exports.default = {
 					res.send({ "success": false, "error": error.response.body.errors[0] });
 				}
 			});;
+
 			var requestFunction = function requestFunction(data) {
 				return new _bluebird2.default(function (resolve, reject) {
 					if ((0, _util.isJson)(data)) data = JSON.parse(data);
@@ -5214,7 +5357,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5224,36 +5367,39 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _q = __webpack_require__(17);
+var _q = __webpack_require__(18);
 
 var _q2 = _interopRequireDefault(_q);
 
-var _util = __webpack_require__(56);
+var _util = __webpack_require__(5);
 
-var _util2 = _interopRequireDefault(_util);
-
-var _mongodb = __webpack_require__(15);
+var _mongodb = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var database;
-// let logger= getLogger();
+var logger = (0, _util.getLogger)();
+/**
+ * 
+ * lets import the mongodb native drivers.
+ *We need to work with "MongoClient" interface in order to connect to a mongodb server.
+*/
 
-// Use connect method to connect to the Server
-// Init method
 
-
-//lets import the mongodb native drivers.
-//We need to work with "MongoClient" interface in order to connect to a mongodb server.
+/**
+ * 
+ *  Use connect method to connect to the Server
+ *  Init method
+ */
 _mongodb.MongoClient.connect(_constants2.default.DB_URL, function (err, db) {
     if (err) {
-        console.log('Unable to connect to the mongoDB server. Error:', err);
+        logger.info('Unable to connect to the mongoDB server. Error:', err);
     } else {
-        console.log('Connection established to: ' + _constants2.default.DB_URL);
+        logger.info('Connection established to: ' + _constants2.default.DB_URL);
         database = db;
     }
 });
@@ -5269,41 +5415,87 @@ exports.default = {
         var collection = database.collection('seo');
         collection.find({ "TOKENNAME": tokenType, "TOKENVALUE": parseInt(uniqueId), "STOREENT_ID": storeId, "STATUS": 1, "LANGUAGE_ID": langId }).toArray(function (err, result) {
             var response = {};
-            console.log(JSON.stringify(result));
+            logger.info(JSON.stringify(result));
             if (err) {
-                console.log(err);
+                logger.info(err);
                 response.errorObject = err;
                 deferred.reject(response);
             } else if (result.length) {
                 deferred.resolve(result);
             } else {
-                console.log('No document(s) found with defined "find" criteria!');
+                logger.info('No document(s) found with defined "find" criteria!');
                 deferred.resolve(result);
             }
         });
 
         return deferred.promise;
     },
-
     /* 
-    * Method for getting the records from DB
-    * Params: uniqueId, tokenType
+    * Method for getting the records from DB  Old Function
+    * Params: Keyword
     */
-    getRecords: function getRecords(keyword, tokenName, langId, storeId) {
-
+    getRecords: function getRecords(keyword) {
         var deferred = _q2.default.defer();
         var collection = database.collection('seo');
-        collection.find({ "URLKEYWORD": keyword, "TOKENNAME": tokenName, "STOREENT_ID": storeId, "STATUS": 1, "LANGUAGE_ID": langId }).toArray(function (err, result) {
+        collection.find({ "URLKEYWORD": keyword }).toArray(function (err, result) {
             var response = {};
-            console.log(JSON.stringify(result));
+            logger.info(JSON.stringify(result));
             if (err) {
-                console.log(err);
+                logger.info('Errror in getRecords' + err);
                 response.errorObject = err;
                 deferred.reject(response);
             } else if (result.length) {
                 deferred.resolve(result);
             } else {
-                console.log('No document(s) found with defined "find" criteria!');
+                logger.info('No document(s) found with defined "find" criteria!');
+                deferred.resolve(result);
+            }
+        });
+
+        return deferred.promise;
+    },
+    /* 
+    * Method for getting the records from DB
+    * Params:  keyWord, TokenName ,langId,storeId
+    */
+    getRecordsByKeyword: function getRecordsByKeyword(keyword, tokenName, langId, storeId) {
+        var deferred = _q2.default.defer();
+        var collection = database.collection('seo');
+        collection.find({ "URLKEYWORD": keyword, "TOKENNAME": tokenName, "STOREENT_ID": parseInt(storeId), "STATUS": 1, "LANGUAGE_ID": langId }).toArray(function (err, result) {
+            var response = {};
+            logger.info(JSON.stringify(result));
+            if (err) {
+                logger.info('Errror in getRecordsByKeyword' + err);
+                response.errorObject = err;
+                deferred.reject(response);
+            } else if (result.length) {
+                deferred.resolve(result);
+            } else {
+                logger.info('No document(s) found with defined "find" criteria!');
+                deferred.resolve(result);
+            }
+        });
+
+        return deferred.promise;
+    },
+    /* 
+    * Method for getting the records from DB
+    * Params: ProductId, TokenName ,langId,storeId
+    */
+    getRecordsByProductId: function getRecordsByProductId(productId, tokenName, langId, storeId) {
+        var deferred = _q2.default.defer();
+        var collection = database.collection('seo');
+        collection.find({ "TOKENVALUE": parseInt(productId), "TOKENNAME": tokenName, "STOREENT_ID": parseInt(storeId), "STATUS": 1, "LANGUAGE_ID": langId }).toArray(function (err, result) {
+            var response = {};
+            logger.info(JSON.stringify(result));
+            if (err) {
+                logger.info('Errror in getRecordsByProductId' + err);
+                response.errorObject = err;
+                deferred.reject(response);
+            } else if (result.length) {
+                deferred.resolve(result);
+            } else {
+                logger.info('No document(s) found with defined "find" criteria!');
                 deferred.resolve(result);
             }
         });
@@ -5311,12 +5503,6 @@ exports.default = {
         return deferred.promise;
     }
 };
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-module.exports = require("util");
 
 /***/ }),
 /* 57 */
@@ -5389,7 +5575,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -5596,11 +5782,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -5793,10 +5979,18 @@ router.get('/getShippingMethods', function (req, res) {
 });
 
 /* 
+ * Router for getShippingMethods
+ */
+
+router.get('/getShippingInfo', function (req, res) {
+  _shipModeCtlr2.default.getShippingInfo(res, req);
+});
+
+/* 
  * Router for updateShippingMethods
  */
 
-router.get('/updateShippingMethods', function (req, res) {
+router.put('/updateShippingMethods', function (req, res) {
   _shipModeCtlr2.default.updateShipModes(res, req);
 });
 
@@ -5813,7 +6007,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -5823,7 +6017,7 @@ var _shipModeMapper = __webpack_require__(62);
 
 var _shipModeMapper2 = _interopRequireDefault(_shipModeMapper);
 
-var _request = __webpack_require__(14);
+var _request = __webpack_require__(15);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -5874,7 +6068,7 @@ exports.default = {
 
 	updateShipModes: function updateShipModes(res, req) {
 
-		var shipModeId = req.query.shipModeId;
+		var shipModeId = req.body.shipModeId;
 		var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_UPDATE_SHIP_INFO;
 		logger.info("updateShipModes post form url:" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true));
 		var messageData = {
@@ -5882,22 +6076,35 @@ exports.default = {
 			"x_calculationUsage": _constants2.default.SHIP_CALC_USAGE
 		};
 		var method = "PUT";
-		var requestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true), method, messageData);
+		var requestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true), method, messageData, (0, _util.getTokens)(req));
+		(0, _requestPromise2.default)(requestCall).then(function (data) {
+			res.send({
+				"success": true
+			});
+		}).catch(function (error) {
+			res.send({ "success": false, "error": error });
+		});
+	},
+
+	/*
+  * Method for updating shipping information in WCS  
+  * Request Method: GET
+  */
+
+	getShippingInfo: function getShippingInfo(res, req) {
+
+		var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_UPDATE_SHIP_INFO;
+		logger.info("getShippingInfo get form url:" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true));
+		var messageData = {};
+		var method = "GET";
+		var requestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true), method, messageData, (0, _util.getTokens)(req));
 		(0, _requestPromise2.default)(requestCall).then(function (data) {
 			res.send({
 				"success": true,
-				"result": {
-					'updateShipModeMsg': _constants2.default.WCS_SHIPMODE_SELECTED
-				}
+				"result": data
 			});
 		}).catch(function (error) {
-			if (error.response.body) {
-				logger.error('errors in service to get ship modes in WCS: ', error.response.body);
-				res.send({ "success": false, "error": error.response.body });
-			} else {
-				logger.error('errors in service to get ship modes in WCS: ', error);
-				res.send({ "success": false, "error": error });
-			}
+			res.send({ "success": false, "error": error });
 		});
 	}
 
@@ -5914,7 +6121,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -5996,7 +6203,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _util = __webpack_require__(5);
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -6127,11 +6334,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -6163,6 +6370,7 @@ exports.default = {
                 displayName: 'name',
                 code: 'partNumber',
                 store: 'storeID',
+                seoKeyword: 'seo_token_ntk',
                 thumbnail: ['thumbnail', function (url) {
                     if (url) {
                         return _constants2.default.WCS_DOUBLE_SLASH + _constants2.default.WCS_HOSTNAME_NOPORT + url;
@@ -6285,7 +6493,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -6361,33 +6569,16 @@ exports.default = {
 		var addAddressURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ADDRESS_DETAILS;
 		logger.info("addAddress POST form url:" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, addAddressURL, true));
 		var method = 'POST';
-		var messageData = {
-			"firstName": req.body.firstName,
-			"lastName": req.body.lastName,
-			"addressType": req.body.addressType,
-			"zipCode": req.body.zipCode,
-			"addressLine": req.body.addressLine,
-			"city": req.body.city,
-			"state": req.body.state,
-			"country": req.body.country,
-			"nickName": nickName
-		};
-		var requestCall = (0, _util.constructRequest)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, addAddressURL, true), method, messageData);
+		var messageData = req.body;
+		var requestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, addAddressURL, true), method, messageData, (0, _util.getTokens)(req));
 		logger.info("requestCAll " + JSON.stringify((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, addAddressURL, true)));
 		(0, _requestPromise2.default)(requestCall).then(function (data) {
-			var result = _addressMapper2.default.mapAddAddressJSON(data);
 			res.send({
-				"success": true,
-				"result": result
+				"success": true
 			});
 		}).catch(function (error) {
-			if (error.response.body) {
-				logger.error('errors in service to add Address in WCS: ', error.response.body);
-				res.send({ "success": false, "error": error.response.body });
-			} else {
-				logger.error('errors in service to add Address in WCS: ', error);
-				res.send({ "success": false, "error": error });
-			}
+			console.log("addressCtlr => addShippingAddress", error);
+			res.send({ "success": false, "error": error });
 		});
 	},
 
@@ -6398,35 +6589,19 @@ exports.default = {
   */
 
 	updateShippingAddress: function updateShippingAddress(res, req) {
-		var uri = req.query.nickName;
-		var updateAddressURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ADDRESS_DETAILS + _constants2.default.SLASH + uri;
+		var nickName = req.body.nickName;
+		var updateAddressURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ADDRESS_DETAILS + _constants2.default.SLASH + nickName;
 		logger.info("updateAddress PUT form url:" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, updateAddressURL, true));
 		var method = 'PUT';
-		var messageData = {
-			"firstName": req.body.firstName,
-			"lastName": req.body.lastName,
-			"addressType": req.body.addressType,
-			"zipCode": req.body.zipCode,
-			"addressLine": req.body.addressLine[0],
-			"city": req.body.city,
-			"state": req.body.state,
-			"country": req.body.country
-		};
-		var requestCall = (0, _util.constructRequest)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, updateAddressURL, true), method, messageData);
+		var messageData = req.body;
+		var requestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, updateAddressURL, true), method, messageData, (0, _util.getTokens)(req));
 		(0, _requestPromise2.default)(requestCall).then(function (data) {
-			var result = _addressMapper2.default.mapUpdateAddressJSON(data);
 			res.send({
-				"success": true,
-				"result": result
+				"success": true
 			});
 		}).catch(function (error) {
-			if (error.response.body) {
-				logger.error('errors in service to update Address in WCS: ', error.response.body);
-				res.send({ "success": false, "error": error.response.body });
-			} else {
-				logger.error('errors in service to update Address in WCS: ', error);
-				res.send({ "success": false, "error": error });
-			}
+			console.log("addressCtlr => addShippingAddress", error);
+			res.send({ "success": false, "error": error });
 		});
 	},
 
@@ -6437,26 +6612,19 @@ exports.default = {
   */
 
 	deleteShippingAddress: function deleteShippingAddress(res, req) {
-		var uri = req.query.nickName;
-		var deleteAddressURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ADDRESS_DETAILS + _constants2.default.SLASH + uri;
+		var nickName = req.query.nickName;
+		var deleteAddressURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ADDRESS_DETAILS + _constants2.default.SLASH + nickName;
 		logger.info("deleteAddress POST form url:" + (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, deleteAddressURL, true));
 		var method = 'DELETE';
 		var messageData = {};
-		var requestCall = (0, _util.constructRequest)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, deleteAddressURL, true), method, messageData);
+		var requestCall = (0, _util.constructRequestWithToken)((0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, deleteAddressURL, true), method, messageData, (0, _util.getTokens)(req));
 		(0, _requestPromise2.default)(requestCall).then(function (data) {
-			var result = _addressMapper2.default.mapDeleteAddressJSON(data);
 			res.send({
-				"success": true,
-				"result": result
+				"success": true
 			});
 		}).catch(function (error) {
-			if (error.response.body) {
-				logger.error('errors in service to delete Address in WCS: ', error.response.body);
-				res.send({ "success": false, "error": error.response.body });
-			} else {
-				logger.error('errors in service to delete Address in WCS: ', error);
-				res.send({ "success": false, "error": error });
-			}
+			console.log("addressCtlr => addShippingAddress", error);
+			res.send({ "success": false, "error": error });
 		});
 	},
 
@@ -6466,10 +6634,10 @@ exports.default = {
   * Request Params : addressId
   */
 
-	selectShippingAddress: function selectShippingAddress(req, res) {
+	selectShippingAddress: function selectShippingAddress(res, req) {
 
 		messageData = {};
-		var addressId = req.query.addressId;
+		var addressId = req.body.addressId;
 		var x_calculationUsage = _constants2.default.SHIP_CALC_USAGE;
 		var conCatUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_SHIP_INFO;
 		var selectShippingAddressURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, conCatUrl, true);
@@ -6483,22 +6651,15 @@ exports.default = {
 			}],
 			"x_calculationUsage": x_calculationUsage
 		};
-		var requestCall = (0, _util.constructRequest)(selectShippingAddressURL, method, messageData);
+		var requestCall = (0, _util.constructRequestWithToken)(selectShippingAddressURL, method, messageData, (0, _util.getTokens)(req));
 
 		(0, _requestPromise2.default)(requestCall).then(function (data) {
-			var result = _addressMapper2.default.mapSelectAddressJSON(data);
 			res.send({
 				"success": true,
-				"result": result
+				"result": data
 			});
 		}).catch(function (error) {
-			if (error.response.body) {
-				logger.error('errors in service to select shipping address selector in EP: ', error.response.body);
-				res.send({ "success": false, "error": error.response.body });
-			} else {
-				logger.error('errors in service to select shipping address selector in EP: ', error);
-				res.send({ "success": false, "error": error });
-			}
+			res.send({ "success": false, "error": error });
 		});
 	}
 
@@ -6515,11 +6676,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _underscore = __webpack_require__(13);
+var _underscore = __webpack_require__(14);
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -6751,7 +6912,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -6760,6 +6921,10 @@ var _util = __webpack_require__(5);
 var _cartMapper = __webpack_require__(11);
 
 var _cartMapper2 = _interopRequireDefault(_cartMapper);
+
+var _loginCtlr = __webpack_require__(19);
+
+var _loginCtlr2 = _interopRequireDefault(_loginCtlr);
 
 var _requestPromise = __webpack_require__(1);
 
@@ -6783,6 +6948,14 @@ exports.default = {
 
     addToCart: function addToCart(req, res) {
         logger.info("inside add to cart");
+
+        logger.info("req.cookie.userId::" + req.cookies.userId);
+
+        //Check if there is a userId already exists by checking the cookie
+        if (req.cookies.userId == 'undefined') {
+            //Call the guestIdentityHandler and set the token
+            _loginCtlr2.default.guestIdentityHandler(req, res);
+        }
 
         var concatURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CART_EXT + "?catalogId=" + _constants2.default.WCS_CATALOG_ID + "&langId=" + _constants2.default.WCS_LANG_ID;
         var addToCartUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatURL, true);
@@ -7168,14 +7341,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var router = _express2.default.Router();
 
 /*
- *  Route for Get promotions from cart
- */
-
-router.get('/getPromotionsAtCart', function (req, res) {
-  _promotionsCtlr2.default.getPromotionsAtCart(req, res);
-});
-
-/*
  *  Route for Get promo codes from cart
  */
 
@@ -7195,7 +7360,7 @@ router.post('/apply', function (req, res) {
  *  Route for Delete promotion
  */
 
-router.delete('/delete', function (req, res) {
+router.post('/delete', function (req, res) {
   _promotionsCtlr2.default.delete(req, res);
 });
 
@@ -7212,7 +7377,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -7383,7 +7548,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -7483,6 +7648,14 @@ router.post('/moveWishListItemToCart', function (req, res) {
   _wishListCtlr2.default.moveWishListItemToCart(req, res);
 });
 
+/* 
+ * router for loadWishLists 
+ */
+
+router.get('/loadWishLists', function (req, res) {
+  _wishListCtlr2.default.loadWishLists(req, res);
+});
+
 exports.default = router;
 
 /***/ }),
@@ -7496,7 +7669,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -7639,6 +7812,40 @@ exports.default = {
     },
 
     /*
+     * Method to get the all the wishlists for the user  
+     * Request Method: GET
+     */
+
+    loadWishLists: function loadWishLists(req, res) {
+        logger.info("inside loadWishLists Controller Load1");
+
+        var concatloadWishListURL = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_WISHLIST + _constants2.default.WCS_AT_SELF + "?responseFormat=json";
+        var loadWishListURL = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatloadWishListURL, true);
+        var methodForLoadWishList = 'GET';
+        var messageData = {};
+
+        logger.info("loadWishListURL: " + loadWishListURL);
+        var requestCall = (0, _util.constructRequestWithToken)(loadWishListURL, methodForLoadWishList, messageData, (0, _util.getTokens)(req));
+        (0, _requestPromise2.default)(requestCall).then(function (body) {
+
+            var result = _wishListMapper2.default.getWishListLists(body);
+            console.log("REsult::" + JSON.stringify(result));
+            res.send({
+                "success": true,
+                "result": result
+            });
+        }).catch(function (error) {
+            if (error.statusCode === 404 || error.statusCode === 400) {
+                logger.error('errors in service to getPersonalInformation in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to getPersonalInformation in WCS: OTHER ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
+        });
+    },
+
+    /*
      * Method to move a product from wishlist to cart in WCS  
      * Request Method: POST
      * Request Body: 
@@ -7730,7 +7937,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -7752,6 +7959,29 @@ exports.default = {
         wishListItemId: "giftListItemID",
         partNumber: "partNumber",
         productId: "productId"
+      })]
+    });
+
+    var result = converter(body);
+    return result;
+  },
+
+  /*
+   * JSON Mapper for mapping responses for the getting wishlist items in WCS
+   */
+
+  getWishListLists: function getWishListLists(body, req) {
+
+    var converter = _jsonMapper2.default.makeConverter({
+
+      wishListList: ['GiftList', _jsonMapper2.default.map({
+        wishListId: "uniqueID",
+        wishListName: "descriptionName",
+        itemList: ['item', _jsonMapper2.default.map({
+          wishListItemId: "giftListItemID",
+          partNumber: "partNumber",
+          productId: "productId"
+        })]
       })]
     });
 
@@ -7841,13 +8071,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _pdpMapper = __webpack_require__(16);
+var _pdpMapper = __webpack_require__(17);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -7977,7 +8207,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _loginCtlr = __webpack_require__(81);
+var _loginCtlr = __webpack_require__(19);
 
 var _loginCtlr2 = _interopRequireDefault(_loginCtlr);
 
@@ -8016,138 +8246,6 @@ exports.default = router;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _constants = __webpack_require__(3);
-
-var _constants2 = _interopRequireDefault(_constants);
-
-var _util = __webpack_require__(5);
-
-var _requestPromise = __webpack_require__(1);
-
-var _requestPromise2 = _interopRequireDefault(_requestPromise);
-
-var _bluebird = __webpack_require__(7);
-
-var _bluebird2 = _interopRequireDefault(_bluebird);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var logger = (0, _util.getLogger)();
-
-exports.default = {
-    /**
-     * Method for logging in
-     * Request method - POST
-     * Request body - logonId,logonPassword
-     */
-    loginIdentityHandler: function loginIdentityHandler(req, res) {
-        var concatUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_LOGIN_IDENTITY;
-        var loginUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatUrl, true);
-        logger.info("Login url = " + loginUrl);
-        var method = 'POST';
-        var messageData = {
-            "logonId": req.body.logonId,
-            "logonPassword": req.body.logonPassword
-        };
-        logger.info("messageData = " + req.body.logonId + "|" + req.body.logonPassword);
-        var logonCall = (0, _util.constructRequestWithoutToken)(loginUrl, method, messageData, '');
-        (0, _requestPromise2.default)(logonCall).then(function (result) {
-            res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
-            res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
-            res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
-            res.cookie(_constants2.default.WCS_USER_ID, result.userId);
-            res.send({
-                "success": true
-            });
-        }).catch(function (error) {
-            if (error.statusCode === 404) {
-                logger.error('errors in service to loginIdentityHandler in WCS: ', error);
-                res.send({ "success": false, "error": error.response.body });
-            } else {
-                logger.error('errors in service to loginIdentityHandler in WCS: ', error);
-                res.send({ "success": false, "error": error.response.body.errors[0] });
-            }
-        });
-    },
-    /**
-     * Method for creating guest user
-     * Request method - POST
-     */
-    guestIdentityHandler: function guestIdentityHandler(req, res) {
-        logger.info("inside guestIdentityHandler");
-        return new _bluebird2.default(function (resolve, reject) {
-            var concatUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_GUEST_IDENTITY;
-            var guestIdentityUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatUrl, true);
-            logger.info("GuestIdentityUrl = " + guestIdentityUrl);
-            var method = 'POST';
-            var guestCall = (0, _util.constructRequestWithoutToken)(guestIdentityUrl, method, '');
-            (0, _requestPromise2.default)(guestCall).then(function (result) {
-                result = JSON.parse(result);
-                res.cookie(_constants2.default.WCS_ACCESS_TOKEN, result.WCToken);
-                res.cookie(_constants2.default.WCS_PERSONALIZATION_ID, result.personalizationID);
-                res.cookie(_constants2.default.WCS_USER_ID, result.userId);
-                res.cookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN, result.WCTrustedToken);
-                res.send({
-                    "success": true
-                });
-            }).catch(function (error) {
-                if (error.statusCode === 404) {
-                    logger.error('errors in service to guestIdentityHandler in WCS: ', error);
-                    res.send({ "success": false, "error": error.response.body });
-                } else {
-                    logger.error('errors in service to guestIdentityHandler in WCS: ', error);
-                    res.send({ "success": false, "error": error.response.body.errors[0] });
-                }
-            });
-        });
-    },
-
-    /**
-     * Method for creating guest user
-     * Request method - DELETE
-     */
-    logoutUser: function logoutUser(req, res) {
-        logger.info("inside logout user");
-        return new _bluebird2.default(function (resolve, reject) {
-            var concatUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_LOGIN_IDENTITY + _constants2.default.WCS_AT_SELF;
-            var logoutUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatUrl, true);
-            logger.info("Logout user = " + logoutUrl);
-            var method = 'DELETE';
-            var messageData = {};
-            var guestCall = (0, _util.constructRequestWithoutToken)(logoutUrl, method, messageData);
-            (0, _requestPromise2.default)(guestCall).then(function (result) {
-                res.clearCookie(_constants2.default.WCS_ACCESS_TOKEN);
-                res.clearCookie(_constants2.default.WCS_TRUSTED_ACCESS_TOKEN);
-                res.clearCookie(_constants2.default.WCS_PERSONALIZATION_ID);
-                res.clearCookie(_constants2.default.WCS_USER_ID);
-                res.send({
-                    "success": true
-                });
-            }).catch(function (error) {
-                if (error.statusCode === 404) {
-                    logger.error('errors in service to logout in WCS: ', error);
-                    res.send({ "success": false, "error": error.response.body });
-                } else {
-                    logger.error('errors in service to logout in WCS: ', error);
-                    res.send({ "success": false, "error": error.response.body.errors[0] });
-                }
-            });
-        });
-    }
-
-};
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
@@ -8155,7 +8253,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _userProfileCtlr = __webpack_require__(83);
+var _userProfileCtlr = __webpack_require__(82);
 
 var _userProfileCtlr2 = _interopRequireDefault(_userProfileCtlr);
 
@@ -8190,7 +8288,7 @@ router.get('/getAddressBook', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8200,13 +8298,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _userProfileMapper = __webpack_require__(84);
+var _userProfileMapper = __webpack_require__(83);
 
 var _userProfileMapper2 = _interopRequireDefault(_userProfileMapper);
 
@@ -8266,7 +8364,7 @@ exports.default = {
     getPersonalInformation: function getPersonalInformation(req, res) {
         logger.info("inside getPersonalInformation");
 
-        var userId = req.query.userId;
+        var userId = req.cookies.userId;
         var concatPersonalInformationUrl = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_PERSON + userId + _constants2.default.WCS_PROFILE_NAME;
         var getPersonalInformationDetailsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, concatPersonalInformationUrl, true);
         var methodForPersonalInformation = 'GET';
@@ -8328,7 +8426,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8338,7 +8436,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -8481,7 +8579,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8495,7 +8593,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _registrationCtlr = __webpack_require__(86);
+var _registrationCtlr = __webpack_require__(85);
 
 var _registrationCtlr2 = _interopRequireDefault(_registrationCtlr);
 
@@ -8514,7 +8612,7 @@ router.post('/user', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8524,7 +8622,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -8583,7 +8681,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8597,7 +8695,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _myAccountCtlr = __webpack_require__(88);
+var _myAccountCtlr = __webpack_require__(87);
 
 var _myAccountCtlr2 = _interopRequireDefault(_myAccountCtlr);
 
@@ -8614,7 +8712,7 @@ router.put('/resetPassword', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8624,7 +8722,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -8670,7 +8768,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8684,7 +8782,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _paymentCtlr = __webpack_require__(90);
+var _paymentCtlr = __webpack_require__(89);
 
 var _paymentCtlr2 = _interopRequireDefault(_paymentCtlr);
 
@@ -8719,7 +8817,7 @@ router.delete('/deletePaymentInstruction', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8729,7 +8827,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -8739,7 +8837,7 @@ var _requestPromise = __webpack_require__(1);
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _paymentMapper = __webpack_require__(91);
+var _paymentMapper = __webpack_require__(90);
 
 var _paymentMapper2 = _interopRequireDefault(_paymentMapper);
 
@@ -8836,7 +8934,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8846,7 +8944,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
@@ -8886,7 +8984,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8924,7 +9022,7 @@ router.get('/seoDetails', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8938,7 +9036,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _layoutCtlr = __webpack_require__(94);
+var _layoutCtlr = __webpack_require__(93);
 
 var _layoutCtlr2 = _interopRequireDefault(_layoutCtlr);
 
@@ -8962,7 +9060,7 @@ router.post('/espot', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8972,7 +9070,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(3);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -9067,6 +9165,38 @@ exports.default = {
 };
 
 /***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(0);
+
+var _express2 = _interopRequireDefault(_express);
+
+var _pdpRoutes = __webpack_require__(95);
+
+var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
+
+var _promotionsRoutes = __webpack_require__(98);
+
+var _promotionsRoutes2 = _interopRequireDefault(_promotionsRoutes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var app = (0, _express2.default)();
+
+app.use('/wcs9/PDP', _pdpRoutes2.default);
+app.use('/wcs9/promotions', _promotionsRoutes2.default);
+
+exports.default = app;
+
+/***/ }),
 /* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9081,34 +9211,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pdpRoutes = __webpack_require__(96);
-
-var _pdpRoutes2 = _interopRequireDefault(_pdpRoutes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var app = (0, _express2.default)();
-
-app.use('/wcs9/PDP', _pdpRoutes2.default);
-
-exports.default = app;
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _express = __webpack_require__(0);
-
-var _express2 = _interopRequireDefault(_express);
-
-var _pdpCtlr = __webpack_require__(97);
+var _pdpCtlr = __webpack_require__(96);
 
 var _pdpCtlr2 = _interopRequireDefault(_pdpCtlr);
 
@@ -9134,7 +9237,7 @@ router.get('/getRecentlyViewedProducts', function (req, res) {
 exports.default = router;
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9146,13 +9249,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _constants = __webpack_require__(18);
+var _constants = __webpack_require__(12);
 
 var _constants2 = _interopRequireDefault(_constants);
 
 var _util = __webpack_require__(5);
 
-var _pdpMapper = __webpack_require__(98);
+var _pdpMapper = __webpack_require__(97);
 
 var _pdpMapper2 = _interopRequireDefault(_pdpMapper);
 
@@ -9207,7 +9310,7 @@ exports.default = {
 					if (resourceName == "pdp") {
 						result = _pdpMapper2.default.mapPdpJSON(data, true);
 					} else if (resourceName == "qv" || resourceName == "cart") {
-						result = _pdpMapper2.default.mapQuickViewJSON(data, true);
+						result = _pdpMapper2.default.mapQuickViewJSON(Json.parse(data), true);
 					}
 					res.send({
 						"success": true,
@@ -9240,11 +9343,11 @@ exports.default = {
 	},
 	getRecentlyViewedProducts: function getRecentlyViewedProducts(req, res) {
 		var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_ESPOT_RECENTLY_VIEWED_PRODUCTD;
-		var getRecentlyViewedProductsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, false);
+		var getRecentlyViewedProductsUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, true);
 		logger.info("Get recently viewed products URL" + getRecentlyViewedProductsUrl);
 		var requestCall = (0, _util.constructRequestWithToken)(getRecentlyViewedProductsUrl, 'GET', '', (0, _util.getTokens)(req));
 		(0, _requestPromise2.default)(requestCall).then(function (body) {
-			var result = _pdpMapper2.default.mapRecentlyViewedProductsJSON(body);
+			var result = _pdpMapper2.default.mapRecentlyViewedProductsJSON(JSON.parse(body));
 			res.send({
 				"success": true,
 				"result": result
@@ -9262,7 +9365,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9272,11 +9375,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _jsonMapper = __webpack_require__(4);
+var _jsonMapper = __webpack_require__(3);
 
 var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
 
-var _constants = __webpack_require__(18);
+var _constants = __webpack_require__(12);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -9617,7 +9720,246 @@ exports.default = {
 };
 
 /***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(0);
+
+var _express2 = _interopRequireDefault(_express);
+
+var _promotionsCtlr = __webpack_require__(99);
+
+var _promotionsCtlr2 = _interopRequireDefault(_promotionsCtlr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var router = _express2.default.Router();
+
+/*
+ *  Route for Get promo codes from cart
+ */
+
+router.get('/getPromoCodePromotionsAtCart', function (req, res) {
+  _promotionsCtlr2.default.getPromoCodePromotionsAtCart(req, res);
+});
+
+/*
+ *  Route for Apply promotion
+ */
+
+router.post('/apply', function (req, res) {
+  _promotionsCtlr2.default.apply(req, res);
+});
+
+/*
+ *  Route for Delete promotion
+ */
+
+router.post('/delete', function (req, res) {
+  _promotionsCtlr2.default.delete(req, res);
+});
+
+exports.default = router;
+
+/***/ }),
 /* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _constants = __webpack_require__(12);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _promotionsMapper = __webpack_require__(100);
+
+var _promotionsMapper2 = _interopRequireDefault(_promotionsMapper);
+
+var _requestPromise = __webpack_require__(1);
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _bluebird = __webpack_require__(7);
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+var _util = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = (0, _util.getLogger)();
+
+exports.default = {
+
+    /*
+    * Method for getting promo codes applied in cart
+    * Request Method : GET 
+    */
+
+    getPromoCodePromotionsAtCart: function getPromoCodePromotionsAtCart(req, res) {
+        logger.info("inside getPromoCodePromotionsAtCart ctrl");
+        var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CART_PROMOTIONS;
+        var getPromoCodePromotionsAtCartUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, true);
+        logger.info("Get Promo codes in Cart URL" + getPromoCodePromotionsAtCartUrl);
+        var requestCall = (0, _util.constructRequestWithToken)(getPromoCodePromotionsAtCartUrl, 'GET', '', (0, _util.getTokens)(req));
+        (0, _requestPromise2.default)(requestCall).then(function (body) {
+            if ((0, _util.isJson)(body)) body = JSON.parse(body);
+            var result = _promotionsMapper2.default.mapPromoCodesResultJSON(body);
+            res.send({
+                "success": true,
+                "result": result
+            });
+        }).catch(function (error) {
+            if (error.statusCode === 404) {
+                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
+        });
+    },
+
+    /*
+     *  Method for applying promotion
+     *  Request Body : promoCode
+     *  Request Method : POST
+     */
+
+    apply: function apply(req, res) {
+        var promoCode = req.body.promoCode;
+        var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CART_PROMOTIONS;
+        logger.info("promocode = " + promoCode);
+        var applyUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, true);
+        logger.info("Apply Promotion URL" + applyUrl);
+        var messageData = {
+            "promoCode": promoCode
+        };
+        var requestCall = (0, _util.constructRequestWithToken)(applyUrl, 'POST', messageData, (0, _util.getTokens)(req));
+        (0, _requestPromise2.default)(requestCall).then(function (body) {
+            if ((0, _util.isJson)(body)) body = JSON.parse(body);
+            res.send({
+                "success": true,
+                "result": {
+                    "orderId": body.orderId,
+                    "promoCode": promoCode
+                }
+            });
+        }).catch(function (error) {
+            if (error.statusCode === 404) {
+                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
+        });
+    },
+
+    /*
+     *  Method for deleting promotions
+     *  Request Body : promoCode
+     *  Request Method : DELETE
+     */
+
+    delete: function _delete(req, res) {
+        var promoCode = req.body.promoCode;
+        var path = _constants2.default.WCS_REST_URL + _constants2.default.WCS_STORE_ID + _constants2.default.WCS_CART_PROMOTIONS + "/" + promoCode;
+        logger.info("promocode = " + promoCode);
+        var deleteUrl = (0, _util.constructUrl)(_constants2.default.WCS_HOSTNAME_NOPORT, path, true);
+        logger.info("Delete Promotion URL " + deleteUrl);
+        var requestCall = (0, _util.constructRequestWithToken)(deleteUrl, 'DELETE', '', (0, _util.getTokens)(req));
+        (0, _requestPromise2.default)(requestCall).then(function (body) {
+            if ((0, _util.isJson)(body)) body = JSON.parse(body);
+            res.send({
+                "success": true,
+                "result": {
+                    "orderId": body.orderId,
+                    "promoCode": promoCode
+                }
+            });
+        }).catch(function (error) {
+            if (error.statusCode === 404 || error.statusCode === 400) {
+                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body });
+            } else {
+                logger.error('errors in service to getPromotionsAtCart in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body.errors[0] });
+            }
+        });
+    }
+};
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _jsonMapper = __webpack_require__(3);
+
+var _jsonMapper2 = _interopRequireDefault(_jsonMapper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+
+    /* 
+     * JSON Mapper for mapping responses for promotions
+     */
+
+    mapPromotionsResultJSON: function mapPromotionsResultJSON(body) {
+        var converter = _jsonMapper2.default.makeConverter({
+            promotions: ['adjustment', _jsonMapper2.default.map({
+                name: 'code',
+                description: {
+                    longDescription: '',
+                    shortDescription: ''
+                }
+            })],
+            orderId: 'orderId'
+        });
+
+        var result = converter(body);
+        return result;
+    },
+    mapPromoCodesResultJSON: function mapPromoCodesResultJSON(body) {
+        var converter = _jsonMapper2.default.makeConverter({
+            promotions: ['promotionCode', _jsonMapper2.default.map({
+                name: '',
+                description: {
+                    longDescription: 'associatedPromotion.0.description',
+                    shortDescription: 'associatedPromotion.0.description'
+                },
+                code: 'code',
+                promotionId: 'associatedPromotion.0.promotionId'
+            })],
+            orderId: 'orderId'
+        });
+        var result = converter(body);
+        return result;
+    }
+};
+
+/***/ }),
+/* 101 */
 /***/ (function(module, exports) {
 
 module.exports = require("cookie-parser");

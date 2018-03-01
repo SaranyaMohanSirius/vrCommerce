@@ -144,7 +144,7 @@ export default {
      logger.info("loadWishListURL: "+ loadWishListURL);
      let requestCall = constructRequestWithToken(loadWishListURL,methodForLoadWishList,messageData,getTokens(req))
      requestPromise(requestCall).then(function (body) {
-     	
+    	 console.log("Result::Before Mapper::"+JSON.stringify(body));
          let result = wishListMapper.getWishListLists(body); 
          console.log("REsult::"+JSON.stringify(result));
          res.send({
