@@ -345,6 +345,10 @@ GET : http://localhost:5000/wcs/userProfile/getPersonalInformation
 Order History
 GET : http://localhost:5000/wcs/userProfile/getOrderHistory
 
+Order Detail :
+
+GET: http://localhost:5000/wcs/userProfile/getOrderDetails?orderId=16008
+
 Address Book
 GET : http://localhost:5000/wcs/userProfile/getAddressBook
 

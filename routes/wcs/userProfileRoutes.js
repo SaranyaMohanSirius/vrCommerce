@@ -12,6 +12,15 @@ router.get('/getOrderHistory', function(req, res){
 });
 
 /* 
+ * router for getting Order Detail 
+ */
+
+router.get('/getOrderDetails', function(req, res){
+    userProfile.getOrderDetails(req,res);
+});
+
+
+/* 
  * router for getting Personal Information
  */
  
