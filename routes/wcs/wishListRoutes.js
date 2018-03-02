@@ -23,7 +23,7 @@ router.post('/addToWishList', function(req, res){
  * router for deleteFromWishList 
  */
 
-router.delete('/deleteFromWishList', function(req, res){
+router.post('/deleteFromWishList', function(req, res){
     wishList.deleteFromWishList(req,res);
 }); 
 
