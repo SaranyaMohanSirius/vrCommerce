@@ -13,7 +13,45 @@ let logger= getLogger();
 export default {
 
   /*
-   * Method to add a product to wishlist in WCS 
+   * Method to add a new wishlist in WCS 
+   * Request Method : POST
+   * Request Body: 
+   * {
+   *     "description": "WishList",
+   *     "descriptionName": "WishList"
+   *  }
+   */
+
+   addNewWishList: function(req,res){
+        let messageData = {
+          "description":req.body.description,
+          "descriptionName": req.body.descriptionName,
+          "registry": "false"
+        }
+        let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_WISHLIST +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID + "&responseFormat=json";
+        let addNewWishListUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true);
+        let method ='POST';
+        logger.info("addNewWishListUrl:" + addNewWishListUrl + "messageData: "+ JSON.stringify(messageData));
+
+        let requestCall = constructRequestWithToken(addNewWishListUrl,method,messageData,getTokens(req))
+        requestPromise(requestCall).then(function (data) {
+            res.send({
+                "success": true,
+                "result": data
+            });
+            }).catch(function (error) {
+            if(error.statusCode === 404 || error.statusCode === 400){
+                logger.error('errors in service to addNewWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to addNewWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
+            });
+   },
+
+  /*
+   * Method to add a product to default wishlist in WCS 
    * Request Method : POST
    * Request Body: 
    * {
@@ -22,7 +60,7 @@ export default {
    *  }
    */
 
-   addToWishList: function(req,res){
+   addToDefaultWishList: function(req,res){
         logger.info("inside add to wish list");
 
         let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_WISHLIST +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
@@ -34,6 +72,42 @@ export default {
 
         let requestCall = constructRequestWithToken(addToWishListUrl,method,messageData,getTokens(req))
         requestPromise(requestCall).then(function () {
+            res.send({
+                "success": true
+            });
+            }).catch(function (error) {
+            if(error.statusCode === 404 || error.statusCode === 400){
+                logger.error('errors in service to addToWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to addToWishList in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
+            });
+   },
+
+   /*
+   * Method to add a product to default wishlist in WCS 
+   * Request Method : POST
+   * Request Body: 
+   * {
+   *     "productId": "10140",
+   *     "quantityRequested": "1"
+   *  }
+   */
+
+   addToWishList: function(req,res){
+        logger.info("inside add to wish list");
+
+        let wishListId = req.body.wishListId;
+        let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_WISHLIST + constants.SLASH +wishListId +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID + "&addItem=true&responseFormat=json";
+        let addToWishListUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true);
+        let messageData = wishListMapper.addToWishListRequestMapperJSON(req.body);
+        let method ='PUT';
+        logger.info("addToWishListUrl:" + addToWishListUrl + "messageData: "+ JSON.stringify(messageData));
+
+        let requestCall = constructRequestWithToken(addToWishListUrl,method,messageData,getTokens(req))
+        requestPromise(requestCall).then(function (data) {
             res.send({
                 "success": true
             });
@@ -103,7 +177,8 @@ export default {
    getWishList: function(req,res){
     logger.info("inside getWishList");
 
-        let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_WISHLIST + constants.WCS_DEFAULT +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+        let wishListId = req.query.wishListId;
+        let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_WISHLIST + constants.SLASH + wishListId +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID + "&responseFormat=json";
         let getWishListUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true);
         let messageData = '';
         let method ='GET';
@@ -111,7 +186,7 @@ export default {
 
         let requestCall = constructRequestWithToken(getWishListUrl,method,messageData,getTokens(req))
         requestPromise(requestCall).then(function (messageData,req) {
-            let result = wishListMapper.getWishListJSON(messageData,req);
+            let result = wishListMapper.getWishListJSON(JSON.parse(messageData),req);
             res.send({
                 "success": true, 
                 "result": result
@@ -144,9 +219,7 @@ export default {
      logger.info("loadWishListURL: "+ loadWishListURL);
      let requestCall = constructRequestWithToken(loadWishListURL,methodForLoadWishList,messageData,getTokens(req))
      requestPromise(requestCall).then(function (body) {
-    	 console.log("Result::Before Mapper::"+JSON.stringify(body));
          let result = wishListMapper.getWishListLists(body); 
-         console.log("REsult::"+JSON.stringify(result));
          res.send({
              "success": true ,
              "result": result                                          

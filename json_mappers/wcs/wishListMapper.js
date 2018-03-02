@@ -15,7 +15,8 @@ export default {
           itemList: ['GiftList.0.item', JM.map({
               wishListItemId: "giftListItemID",
               partNumber: "partNumber",
-              productId: "productId"
+              productId: "productId",
+              quantity: "quantityRequested"
               })]
         })
 
@@ -37,7 +38,8 @@ export default {
         	  itemList: ['item', JM.map({
 	              wishListItemId: "giftListItemID",
 	              partNumber: "partNumber",
-	              productId: "productId"
+	              productId: "productId",
+                quantity: "quantityRequested"
               })]
           })]
         })
