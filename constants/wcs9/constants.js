@@ -1,7 +1,7 @@
 export default {
  
-   "WCS_HOSTNAME" : "35.164.254.111",
-   "WCS_HOSTNAME_NOPORT" : "35.164.254.111",
+   "WCS_HOSTNAME" : "192.168.45.132",
+   "WCS_HOSTNAME_NOPORT" : "192.168.45.132",
    "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
    "WCS_CATEGORY_TOP": "/categoryview/@top",
    "WCS_CATEGORY": "/categoryview/byId/",
