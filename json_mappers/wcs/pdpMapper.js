@@ -143,6 +143,68 @@ export default {
 		}	
         return jsonObj;
   },
+
+  /* 
+   * JSON Mapper for generating responses for Related products
+   */
+
+   mapRelatedProductsJSON: function(body,inv){	
+		let converter = JM.makeConverter({
+			catalogEntryView: ['catalogEntryView', JM.map({		
+				merchandisingAssociations: ['merchandisingAssociations', JM.map({
+					hasSingleSKU: 'hasSingleSKU',
+					catalogEntryTypeCode: 'catalogEntryTypeCode',				
+					buyable: 'buyable',				
+					store: 'storeID',		
+					uniqueID: 'uniqueID',	
+					listPrice : 'price.0.value',			
+					purchasePrice: 'price.1.value',			
+					code: 'partNumber',			
+					resourceId : 'resourceId',			
+					displayName: 'name',	
+					seoKeyword: 'seo_token_ntk',
+					attributes: ['attributes', JM.map({
+						  displayable: 'displayable',
+						  name: 'name',
+						  identifier: 'identifier',
+						  values: ['values', JM.map({
+							identifier: 'identifier',
+							uniqueID: 'uniqueID',
+							image : ['image1path',function(url){ 
+                          		if(url){
+                          			return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+                      			}
+                      		}],
+						  })], 
+					})],
+					
+                    thumbnail : ['thumbnail',function(url){ 
+                        if(url){
+                          	return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+                      	}
+                     }],
+                    fullImage : ['fullImage',function(url){ 
+                        if(url){
+                          	return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+                      	}
+                     }],		
+				})],
+			})],	
+		});    
+		let result = converter(body);
+		let jsonObj = result;
+		
+		if(inv != true){
+			for(let i=0 ; i<jsonObj.catalogEntryView.length ; i++){
+				let invAvailability = inv.InventoryAvailability[i].inventoryStatus;	
+				let quantityAvailable = inv.InventoryAvailability[i].availableQuantity;	
+				
+				jsonObj.catalogEntryView[i].availability = invAvailability;
+				jsonObj.catalogEntryView[i].quantity = quantityAvailable;
+			}
+		}	
+        return jsonObj;
+  },
     /* 
    * JSON Mapper for generating responses for Quick View page 
    */
@@ -231,6 +293,10 @@ export default {
 		}	
         return jsonObj;
   },
+
+  /* 
+   * JSON Mapper for generating responses for Recently viewed items
+   */
   mapRecentlyViewedProductsJSON: function(body){
 	  let converter = JM.makeConverter({
 		  resourceId: 'resourceId',
