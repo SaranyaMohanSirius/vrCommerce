@@ -111,6 +111,14 @@ export default {
 					  usage: 'usage',
 					  sequence : 'sequence',
 					})],
+					attachments:['attachments', JM.map({
+						attachmentAssetPath : ['attachmentAssetPath',function(url){ 
+							if(url){
+							  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+							  }
+						 }],
+						usage: 'usage',
+					})],
 					thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
@@ -126,7 +134,15 @@ export default {
                     if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
                     }
-                }],
+				}],
+				attachments:['attachments', JM.map({
+					attachmentAssetPath : ['attachmentAssetPath',function(url){ 
+						if(url){
+						  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+						  }
+					 }],
+					usage: 'usage',
+				})],
 			})],	
 		});    
 		let result = converter(body);
@@ -263,6 +279,14 @@ export default {
                       	}],
 					  })], 	
 					})],
+					attachments:['attachments', JM.map({
+						attachmentAssetPath : ['attachmentAssetPath',function(url){ 
+							if(url){
+							  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+							  }
+						 }],
+						usage: 'usage',
+					})],
 					thumbnail : ['thumbnail',function(url){ 
                         if(url){
                           	return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
@@ -278,7 +302,15 @@ export default {
                     if(url){
                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
                   	}
-                }],
+				}],
+				attachments:['attachments', JM.map({
+					attachmentAssetPath : ['attachmentAssetPath',function(url){ 
+						if(url){
+						  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+						  }
+					 }],
+					usage: 'usage',
+				})],
 			})],	
 		});    
 		let result = converter(body);
@@ -392,6 +424,14 @@ export default {
 						  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
 					  }
 				 }],
+				 attachments:['attachments', JM.map({
+					attachmentAssetPath : ['attachmentAssetPath',function(url){ 
+						if(url){
+						  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+						  }
+					 }],
+					usage: 'usage',
+				})],
 			})],
 			thumbnail : ['thumbnail',function(url){ 
 				if(url){
@@ -403,6 +443,14 @@ export default {
 					 return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
 				  }
 			}],
+			attachments:['attachments', JM.map({
+				attachmentAssetPath : ['attachmentAssetPath',function(url){ 
+					if(url){
+					  return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
+					  }
+				 }],
+				usage: 'usage',
+			})],
 		})],
 		
 
