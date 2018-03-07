@@ -396,7 +396,7 @@ Body : {
 }
 
 Delete Payment Instructions
-DELETE : localhost:5000/wcs/payment/deletePaymentInstruction
+POST : localhost:5000/wcs/payment/deletePaymentInstruction
 Body : {
 	"piId": "15045"
 }

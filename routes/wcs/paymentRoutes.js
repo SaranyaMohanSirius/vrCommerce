@@ -23,7 +23,7 @@ router.put('/putPaymentInstruction', function(req,res){
 /**
  *  Route for deleting payment instruction
  */
-router.delete('/deletePaymentInstruction', function(req,res){
+router.post('/deletePaymentInstruction', function(req,res){
     payment.deletePaymentInstruction(req,res);
 });
 
