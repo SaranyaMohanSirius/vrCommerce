@@ -20,10 +20,10 @@ export default {
                 pages: JM.helpers.def(pages),
              },
             resourceIdentifier: 'resourceId',
-            searchResults: ['CatalogEntryView', JM.map({                                    
+            searchResults: ['catalogEntryView', JM.map({                                    
                      uniqueID: 'uniqueID',
-                     listPrice: 'Price.0.priceUsage',
-                     purchasePrice: 'Price.0.priceValue',
+                     listPrice: 'price.0.value',
+                     purchasePrice: 'price.1.value',
                      displayName: 'name',
                      code: 'partNumber',
                      store: 'storeID',
@@ -33,14 +33,22 @@ export default {
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
                         }
                      }],
-                     attributes: ' ',
+                     attributes: ['attributes', JM.map({
+                          displayable: 'displayable',
+                          name: 'name',
+                          identifier: 'identifier',
+                          values: 'values.0.value', 
+
+                     })],
               })],
-            facets: ['FacetView',JM.map({
-                entry : ['Entry', JM.map({
+            facets: ['facetView',JM.map({
+                entry : ['entry', JM.map({
                     count : 'count',
-                    uniqueId : ' ',
+                    uniqueId : function(input){
+                        return input.extendedData.uniqueId;
+                    },
                     label : 'label',
-                    value : 'entryValue',
+                    value : 'value',
                     image : ['image',function(url){ 
                         if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 
@@ -48,7 +56,16 @@ export default {
                     }],
 
                 })],
-                extendedData: ' '
+                extendedData: {
+                    name: 'name',
+                    value: 'value',
+                    facet_id: 'extendedData.facet_id',
+                    fdesc: 'extendedData.fdesc',
+                    fname: 'extendedData.fname',
+                    srchattr_id: 'extendedData.srchattr_id',
+                    srchattridentifier: 'extendedData.srchattridentifier',
+                    storeent_id: 'extendedData.storeent_id'
+                } 
 
             })], 
         });

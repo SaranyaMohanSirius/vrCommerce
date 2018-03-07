@@ -21,9 +21,9 @@ export default {
    getTopCategories: function(res){
 	   
    			
-   			let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CATEGORY_TOP +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+   			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_TOP +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
    			let messageData = {};
-			let getTopCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+			let getTopCategoriesUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
 			logger.info("getTopCategoriesUrl: " +getTopCategoriesUrl);
         	let method ='GET';
           	let requestCall = constructRequestWithoutToken(getTopCategoriesUrl,method,messageData);
@@ -49,7 +49,7 @@ export default {
 		let identifier = req.query.identifier;
 		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY + identifier + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
 		let messageData = {};
-		let getCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+		let getCategoriesUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
 		logger.info("getCategoriesUrl: " +getCategoriesUrl);
        	let method ='GET';
 	 	let requestCall = constructRequestWithoutToken(getCategoriesUrl,method,messageData);
@@ -86,9 +86,9 @@ export default {
 			{
 				value = req.query.identifier;
 			}
-				let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + value;
+				let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + value;
 	   			let messageData = {};
-				let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+				let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
 				logger.info("getSubCategoriesUrl: " +getSubCategoriesUrl);
 	        	let method ='GET';
 	          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
@@ -127,7 +127,7 @@ export default {
    			logger.info("getProductsListForCategory -> categoryId::" +categoryId);
    			let value = req.query.identifier;
    		//	seoController.getIdByKeyword(categoryId,'CategoryToken').then(function(value){
-    		let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + value + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
+    		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + value + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
 			 if(req.query.orderBy){
    				let orderBy = req.query.orderBy;
     			concatURL = concatURL + "&orderBy=" + orderBy;              
@@ -145,7 +145,7 @@ export default {
                 else
                     concatURL = concatURL + "&facet=" + facet; 
         	}	
-		   	let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+		   	let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
 		  	logger.info("getProductsListForCategoryUrl: " +getProductsListForCategoryUrl);
         	let method ='GET';
         	let requestCall = constructRequestWithoutToken(getProductsListForCategoryUrl,method,'');
@@ -169,6 +169,7 @@ export default {
 	                logger.error('errors in service to getProductsListForCategory in WCS: ', error);
 	                res.send({ "success": false, "error": error});
 	              }
-	          });
+						});
+							//		});
 	}
 };

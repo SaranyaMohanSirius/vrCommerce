@@ -11,12 +11,12 @@ export default {
 
 	mapTopCategoryJSON: function(input){
 		let converter = JM.makeConverter({
-			TopCategories: ['CatalogGroupView',JM.map({
+			TopCategories: ['catalogGroupView',JM.map({
 					name : 'name',
 					identifier : 'identifier',
 					id: 'uniqueID',
-					store: ' ',
-					seoKeyword: ' ',
+					store: 'storeID',
+					seoKeyword: 'seo_token_ntk',
 			}) ],
 			totalCount : 'recordSetCount',
 			
@@ -63,7 +63,7 @@ export default {
 
 	mapSubCategoryJSON: function(input){
 		let converter = JM.makeConverter({
-			SubCategories: ['CatalogGroupView',JM.map({
+			SubCategories: ['catalogGroupView',JM.map({
 					name : 'name',
 					identifier : 'identifier',
 					id: 'uniqueID',
@@ -101,10 +101,10 @@ export default {
                 pages: JM.helpers.def(pages),
 			  },
 			  resourceIdentifier: 'resourceId',
-              productsList: ['CatalogEntryView', JM.map({                     
+              productsList: ['catalogEntryView', JM.map({                     
                      availability: '',
-                     listPrice : 'Price.0.priceUsage',
-					 purchasePrice: 'Price.0.priceValue',
+                     listPrice : 'price.0.value',
+					 purchasePrice: 'price.1.value',
                      displayName: 'name',
                      code: 'partNumber',
 					 uniqueID: 'uniqueID',
@@ -125,12 +125,14 @@ export default {
                     hasSingleSKU: 'hasSingleSKU',
                     catalogEntryTypeCode: 'catalogEntryTypeCode',
               })],
-              facets: ['FacetView',JM.map({
-              	entry : ['Entry', JM.map({
+              facets: ['facetView',JM.map({
+              	entry : ['entry', JM.map({
               		count : 'count',
-              		uniqueId : ' ',
+              		uniqueId : function(input){
+              			return input.extendedData.uniqueId;
+              		},
               		label : 'label',
-              		value : 'entryValue',
+              		value : 'value',
               		image : ['image',function(url){ 
                           if(url){
                           return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url); 

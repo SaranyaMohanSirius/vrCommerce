@@ -1,6 +1,7 @@
 export default {
  
    "WCS_HOSTNAME" : "192.168.45.132",
+   "WCS_HOSTNAME_PORT" : "192.168.45.132:3737",
    "WCS_HOSTNAME_NOPORT" : "192.168.45.132",
    "WCS_PRODUCT_DETAILS_APPEND": "/productview/byId/",
    "WCS_CATEGORY_TOP": "/categoryview/@top",
@@ -8,6 +9,7 @@ export default {
    "WCS_SUB_CATEGORY": "/categoryview/byParentCategory/",
    "WCS_CATEGORY_DETAILS_APPEND": "/productview/byCategory/",
    "WCS_REST_URL": "/wcs/resources/store/",
+   "WCS_PRODUCT_DETAILS": "/search/resources/store/",
    "WCS_GUEST_IDENTITY": "/guestidentity",
    "WCS_LOGIN_IDENTITY": "/loginidentity",
    "WCS_KEYWORD_SUGGESTION":"/sitecontent/keywordSuggestionsByTerm/",
