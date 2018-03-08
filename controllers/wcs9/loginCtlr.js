@@ -18,7 +18,7 @@ export default {
     loginIdentityHandler: function(req,res){
         let concatUrl = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_LOGIN_IDENTITY;
         let loginUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatUrl , true);
-        logger.info("Login url = "+loginUrl);
+        logger.info("Login url is = "+loginUrl);
         let method = 'POST';
         let messageData = {
             "logonId": req.body.logonId,
