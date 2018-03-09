@@ -1,9 +1,9 @@
-import constants from '../../constants/wcs/constants';
+import constants from '../../constants/wcs9/constants';
 import {getLogger,
         constructUrl,
         constructRequestWithoutToken
        } from '../../util/wcs/util';
-import pdpMapper from '../../json_mappers/wcs/pdpMapper';
+import pdpMapper from '../../json_mappers/wcs9/pdpMapper';
 import requestPromise from 'request-promise';
 import Promise from "bluebird";
 
@@ -24,8 +24,9 @@ export default {
              urlIds = urlIds+"id="+x+"&";          
         }
         let concatURL = constants.WCS_PRODUCT_DETAILS+ constants.WCS_STORE_ID + constants.WCS_PRODUCT_BYIDS + urlIds ;
-        logger.info("getProductDetailsByIds URL : "+constructUrl(constants.WCS_HOSTNAME,concatURL,false));
-        let productByIdsUrl = constructUrl(constants.WCS_HOSTNAME,concatURL,false);
+        logger.info("getProductDetailsByIds URL : "+constructUrl(constants.WCS_HOSTNAME_PORT,concatURL,false));
+        logger.info("my URL : just checking ");
+        let productByIdsUrl = constructUrl(constants.WCS_HOSTNAME_PORT,concatURL,false);
         let method ='GET';
         let messageData = {};
         let requestCall = constructRequestWithoutToken(productByIdsUrl,method,messageData);
@@ -65,7 +66,8 @@ export default {
     
     let id = req.query.id;
     let concatURL = constants.WCS_PRODUCT_DETAILS+ constants.WCS_STORE_ID + constants.WCS_PRODUCT_BY_SINGLE_ID+id;
-    let productBySingleIdUrl = constructUrl(constants.WCS_HOSTNAME,concatURL,false);
+    logger.info("my new URL : just checking ");
+    let productBySingleIdUrl = constructUrl(constants.WCS_HOSTNAME_PORT,concatURL,false);
     let method ='GET';
     let messageData = {};
     let requestCall = constructRequestWithoutToken(productBySingleIdUrl,method,messageData);

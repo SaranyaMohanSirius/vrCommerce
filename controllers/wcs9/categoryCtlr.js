@@ -1,12 +1,12 @@
-import constants from '../../constants/wcs/constants';
+import constants from '../../constants/wcs9/constants';
 import {getLogger,
         constructUrl,
         getAuthTokensFromDB,
 				constructRequestWithoutToken,
 				isJson
        } from '../../util/wcs/util';
-import categoryMapper from '../../json_mappers/wcs/categoryMapper';
-import seoController from '../wcs/seoCtlr';
+import categoryMapper from '../../json_mappers/wcs9/categoryMapper';
+ import seoController from '../wcs9/seoCtlr';
 import requestPromise from 'request-promise';
 
 let logger= getLogger();
@@ -23,7 +23,7 @@ export default {
    			
    			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_TOP +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
    			let messageData = {};
-			let getTopCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+			let getTopCategoriesUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
 			logger.info("getTopCategoriesUrl: " +getTopCategoriesUrl);
         	let method ='GET';
           	let requestCall = constructRequestWithoutToken(getTopCategoriesUrl,method,messageData);
@@ -47,31 +47,28 @@ export default {
 
 	   getCategory: function(res,req){  			
 		let identifier = req.query.identifier;
-		console.log("Identifier::"+identifier);
-		seoController.getIdByKeyword(req.query.identifier,'CategoryToken').then(function(value){
-			let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY + value + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
-			let messageData = {};
-			let getCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
-			logger.info("getCategoriesUrl: " +getCategoriesUrl);
-	       	let method ='GET';
-		 	let requestCall = constructRequestWithoutToken(getCategoriesUrl,method,messageData);
-			logger.info(JSON.stringify(requestCall));
-			requestPromise(requestCall).then(function (messageData) {
-		      let result = categoryMapper.mapCategoryJSON(messageData);
-		              res.send({
-		                "success": true ,
-		                "result": result                                           
-		            });   
-		      }).catch(function (error) {
-		          if(error){
-		            logger.error('errors in service to getCategories in WCS: ', error);
-		            res.send({ "success": false, "error": error }); 
-		          }else{
-		            logger.error('errors in service to getCategories in WCS: ', error);
-		            res.send({ "success": false, "error": error});
-		          }
-		      });
-		});
+		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY + identifier + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+		let messageData = {};
+		let getCategoriesUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
+		logger.info("getCategoriesUrl: " +getCategoriesUrl);
+       	let method ='GET';
+	 	let requestCall = constructRequestWithoutToken(getCategoriesUrl,method,messageData);
+		logger.info(JSON.stringify(requestCall));
+		requestPromise(requestCall).then(function (messageData) {
+	      let result = categoryMapper.mapCategoryJSON(messageData);
+	              res.send({
+	                "success": true ,
+	                "result": result                                           
+	            });   
+	      }).catch(function (error) {
+	          if(error){
+	            logger.error('errors in service to getCategories in WCS: ', error);
+	            res.send({ "success": false, "error": error }); 
+	          }else{
+	            logger.error('errors in service to getCategories in WCS: ', error);
+	            res.send({ "success": false, "error": error});
+	          }
+	      });
 	},
 
 	/*
@@ -83,11 +80,15 @@ export default {
 	getSubCategories: function(res,req){
 
 		logger.info(" categoryCtrl -> getSubCategories: ");
-		
-		seoController.getIdByKeyword(req.query.identifier,'CategoryToken').then(function(value){
+ 	//seoController.getIdByKeyword(req.query.identifier,'CategoryToken').then(function(value){
+		let value = req.query.identifier;
+			if(value == null)
+			{
+				value = req.query.identifier;
+			}
 				let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_SUB_CATEGORY + value;
 	   			let messageData = {};
-				let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+				let getSubCategoriesUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
 				logger.info("getSubCategoriesUrl: " +getSubCategoriesUrl);
 	        	let method ='GET';
 	          	let requestCall = constructRequestWithoutToken(getSubCategoriesUrl,method,messageData);
@@ -107,10 +108,9 @@ export default {
 		                logger.error('errors in service to getSubCategories in WCS: ', error);
 		                res.send({ "success": false, "error": error});
 		              }
-		          });
-
-	 			
-			});
+							});
+							
+				//		});
 
 	},
 
@@ -125,12 +125,12 @@ export default {
    			let currentPageNumber = req.query.currentPage;
    			
    			logger.info("getProductsListForCategory -> categoryId::" +categoryId);
-   			
-   			seoController.getIdByKeyword(categoryId,'CategoryToken').then(function(value){
+   			let value = req.query.identifier;
+   		//	seoController.getIdByKeyword(categoryId,'CategoryToken').then(function(value){
     		let concatURL = constants.WCS_PRODUCT_DETAILS + constants.WCS_STORE_ID + constants.WCS_CATEGORY_DETAILS_APPEND + value + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID+ "&pageNumber=" + currentPageNumber + "&pageSize=" + pageSize;
 			 if(req.query.orderBy){
    				let orderBy = req.query.orderBy;
-    			concatURL = concatURL + "&orderBy=" + orderBy; 
+    			concatURL = concatURL + "&orderBy=" + orderBy;              
     		}		
     		 if(req.query.facet){
                 let facet = req.query.facet;
@@ -145,7 +145,7 @@ export default {
                 else
                     concatURL = concatURL + "&facet=" + facet; 
         	}	
-		   	let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME, concatURL, false);
+		   	let getProductsListForCategoryUrl = constructUrl(constants.WCS_HOSTNAME_PORT, concatURL, false);
 		  	logger.info("getProductsListForCategoryUrl: " +getProductsListForCategoryUrl);
         	let method ='GET';
         	let requestCall = constructRequestWithoutToken(getProductsListForCategoryUrl,method,'');
@@ -156,7 +156,7 @@ export default {
 			      'currentPage': currentPageNumber
 				};
 				if(isJson(body)) body = JSON.parse(body);
-	          	let result = categoryMapper.mapProductsListForCategoryJSON(body,messageData);
+	         	let result = categoryMapper.mapProductsListForCategoryJSON(body,messageData);
 	                  res.send({
 	                    "success": true ,
 	                    "result": result                                           
@@ -169,8 +169,7 @@ export default {
 	                logger.error('errors in service to getProductsListForCategory in WCS: ', error);
 	                res.send({ "success": false, "error": error});
 	              }
-	          });
- 		  	
-   			});
+						});
+							//		});
 	}
 };

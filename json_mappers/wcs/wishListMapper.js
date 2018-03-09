@@ -15,8 +15,33 @@ export default {
           itemList: ['GiftList.0.item', JM.map({
               wishListItemId: "giftListItemID",
               partNumber: "partNumber",
-              productId: "productId"
+              productId: "productId",
+              quantity: "quantityRequested"
               })]
+        })
+
+            let result = converter(body);
+            return result;
+  },
+
+  /*
+   * JSON Mapper for mapping responses for the getting wishlist items in WCS
+   */
+
+  	getWishListLists: function(body,req){
+
+        let converter = JM.makeConverter({
+
+          wishListList: ['GiftList', JM.map({ 
+        	  wishListId: "uniqueID",
+        	  wishListName: "descriptionName",
+        	  itemList: ['item', JM.map({
+	              wishListItemId: "giftListItemID",
+	              partNumber: "partNumber",
+	              productId: "productId",
+                quantity: "quantityRequested"
+              })]
+          })]
         })
 
             let result = converter(body);

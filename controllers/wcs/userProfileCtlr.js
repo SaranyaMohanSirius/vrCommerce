@@ -45,6 +45,35 @@ export default {
         });
              
     },
+    /*
+    * Method to get Order Detail of an user in WCS 
+    * Request Method : GET
+    */
+    getOrderDetails : function(req,res){
+    	logger.info("inside getOrderDetails");
+        let orderId = req.query.orderId;
+    	let concatOrderDetailsUrl = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_ORDER + orderId;
+        let getOrderDetailsUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatOrderDetailsUrl,true);
+        let methodForOrderDetails = 'GET';
+        let messageData = {};
+
+        logger.info("getOrderDetailsUrl: "+ getOrderDetailsUrl);
+        let requestCall = constructRequestWithToken(getOrderDetailsUrl,methodForOrderDetails,messageData,getTokens(req))
+        requestPromise(requestCall).then(function (body) {
+            res.send({
+                "success": true ,
+                "result": body                                          
+            });
+            }).catch(function (error) {
+            if(error.statusCode === 404 || error.statusCode === 400){
+                logger.error('errors in service to getOrderDetail in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body });
+            }else{
+                logger.error('errors in service to getOrderDetail in WCS: ', JSON.stringify(error));
+                res.send({ "success": false, "error": error.response.body.errors[0] }); 
+            } 
+        });          
+    },
 
    /*
     * Method to get My Account - Personal Information of an user in WCS 

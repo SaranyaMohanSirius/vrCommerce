@@ -34,8 +34,19 @@ export default {
         seoController.getIdByKeyword(objectId,tokenName).then(function(value){
         	
         console.log("value:::"+value);
+        let idString = "";
         
-        let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_LAYOUT + "&objectIdentifier=" + value + "&deviceClass=" + deviceClass + "&pageGroup=" + pageGroup;
+        if(pageGroup == 'Category'){
+        	idString = "&categoryId="+value;
+        }else if(pageGroup == 'Product'){
+        	idString = "&productId="+value;
+        }else if(pageGroup == 'Product'){
+        	
+        }else if(pageGroup == 'Search'){
+        	
+        }
+        
+        let concatURL = constants.WCS_REST_URL+ constants.WCS_STORE_ID + constants.WCS_LAYOUT + "&objectIdentifier=" + value + "&deviceClass=" + deviceClass + "&pageGroup=" + pageGroup+idString;
         logger.info("Layout URL"+constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true));
         let layoutUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,concatURL,true);
         let method ='GET';

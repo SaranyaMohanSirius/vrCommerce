@@ -55,6 +55,9 @@ export default {
 							else if(resourceName == "qv" || resourceName == "cart"){
 								result = pdpMapper.mapQuickViewJSON(data,true);
 							}
+							else if(resourceName == "relatedProducts"){
+								result = pdpMapper.mapRelatedProductsJSON(data,true);
+							}
 							res.send({
 								"success": true,
 								"result": result

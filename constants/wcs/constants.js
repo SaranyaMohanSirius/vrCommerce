@@ -18,6 +18,7 @@ export default {
    "WCS_CAS_STORE_ID": "10051",
    "WCS_CATALOG_ID": "10052",
    "WCS_CART": "/cart/",
+   "WCS_ESPOT": "/espot/",
    "WCS_CART_EXT": "/cart",
    "WCS_DEFAULT": "/@default",
    "WCS_WISHLIST": "/wishlist",

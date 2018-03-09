@@ -7,6 +7,7 @@ import {getLogger,
         requiredProtocolData,
        } from '../../util/wcs/util';
 import cartMapper from '../../json_mappers/wcs/cartMapper';
+import loginController from '../../controllers/wcs/loginCtlr';
 import requestPromise from 'request-promise';
 import Promise from "bluebird";
 
@@ -22,6 +23,14 @@ export default {
 
    addToCart: function(req,res){
         logger.info("inside add to cart");
+        
+        logger.info("req.cookie.userId::"+req.cookies.userId);
+        
+        //Check if there is a userId already exists by checking the cookie
+        if(req.cookies.userId == 'undefined'){
+        	//Call the guestIdentityHandler and set the token
+        	loginController.guestIdentityHandler(req, res);
+        }
 
         let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CART_EXT +"?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
         let addToCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true);
