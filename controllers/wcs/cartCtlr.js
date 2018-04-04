@@ -316,6 +316,7 @@ export default {
                 return checkOut(data, authToken);
               });
           },
+//--------------------------------------------------------------------------
 
          /* 
           * Method for getting Order Payment Summary in WCS

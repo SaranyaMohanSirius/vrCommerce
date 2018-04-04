@@ -38,22 +38,22 @@ export default{
      * Request body - Refer artifacts
      * Request method - POST
      */
-    createPaymentInstruction: function(req,res){
-        let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_CART_AT_SELF+constants.WCS_PAYMENT_INSTRUCTION;
-        let createPaymentInstructionUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,true);
-        logger.info("Create payment instruction url = "+ createPaymentInstructionUrl);
-        let messageData = req.body;
-        messageData.authToken = getTokens(req).WCTrustedToken;
-        let createPaymentInstructionCall = constructRequestWithToken(createPaymentInstructionUrl,'POST',messageData,getTokens(req));
-        requestPromise(createPaymentInstructionCall).then(function(body){
-            if(isJson(body)) body = JSON.parse(body);
-            res.send({
-                "success" : true,
-                "result" : body
-            })
-        }).catch(function(error){
-            logger.error('errors in service to createPaymentInstruction in WCS: ', error);
-            res.send({ "success": false, "error": error.response.body });
+    createPaymentInstruction: function(msg){
+        return new Promise(function(resolve,reject){
+            let path = constants.WCS_REST_URL+constants.WCS_STORE_ID+constants.WCS_CART_AT_SELF+constants.WCS_PAYMENT_INSTRUCTION;
+            let createPaymentInstructionUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT,path,true);
+    
+            let messageData = msg;
+            let createPaymentInstructionCall = constructRequestWithToken(createPaymentInstructionUrl,'POST',messageData,'');
+            requestPromise(createPaymentInstructionCall).then(function(body){
+                if(isJson(body)) body = JSON.parse(body);
+                console.log("payment ins created = ",body);
+                resolve(body);
+            }).catch(function(error){
+                logger.error('errors in service to createPaymentInstruction in WCS: ', error);
+                res.send({ "success": false, "error": error.response.body });
+                reject(false);
+            })  
         })
     },
     /**

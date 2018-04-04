@@ -32,7 +32,8 @@ export default {
             res.cookie(constants.WCS_PERSONALIZATION_ID,result.personalizationID);
             res.cookie(constants.WCS_USER_ID,result.userId);
             res.send({
-                    "success": true                         
+                    "success": true    ,
+                    "result": result                     
                 });  
           }).catch(function(error){
             if(error.statusCode === 404){

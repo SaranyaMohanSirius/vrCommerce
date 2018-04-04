@@ -16,6 +16,7 @@ import wcsMyAccountRoutes from './wcs/myAccountRoutes';
 import wcsPaymentRoutes from './wcs/paymentRoutes';
 import wcsSEORoutes from './wcs/seoRoutes';
 import wcsLayoutRoutes from './wcs/layoutRoutes';
+import vrRoutes from './wcs/vrRoutes';
 
 let app = express();
 
@@ -36,5 +37,6 @@ app.use('/wcs/myAccount',wcsMyAccountRoutes);
 app.use('/wcs/payment',wcsPaymentRoutes);
 app.use('/wcs/seo',wcsSEORoutes);
 app.use('/wcs/page',wcsLayoutRoutes);
+app.use('/vr',vrRoutes);
 
 export default app;

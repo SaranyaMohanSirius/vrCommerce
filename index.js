@@ -1,12 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {getLogger} from './util/elasticPath/util';
-import epRoute from './routes/ep-index';
 import wcsRoute from './routes/wcs-index';
-import wcs9Route from './routes/wcs9-index';
 import cookieParser from 'cookie-parser';
 
-let logger=getLogger();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 let app = express();
@@ -43,13 +39,12 @@ app.use(bodyParser.json());
 /**
  * App includes all the Routes
  */
-app.all('/ep/*',epRoute);
 app.all('/wcs/*',wcsRoute);
-app.all('/wcs9/*',wcs9Route);
+app.all('/vr/*',wcsRoute);
 
 // Spin up the server
 app.listen(app.get('port'), function() {
-  logger.info('running on port', app.get('port'))
+  console.log('running on port', app.get('port'))
 })
 
 

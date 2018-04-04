@@ -53,8 +53,8 @@ module.exports = {
 			json: data,
 			headers: {
 			  'Content-Type': 'application/json',
-			  'WCToken': tokens.WCToken,
-              'WCTrustedToken': tokens.WCTrustedToken
+				'WCToken': '14478%2C5BNxQ5rcuhCypChQ415EPoK7%2FJCiK%2BtSDBrlnEIzMKjanWjC3QmeFY%2B672d8QGuwIT9bhHHMfc1jKrGWCVyXx9kQ7GA7t%2FZ%2FOVe%2FN55WnjdSTRpM2N1zW1gtuvz4VpdAkq3849%2FRdq1MvTPm7HAKA%2FYGK7LgFWi7lz8EAtSq5mmPKdHUmLAJYKoDveBixiZLddK%2BrMSyugNhyhPEaUwOoJKit9e3c0yOIdv5VsYznzE%3D',
+				'WCTrustedToken': '14478%2CnZO8Oy9gtTQXlFTYUB1QXIoTGo9suWgoodntnNZHCkw%3D'
 			}
 		};
 	},
