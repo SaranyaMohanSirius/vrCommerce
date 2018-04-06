@@ -50,7 +50,7 @@ export default {
             "error": error.response.body.errors[0]
           });
         }
-      });
+      });;
 
       let requestFunction = function(data) {
         return new Promise(function(resolve, reject) {
@@ -317,7 +317,7 @@ export default {
   getIntent: function(req, res) {
 
 
-    let customText = "add this item to the cart";
+    let customText = req.query.message;
     console.log("inside controller");
     let apiai = apiapp.textRequest(customText, {
             sessionId: API_AI_SESSION_ID// any arbitrary id
