@@ -23,7 +23,7 @@ router.get('/getcartDetails', function(req, res){
 /*
  *  Route for add to cart
 */
- 
+
 router.post('/addToCart', function(req, res){
     vr.addToCart(req,res);
 });
@@ -31,8 +31,13 @@ router.post('/addToCart', function(req, res){
 /*
  *  Route for checkout
 */
- 
+
 router.post('/checkout', function(req, res){
     vr.submitOrder(req,res);
+});
+
+router.get('/getIntent', function(req, res){
+    console.log('Inside');
+    vr.getIntent(req, res);
 });
 export default router;

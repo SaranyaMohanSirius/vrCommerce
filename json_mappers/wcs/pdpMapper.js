@@ -11,28 +11,22 @@ export default {
 		let converter = JM.makeConverter({
 			catalogEntryView: ['catalogEntryView', JM.map({
 
-				listPrice : 'price.0.value',
-				purchasePrice: 'price.1.value',
-				displayName: 'name',
+				price : ['price.0.value',function(url){
+										if(url){
+												 return (url+"$");
+										}
+				}],
+				name: 'name',
 				fullImage : ['fullImage',function(url){
-                    if(url){
-                          return (constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url);
-                    }
-				}]
+										if(url){
+												 return ("https:"+constants.WCS_DOUBLE_SLASH+constants.WCS_HOSTNAME_NOPORT+url);
+										}
+				}],
+				})],
+			});
 
-		});
 		let result = converter(body);
 		let jsonObj = result;
-
-		if(inv != true){
-			for(let i=0 ; i<jsonObj.catalogEntryView.length ; i++){
-				let invAvailability = inv.InventoryAvailability[i].inventoryStatus;
-				let quantityAvailable = inv.InventoryAvailability[i].availableQuantity;
-
-				jsonObj.catalogEntryView[i].availability = invAvailability;
-				jsonObj.catalogEntryView[i].quantity = quantityAvailable;
-			}
-		}
         return jsonObj;
   },
 
