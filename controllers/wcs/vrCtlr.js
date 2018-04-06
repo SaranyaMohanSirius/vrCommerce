@@ -67,10 +67,9 @@ export default {
             } else if (resourceName == "relatedProducts") {
               result = pdpMapper.mapRelatedProductsJSON(data, true);
             }
-            res.send({
-              "success": true,
-              "result": result
-            });
+            res.send(
+               result
+            );
           } else {
             requestPromise(requestCall).then(function(body) {
               if (isJson(body)) body = JSON.parse(body);
@@ -79,10 +78,9 @@ export default {
               } else if (resourceName == "qv" || resourceName == "cart") {
                 result = pdpMapper.mapQuickViewJSON(data, body);
               }
-              res.send({
-                "success": true,
-                "result": result
-              });
+              res.send(
+                 result
+            );
             }).catch(function(error) {
               if (error.statusCode === 404 || error.statusCode === 500) {
                 logger.error('error in service to getProductDetails in WCS: ', error);
