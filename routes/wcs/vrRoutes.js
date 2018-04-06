@@ -33,9 +33,12 @@ router.post('/addToCart', function(req, res){
 */
 
 router.post('/checkout', function(req, res){
-    vr.submitOrder(req,res);
+    vr.submitOrder(req,res, true);
 });
 
+router.get('/buy', function(req, res){
+    vr.buyItem(req, res);
+});
 router.get('/getIntent', function(req, res){
     console.log('Inside');
     vr.getIntent(req, res);

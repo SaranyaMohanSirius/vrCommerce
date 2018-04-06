@@ -18,7 +18,8 @@ const apiapp = apiai('3ccd4dd841d844228127611bec41a436');
 const API_AI_SESSION_ID = 'tabby_cat';
 let logger = getLogger();
 
-export default {
+module.exports =  {
+
   getProductDetails: function(req, res) {
 
 
@@ -50,7 +51,7 @@ export default {
             "error": error.response.body.errors[0]
           });
         }
-      });;
+      });
 
       let requestFunction = function(data) {
         return new Promise(function(resolve, reject) {
@@ -68,7 +69,7 @@ export default {
               result = pdpMapper.mapRelatedProductsJSON(data, true);
             }
             res.send(
-               result
+              result
             );
           } else {
             requestPromise(requestCall).then(function(body) {
@@ -79,8 +80,8 @@ export default {
                 result = pdpMapper.mapQuickViewJSON(data, body);
               }
               res.send(
-                 result
-            );
+                result
+              );
             }).catch(function(error) {
               if (error.statusCode === 404 || error.statusCode === 500) {
                 logger.error('error in service to getProductDetails in WCS: ', error);
@@ -318,19 +319,45 @@ export default {
     let customText = req.query.message;
     console.log("inside controller");
     let apiai = apiapp.textRequest(customText, {
-            sessionId: API_AI_SESSION_ID// any arbitrary id
-          });
+      sessionId: API_AI_SESSION_ID // any arbitrary id
+    });
 
-     apiai.on('response', (response) => {
-       console.log(response.result.metadata.intentName);
-      res.send({intent:response.result.metadata.intentName});
+    apiai.on('response', (response) => {
+      console.log(response.result.metadata.intentName);
+      res.send({
+        intent: response.result.metadata.intentName
+      });
 
-     });
-     apiai.on('error', (error) => {
-       console.log("error ",error);
-      res.end({isSuccess:false});
+    });
+    apiai.on('error', (error) => {
+      console.log("error ", error);
+      res.end({
+        isSuccess: false
+      });
 
-     });
-     apiai.end();
+    });
+    apiai.end();
+  },
+
+  buyItem: function(req, res) {
+    let productId = req.query.productId;
+    let concatURL = constants.WCS_REST_URL + constants.WCS_STORE_ID + constants.WCS_CART_EXT + "?catalogId=" + constants.WCS_CATALOG_ID + "&langId=" + constants.WCS_LANG_ID;
+    let addToCartUrl = constructUrl(constants.WCS_HOSTNAME_NOPORT, concatURL, true);
+    let messageData = {
+      "orderItem": [{
+        "productId": productId,
+        "quantity": "1"
+      }]
+    };
+
+    let method = 'POST';
+    let requestCall = constructRequestWithToken(addToCartUrl, method, messageData, getTokens(req));
+    console.log("request call = ", requestCall);
+    requestPromise(requestCall).then(function(result) {
+      module.exports.submitOrder(req, res, false);
+    }).catch(function(error) {
+      console.log("error in cart ",error);
+    })
   }
+
 }
