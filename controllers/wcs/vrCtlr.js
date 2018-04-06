@@ -186,7 +186,7 @@ module.exports =  {
    *   }
    */
 
-  submitOrder: function(req, res) {
+  submitOrder: function(req, res, isSumerian) {
     /*
      * Method for preparing order for checkout in WCS
      * Request Method : PUT
@@ -263,24 +263,35 @@ module.exports =  {
         let messageBody = {};
         let requestCall = constructRequestWithToken(getOrderConfirmationDetailsUrl, methodForConfirmationDetails, messageBody, '')
         requestPromise(requestCall).then(function(result) {
-          if (boo)
-            res.send({
-              "success": true,
-              "result": result
-            });
+          if (boo){
+              if(!isSumerian){
+                console.log("result ---------------",result);
+                  let resultToSend = {};
+                  resultToSend.success = true;
+                  resultToSend.price = result.orderItem[0].orderItemPrice;
+                  res.send(resultToSend);
+              }
+              else{
+                res.send({
+                  "success": true,
+                  "result": result
+                });
+              }
+
+          }
           else resolve(result);
         }).catch(function(error) {
           if (error.statusCode === 404 || error.statusCode === 400) {
-            //logger.error('errors in service to getOrderConfirmationDetails of submitOrder in WCS: ', JSON.stringify(error));
+            logger.error('errors in service to getOrderConfirmationDetails of submitOrder in WCS: ', JSON.stringify(error));
             res.send({
               "success": false,
-              "error": error.response.body
+              "error": error
             });
           } else {
-            //logger.error('errors in service to getOrderConfirmationDetails of submitOrder in WCS: ', JSON.stringify(error));
+            logger.error('errors in service to getOrderConfirmationDetails of submitOrder in WCS: ', JSON.stringify(error));
             res.send({
               "success": false,
-              "error": error.response.body.errors[0]
+              "error": error
             });
           }
         });
@@ -288,7 +299,7 @@ module.exports =  {
     }
     preCheckOut().then(function(data) {
       console.log("precheckout = ", data);
-      getOrderConfirmationDetails(data, false).then(function(orderDetails) {
+      getOrderConfirmationDetails(data, false, isSumerian).then(function(orderDetails) {
         console.log("get order conf = ", orderDetails);
         let msg = {
           "account": "4012888888881881",
