@@ -57,8 +57,8 @@ module.exports = {
       json: data,
       headers: {
         'Content-Type': 'application/json',
-        'WCToken': "14478%2CkLRK2pvfKRpVy7IQsJhhaM3hvK6e3VnKXAeh%2BLPcJB%2F%2FdOGOyNejrpjNbZnEKZ1r82BYoeU7VcJPuU4g0%2FzOPEfdg7tp4kBiYiO%2BPQ9qkIB7diNDWxYCOejPztc%2FidC2Jo5FjVAHjL4S%2FcrGuSQys0XqAy%2B9wIX3DMV5Zx5Tz2Dq4GQ8y6MejBb0974jiuHgDbcSSp0PwPz9Nj8AxIVNGi0Mw%2B1vyqCoQJWvg3upYKk%3D",
-        'WCTrustedToken': '14478%2CeJRJ0i9F0kJ%2F2wWTx%2FyCH18J%2Fqdd4x4eqf7llNbLUpk%3D'
+        "WCToken": "14478%2Cmkb1ovoW5hq1Sk2BOw5twNQHA7tEYchhLpm1pjU78HIIf4JP0dttYrECygLlfxq8BIyIeAQqxpo%2FuQszJNUbg6Z4XydIzsguwoA81YixIPjr63ZlsHmaaolWuCs9fG3wKr9x8lD8OcUnoRLEdjkdZM1md9D33k%2Fcu7hvEEwfPYzcz1E9%2B2xQd8cZ1oEE7BqjfWtpoOPAZ%2BwNygMQ%2FuQJNjNcruy3eZxgQ0F0mfMvBVA%3D",
+        "WCTrustedToken": "14478%2C5Du%2FUusPt%2Bf5VH2RMmWN9oMTT5W1RNoFB6WArgFjQW4%3D"
       }
     };
   },
